@@ -5,9 +5,11 @@ import HomeCalender from '@/components/HomeCalender.vue';
 <template>
 <header>
   <img class="menu-icon" alt="Menu Icon" src="../components/icons/Menu.png">
-  <h3>May 1, 2024</h3>
+  <p>May 1, 2024</p>
 </header>
+
 <HomeCalender />
+
 </template>
 
 <style scoped>
@@ -21,6 +23,14 @@ import HomeCalender from '@/components/HomeCalender.vue';
     align-items: center;
     padding: 24px;
     gap: 7px;
+  }
+
+  header p{
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    margin: 0;
+    padding: 0;
   }
 
 </style>
