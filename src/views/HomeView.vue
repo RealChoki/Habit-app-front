@@ -1,32 +1,50 @@
-<script setup lang="ts">
-import HomeCalender from '@/components/HomeCalender.vue';
-</script>
-
 <template>
-  <header>
-    <img class="menu-icon" alt="Menu Icon" src="../components/icons/Menu.png">
-    <p>May 1, 2024</p>
-  </header>
-
-  <HomeCalender />
+  <HeaderNavbar />
+  <div class="container-fluid d-flex justify-content-center">
+    <div>
+      <HomeCalender />
+      <div class="max-width-500">
+        <TaskElement :task="gymTask" />
+        <TaskElement :task="waterTask" />
+        <TaskElement :task="pianoTask" />
+      </div>
+    </div>
+  </div>
 </template>
 
+<script setup lang="ts">
+import { ref } from 'vue'
+import HomeCalender from '@/components/HomeCalender.vue'
+import HeaderNavbar from '@/components/Navbar.vue'
+import TaskElement from '@/components/TaskElement.vue'
+
+const gymTask = ref({
+  id: 1,
+  timestamp: null,
+  type: 'yesno',
+  title: 'Go to gym',
+  value: true
+})
+const waterTask = ref({
+  id: 1,
+  timestamp: null,
+  type: 'numeric',
+  title: 'Drink 5 Glasses of Water',
+  count: 5,
+  value: true
+})
+const pianoTask = ref({
+  id: 1,
+  timestamp: null,
+  type: 'timer',
+  title: 'Play 1 hour of Piano',
+  timer: 3600,
+  value: true
+})
+</script>
+
 <style scoped>
-  header {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 24px;
-    gap: 7px;
-  }
-
-  header p{
-    font-size: 15px;
-    font-weight: bold;
-    color: white;
-    margin: 0;
-    padding: 0;
-  }
-
+.max-width-500 {
+  max-width: 500px;
+}
 </style>
