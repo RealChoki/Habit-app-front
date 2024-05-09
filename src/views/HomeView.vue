@@ -13,9 +13,6 @@ import HomeCalender from '@/components/HomeCalender.vue';
 </template>
 
 <style scoped>
-  .menu-icon {
-  }
-
   header {
     display: flex;
     flex-direction: row;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref } from "vue";
 
 const days = ref([
     { day: "Mon", date: 1 },
