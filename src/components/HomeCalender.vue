@@ -22,6 +22,8 @@ const days = ref([
             </div>
         </div>
     </div>
+
+    <a href="/evaluate" class="button">Evaluate</a>
 </template>
 
 <style scoped>

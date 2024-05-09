@@ -3,13 +3,12 @@ import HomeCalender from '@/components/HomeCalender.vue';
 </script>
 
 <template>
-<header>
-  <img class="menu-icon" alt="Menu Icon" src="../components/icons/Menu.png">
-  <p>May 1, 2024</p>
-</header>
+  <header>
+    <img class="menu-icon" alt="Menu Icon" src="../components/icons/Menu.png">
+    <p>May 1, 2024</p>
+  </header>
 
-<HomeCalender />
-
+  <HomeCalender />
 </template>
 
 <style scoped>
