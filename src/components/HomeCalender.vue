@@ -3,7 +3,7 @@
     <!-- Arrow icon to the left -->
     <font-awesome-icon
       :icon="['fas', 'chevron-left']"
-      class="arrow-icon mt-2 me-2 cursor-pointer"
+      class="arrow-icon pt-0 mt-2 me-2 cursor-pointer text-white"
       @click="previousWeek"
     />
 
@@ -17,7 +17,7 @@
     <!-- Arrow icon to the right -->
     <font-awesome-icon
       :icon="['fas', 'chevron-right']"
-      class="arrow-icon mt-2 ms-2 cursor-pointer"
+      class="arrow-icon pt-0 mt-2 ms-2 cursor-pointer text-white"
       @click="nextWeek"
     />
   </div>

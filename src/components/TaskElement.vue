@@ -2,18 +2,17 @@
   <div class="container d-flex align-items-center justify-content-between p-2 py-3">
     <div class="d-flex align-items-center">
       <font-awesome-icon
-        class="tasktype-icon"
+        class="tasktype-icon rounded-square"
         :icon="['fas', 'list-check']"
         v-if="task.type === 'yesno'"
       />
       <font-awesome-icon
-        class="tasktype-icon"
+        class="tasktype-icon rounded-square"
         :icon="['fas', 'plus-minus']"
-        style="width: 16px"
         v-else-if="task.type === 'numeric'"
       />
       <font-awesome-icon
-        class="tasktype-icon"
+        class="tasktype-icon rounded-square"
         :icon="['fas', 'clock']"
         v-else-if="task.type === 'timer'"
       />
@@ -61,11 +60,13 @@
           class="cursor-pointer rounded-circle no-select"
           :icon="['fas', 'pause']"
           :class="{ 'text-success': task.value }"
+          @click="pauseCountdown(task)"
         />
         <font-awesome-icon
           class="cursor-pointer rounded-circle no-select"
           :icon="['fas', 'play']"
           :class="{ 'text-success': task.value }"
+          @click="startCountdown(task)"
         />
         <p
           class="timer position-absolute translate-middle p-0 m-0"
@@ -104,8 +105,14 @@ const props = defineProps({
   task: Object
 })
 
+const isInPast = (timestamp) => {
+  const beginningOfDay = new Date()
+  beginningOfDay.setHours(0, 0, 0, 0)
+  return timestamp <= beginningOfDay.getTime()
+}
+
 const toggleTaskValue = (task) => {
-  if (task.value === false) return
+  if (isInPast(task.timestamp)) return
   task.value = task.value === true ? null : true
 }
 
@@ -121,19 +128,20 @@ const updateNumericTaskValue = (task) => {
 }
 
 const incrementCount = (task) => {
+  if (isInPast(task.timestamp)) return
   task.count += 1
   updateNumericTaskValue(task)
 }
 
 const decrementCount = (task) => {
+  if (isInPast(task.timestamp)) return
   if (task.count > 0) {
     task.count -= 1
     updateNumericTaskValue(task)
   }
 }
 
-const getTimeStamp = (timer) => {
-  const seconds = timer
+const getTimeStamp = (seconds) => {
   const hours = Math.floor(seconds / 3600)
   const minutes = Math.floor((seconds % 3600) / 60)
   const remainingSeconds = seconds % 60
@@ -142,6 +150,24 @@ const getTimeStamp = (timer) => {
   const paddedSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds
 
   return `${hours}:${paddedMinutes}:${paddedSeconds}`
+}
+
+const startCountdown = (task) => {
+  if (isInPast(task.timestamp)) return
+    task.value = true
+    task.timerInterval = setInterval(() => {
+      if (task.timer <= 0) {
+        clearInterval(task.timerInterval)
+        task.value = false
+      } else {
+        task.timer--
+      }
+    }, 1000)
+}
+
+const pauseCountdown = (task) => {
+  task.value = false
+  clearInterval(task.timerInterval)
 }
 </script>
 
@@ -153,14 +179,23 @@ const getTimeStamp = (timer) => {
   border-radius: 50%;
   width: 12px;
   height: 12px;
-  background-color: #2e2e2f;
+  background-color: #232323;
   color: #5b5b5b;
   padding: 8px;
   margin-left: 8px;
 }
 
+.rounded-square {
+  border-radius: 5px;
+  width: 12px;
+  height: 12px;
+  background-color: #232323;
+  color: #5b5b5b;
+  padding: 10px;
+}
+
 .container {
-  border-bottom: 1px solid #2e2e2f;
+  border-bottom: 1px solid #232323;
 }
 
 p.timer {

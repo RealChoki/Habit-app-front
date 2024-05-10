@@ -20,14 +20,14 @@ import TaskElement from '@/components/TaskElement.vue'
 
 const gymTask = ref({
   id: 1,
-  timestamp: null,
+  timestamp: 1715299200000, //10th may
   type: 'yesno',
   title: 'Go to gym',
-  value: false
+  value: null
 })
 const waterTask = ref({
   id: 1,
-  timestamp: null,
+  timestamp: 1715299200000, //10th may
   type: 'numeric',
   subtype: 'increment', // 'increment' or 'decrement
   title: 'Drink 5 Glasses of Water',
@@ -37,11 +37,11 @@ const waterTask = ref({
 })
 const pianoTask = ref({
   id: 1,
-  timestamp: null,
+  timestamp: new Date(), //10th may
   type: 'timer',
   title: 'Play 1 hour of Piano',
   timer: 3600,
-  value: true
+  value: null
 })
 </script>
 
