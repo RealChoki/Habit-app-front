@@ -154,11 +154,10 @@ const getTimeStamp = (seconds) => {
 
 const startCountdown = (task) => {
   if (isInPast(task.timestamp)) return
-    task.value = true
     task.timerInterval = setInterval(() => {
       if (task.timer <= 0) {
         clearInterval(task.timerInterval)
-        task.value = false
+        task.value = true
       } else {
         task.timer--
       }
@@ -166,6 +165,8 @@ const startCountdown = (task) => {
 }
 
 const pauseCountdown = (task) => {
+  if (isInPast(task.timestamp)) return
+  if (task.value === true) return
   task.value = false
   clearInterval(task.timerInterval)
 }

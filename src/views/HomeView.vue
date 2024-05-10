@@ -19,15 +19,15 @@ import HeaderNavbar from '@/components/Navbar.vue'
 import TaskElement from '@/components/TaskElement.vue'
 
 const gymTask = ref({
-  id: 1,
-  timestamp: 1715299200000, //10th may
+  id: 1,  
+  timestamp: new Date(),
   type: 'yesno',
   title: 'Go to gym',
   value: null
 })
 const waterTask = ref({
   id: 1,
-  timestamp: 1715299200000, //10th may
+  timestamp: new Date(),
   type: 'numeric',
   subtype: 'increment', // 'increment' or 'decrement
   title: 'Drink 5 Glasses of Water',
@@ -37,10 +37,10 @@ const waterTask = ref({
 })
 const pianoTask = ref({
   id: 1,
-  timestamp: new Date(), //10th may
+  timestamp: new Date(), 
   type: 'timer',
   title: 'Play 1 hour of Piano',
-  timer: 3600,
+  timer: 3,
   value: null
 })
 </script>
