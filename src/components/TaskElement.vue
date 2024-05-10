@@ -27,6 +27,7 @@
           'text-success': task.value === true,
           'text-danger': task.value === false
         }"
+        @click="toggleTaskValue(task)"
       />
     </div>
     <div v-else-if="task.type === 'numeric'">
@@ -35,11 +36,13 @@
           class="cursor-pointer rounded-circle"
           :icon="['fas', 'minus']"
           :class="{ 'text-success': task.value }"
+          @click="decrementCount(task)"
         />
         <font-awesome-icon
           class="cursor-pointer rounded-circle"
           :icon="['fas', 'plus']"
           :class="{ 'text-success': task.value }"
+          @click="incrementCount(task)"
         />
         <p
           class="timer position-absolute translate-middle p-0 m-0"
@@ -100,6 +103,34 @@ library.add(faPlus, faMinus, faCheck, faListCheck, faClock, faPlay, faPause, faP
 const props = defineProps({
   task: Object
 })
+
+const toggleTaskValue = (task) => {
+  if (task.value === false) return
+  task.value = task.value === true ? null : true
+}
+
+const updateNumericTaskValue = (task) => {
+  if (
+    (task.subtype === 'increment' && task.count >= task.goal) ||
+    (task.subtype !== 'increment' && task.count <= task.goal)
+  ) {
+    task.value = true
+  } else {
+    task.value = null
+  }
+}
+
+const incrementCount = (task) => {
+  task.count += 1
+  updateNumericTaskValue(task)
+}
+
+const decrementCount = (task) => {
+  if (task.count > 0) {
+    task.count -= 1
+    updateNumericTaskValue(task)
+  }
+}
 
 const getTimeStamp = (timer) => {
   const seconds = timer

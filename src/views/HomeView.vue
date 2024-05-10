@@ -29,8 +29,10 @@ const waterTask = ref({
   id: 1,
   timestamp: null,
   type: 'numeric',
+  subtype: 'increment', // 'increment' or 'decrement
   title: 'Drink 5 Glasses of Water',
-  count: 5,
+  count: 0,
+  goal: 5,
   value: null
 })
 const pianoTask = ref({
