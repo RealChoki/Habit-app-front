@@ -21,7 +21,7 @@
     </div>
     <div v-if="task.type === 'yesno'">
       <font-awesome-icon
-        class="cursor-pointer rounded-circle"
+        class="cursor-pointer rounded-circle no-select"
         :icon="['fas', 'check']"
         :class="{
           'text-success': task.value === true,
@@ -33,13 +33,13 @@
     <div v-else-if="task.type === 'numeric'">
       <div class="position-relative pt-2">
         <font-awesome-icon
-          class="cursor-pointer rounded-circle"
+          class="cursor-pointer rounded-circle no-select"
           :icon="['fas', 'minus']"
           :class="{ 'text-success': task.value }"
           @click="decrementCount(task)"
         />
         <font-awesome-icon
-          class="cursor-pointer rounded-circle"
+          class="cursor-pointer rounded-circle no-select"
           :icon="['fas', 'plus']"
           :class="{ 'text-success': task.value }"
           @click="incrementCount(task)"
@@ -58,12 +58,12 @@
     <div v-else-if="task.type === 'timer'">
       <div class="position-relative pt-2">
         <font-awesome-icon
-          class="cursor-pointer rounded-circle"
+          class="cursor-pointer rounded-circle no-select"
           :icon="['fas', 'pause']"
           :class="{ 'text-success': task.value }"
         />
         <font-awesome-icon
-          class="cursor-pointer rounded-circle"
+          class="cursor-pointer rounded-circle no-select"
           :icon="['fas', 'play']"
           :class="{ 'text-success': task.value }"
         />
