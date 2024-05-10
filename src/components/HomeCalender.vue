@@ -1,9 +1,9 @@
 <template>
-  <div class="calender d-flex align-items-center mb-5">
+  <div class="calender d-flex align-items-center mb-2">
     <!-- Arrow icon to the left -->
     <font-awesome-icon
       :icon="['fas', 'chevron-left']"
-      class="arrow-icon pt-0 mt-2 me-2 cursor-pointer text-white"
+      class="arrow-icon mt-0 me-2 cursor-pointer text-white"
       @click="previousWeek"
     />
 
@@ -17,7 +17,7 @@
     <!-- Arrow icon to the right -->
     <font-awesome-icon
       :icon="['fas', 'chevron-right']"
-      class="arrow-icon pt-0 mt-2 ms-2 cursor-pointer text-white"
+      class="arrow-icon mt-0 ms-2 cursor-pointer text-white"
       @click="nextWeek"
     />
   </div>

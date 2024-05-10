@@ -1,7 +1,7 @@
 <template>
     <div class="back-next">
         <RouterLink class="back" to="/">BACK</RouterLink>
-        <img src="../icons/dots1.png" alt="ellipsis" />
+        <img alt="ellipsis" />
         <RouterLink class="next" to="/">NEXT</RouterLink>
     </div>
 </template>

@@ -26,6 +26,22 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/YesNoView.vue')
+    },
+    {
+      path: '/NumericValueView',
+      name: 'NumericValueView',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/NumericValueView.vue')
+    },
+    {
+      path: '/TimerView',
+      name: 'TimerView',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/TimerView.vue')
     }
   ]
 })

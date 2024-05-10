@@ -4,19 +4,11 @@
 </script>
 
 <template>
-    <h2 class="title">How do you want to evaluate your progress?</h2>
+    <h2 class="text-white font-weight-bold text-center pt-5 mb-5 pb-5 fs-5">How do you want to evaluate your progress?</h2>
     <EvaluateButton/>
     <BackNextButton/>
 </template>
 
 <style scoped>
-    .title {
-        color: #FEFFF7;
-        font-size: 18px;
-        margin-top: 42px;
-        margin-bottom: 90px;
-        padding: 0;
-        font-weight: bold;
-        text-align: center;
-    }
+
 </style>

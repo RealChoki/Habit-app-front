@@ -5,7 +5,7 @@
 <template>
   <header class="navbar navbar-dark  py-3 mb-3">
     <div class="container">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler border-1" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <p class="navbar-brand">May 1, 2024</p>
@@ -19,7 +19,7 @@ header {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  padding: 24px;
+  padding: 15px;
   gap: 7px;
 }
 
