@@ -23,23 +23,54 @@
       <font-awesome-icon
         class="cursor-pointer rounded-circle"
         :icon="['fas', 'check']"
-        :class="{ 'text-success': task.value }"
+        :class="{
+          'text-success': task.value === true,
+          'text-danger': task.value === false
+        }"
       />
     </div>
     <div v-else-if="task.type === 'numeric'">
       <div class="position-relative pt-2">
-        <font-awesome-icon class="cursor-pointer rounded-circle" :icon="['fas', 'minus']" :class="{ 'text-success': task.value }"/>
-        <font-awesome-icon class="cursor-pointer rounded-circle" :icon="['fas', 'plus']" :class="{ 'text-success': task.value }"/>
-        <p class="timer position-absolute translate-middle p-0 m-0" :class="{ 'text-success': task.value }">
+        <font-awesome-icon
+          class="cursor-pointer rounded-circle"
+          :icon="['fas', 'minus']"
+          :class="{ 'text-success': task.value }"
+        />
+        <font-awesome-icon
+          class="cursor-pointer rounded-circle"
+          :icon="['fas', 'plus']"
+          :class="{ 'text-success': task.value }"
+        />
+        <p
+          class="timer position-absolute translate-middle p-0 m-0"
+          :class="{
+            'text-success': task.value === true,
+            'text-danger': task.value === false
+          }"
+        >
           Count: {{ task.count }}
         </p>
       </div>
     </div>
     <div v-else-if="task.type === 'timer'">
       <div class="position-relative pt-2">
-        <font-awesome-icon class="cursor-pointer rounded-circle" :icon="['fas', 'pause']" :class="{ 'text-success': task.value }"/>
-        <font-awesome-icon class="cursor-pointer rounded-circle" :icon="['fas', 'play']" :class="{ 'text-success': task.value }"/>
-        <p class="timer position-absolute translate-middle p-0 m-0" :class="{ 'text-success': task.value }">
+        <font-awesome-icon
+          class="cursor-pointer rounded-circle"
+          :icon="['fas', 'pause']"
+          :class="{ 'text-success': task.value }"
+        />
+        <font-awesome-icon
+          class="cursor-pointer rounded-circle"
+          :icon="['fas', 'play']"
+          :class="{ 'text-success': task.value }"
+        />
+        <p
+          class="timer position-absolute translate-middle p-0 m-0"
+          :class="{
+            'text-success': task.value === true,
+            'text-danger': task.value === false
+          }"
+        >
           {{ getTimeStamp(task.timer) }}
         </p>
       </div>

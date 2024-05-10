@@ -23,7 +23,7 @@ const gymTask = ref({
   timestamp: null,
   type: 'yesno',
   title: 'Go to gym',
-  value: true
+  value: false
 })
 const waterTask = ref({
   id: 1,
@@ -31,7 +31,7 @@ const waterTask = ref({
   type: 'numeric',
   title: 'Drink 5 Glasses of Water',
   count: 5,
-  value: true
+  value: null
 })
 const pianoTask = ref({
   id: 1,
