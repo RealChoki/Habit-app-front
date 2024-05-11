@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import HomeCalender from '@/components/HomeCalender.vue'
-import HeaderNavbar from '@/components/Navbar.vue'
+import HeaderNavbar from '@/components/HeaderNavbar.vue'
 import TaskElement from '@/components/TaskElement.vue'
 
 const gymTask = ref({
