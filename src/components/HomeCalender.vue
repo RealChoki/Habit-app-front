@@ -44,6 +44,7 @@ const days = ref([])
 let weekOffset = 0
 const selectedDateIndex = ref(null) // Initially, no date is selected
 const today = new Date()
+today.setDate(today.getDate() - 1) // temporary fix for the current day
 
 // Function to check if the date at the given index is today
 const isToday = (index) => {
@@ -53,7 +54,6 @@ const isToday = (index) => {
   )
 }
 
-// Function to select a date
 const selectDate = (index) => {
   selectedDateIndex.value = index
 }
@@ -83,13 +83,15 @@ const getDayName = (dayIndex) => {
 
 const previousWeek = () => {
   weekOffset++
-  days.value = [] // Clear previous dates
+  days.value = []
+  selectedDateIndex.value = null
   calculateDates(weekOffset)
 }
 
 const nextWeek = () => {
   weekOffset--
-  days.value = [] // Clear previous dates
+  days.value = []
+  selectedDateIndex.value = null
   calculateDates(weekOffset)
 }
 
