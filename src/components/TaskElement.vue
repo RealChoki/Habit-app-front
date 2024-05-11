@@ -34,14 +34,14 @@
         <font-awesome-icon
           class="cursor-pointer rounded-circle no-select"
           :icon="['fas', 'minus']"
-          :class="{ 'text-success': task.value }"
-          @click="decrementCount(task)"
+          :class="{ 'text-success': task.value, 'text-danger': task.value === false }"
+          @click="adjustCount(task, false)"
         />
         <font-awesome-icon
           class="cursor-pointer rounded-circle no-select"
           :icon="['fas', 'plus']"
-          :class="{ 'text-success': task.value }"
-          @click="incrementCount(task)"
+          :class="{ 'text-success': task.value, 'text-danger': task.value === false }"
+          @click="adjustCount(task, true)"
         />
         <p
           class="timer position-absolute translate-middle p-0 m-0"
@@ -107,12 +107,10 @@ const props = defineProps({
 
 // Define a variable to track timer running state
 const isTimerRunning = ref(null)
+const beginningOfDay = new Date()
+beginningOfDay.setHours(0, 0, 0, 0)
 
-const isInPast = (timestamp) => {
-  const beginningOfDay = new Date()
-  beginningOfDay.setHours(0, 0, 0, 0)
-  return timestamp <= beginningOfDay.getTime()
-}
+const isInPast = (timestamp) => timestamp <= beginningOfDay.getTime()
 
 const toggleTaskValue = (task) => {
   if (isInPast(task.timestamp)) return
@@ -130,44 +128,34 @@ const updateNumericTaskValue = (task) => {
   }
 }
 
-const incrementCount = (task) => {
+const adjustCount = (task, increment) => {
   if (isInPast(task.timestamp)) return
-  task.count += 1
-  updateNumericTaskValue(task)
-}
-
-const decrementCount = (task) => {
-  if (isInPast(task.timestamp)) return
-  if (task.count > 0) {
+  if (increment) {
+    task.count += 1
+  } else if (task.count > 0) {
     task.count -= 1
-    updateNumericTaskValue(task)
   }
+  updateNumericTaskValue(task)
 }
 
 const getTimeStamp = (seconds) => {
   const hours = Math.floor(seconds / 3600)
   const minutes = Math.floor((seconds % 3600) / 60)
-  const remainingSeconds = seconds % 60
-
-  const paddedMinutes = minutes < 10 ? `0${minutes}` : minutes
-  const paddedSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds
-
+  const paddedMinutes = minutes.toString().padStart(2, '0')
+  const paddedSeconds = (seconds % 60).toString().padStart(2, '0')
   return `${hours}:${paddedMinutes}:${paddedSeconds}`
 }
 
 const startCountdown = (task) => {
-  if (isInPast(task.timestamp) || isTimerRunning.value) return
-  if (task.value === true || task.value == false) return
+  if (isInPast(task.timestamp) || isTimerRunning.value || task.value !== null) return
   isTimerRunning.value = true
   task.timerInterval = setInterval(() => {
     if (task.timer <= 1) {
-      // UI: the buttons turn green when the timer hits 0 (1s in code)
       task.value = true
       isTimerRunning.value = null
-      task.timer--
+      task.timer = 0
       clearInterval(task.timerInterval)
     } else {
-      isTimerRunning.value = true
       task.timer--
     }
   }, 1000)
@@ -175,7 +163,6 @@ const startCountdown = (task) => {
 
 const pauseCountdown = (task) => {
   if (isInPast(task.timestamp) || !isTimerRunning.value) return
-  if (task.value === true || task.value === false) return
   isTimerRunning.value = false
   clearInterval(task.timerInterval)
 }
