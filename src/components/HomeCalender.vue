@@ -7,7 +7,13 @@
       @click="previousWeek"
     />
 
-    <div class="day cursor-pointer" v-for="day in days" :key="day.date">
+    <div
+      class="day cursor-pointer text-center"
+      v-for="(day, index) in days"
+      :key="day.date"
+      :class="{ 'border border-white': isToday(index) }"
+      @click="selectDate(index)"
+    >
       <p>{{ day.day }}</p>
       <div class="date">
         <p>{{ day.date }}</p>
@@ -34,9 +40,23 @@ library.add(faChevronLeft, faChevronRight)
 
 const days = ref([])
 let weekOffset = 0
+const selectedDateIndex = ref(null) // Initially, no date is selected
+const today = new Date()
+
+// Function to check if the date at the given index is today
+const isToday = (index) => {
+  return (
+    index === selectedDateIndex.value ||
+    (selectedDateIndex.value === null && new Date().getDate() === days.value[index].date)
+  )
+}
+
+// Function to select a date
+const selectDate = (index) => {
+  selectedDateIndex.value = index
+}
 
 const calculateDates = (offset) => {
-  const today = new Date()
   const monday = new Date(today)
   const currentDay = today.getDay()
 
@@ -92,7 +112,6 @@ calculateDates(weekOffset)
 .day p {
   font-size: 10px;
   margin: 0;
-  text-align: center;
   padding-top: 5px;
   color: #c5c5c5;
 }
