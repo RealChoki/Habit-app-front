@@ -23,7 +23,7 @@
         class="cursor-pointer rounded-circle no-select"
         :icon="['fas', 'check']"
         :class="{
-          'text-success': task.value === true,
+          'text-success': task.value,
           'text-danger': task.value === false
         }"
         @click="toggleTaskValue(task)"
@@ -46,7 +46,7 @@
         <p
           class="timer position-absolute translate-middle p-0 m-0"
           :class="{
-            'text-success': task.value === true,
+            'text-success': task.value,
             'text-danger': task.value === false
           }"
         >
@@ -59,20 +59,20 @@
         <font-awesome-icon
           class="cursor-pointer rounded-circle no-select"
           :icon="['fas', 'pause']"
-          :class="{ 'text-success': task.value }"
+          :class="{ 'text-success': task.value, 'text-danger': task.value === false }"
           @click="pauseCountdown(task)"
         />
         <font-awesome-icon
           class="cursor-pointer rounded-circle no-select"
           :icon="['fas', 'play']"
-          :class="{ 'text-success': task.value }"
+          :class="{ 'text-success': task.value, 'text-danger': task.value === false }"
           @click="startCountdown(task)"
         />
         <p
           class="timer position-absolute translate-middle p-0 m-0"
           :class="{
-            'text-success': task.value === true,
-            'text-danger': task.value === false
+            'text-success': isTimerRunning || task.value,
+            'text-danger': isTimerRunning === false || task.value === false
           }"
         >
           {{ getTimeStamp(task.timer) }}
@@ -95,7 +95,7 @@ import {
   faPause,
   faPlusMinus
 } from '@fortawesome/free-solid-svg-icons'
-import { defineProps } from 'vue'
+import { defineProps, ref } from 'vue'
 
 // Add the icons to the library
 library.add(faPlus, faMinus, faCheck, faListCheck, faClock, faPlay, faPause, faPlusMinus)
@@ -105,6 +105,9 @@ const props = defineProps({
   task: Object
 })
 
+// Define a variable to track timer running state
+const isTimerRunning = ref(null)
+
 const isInPast = (timestamp) => {
   const beginningOfDay = new Date()
   beginningOfDay.setHours(0, 0, 0, 0)
@@ -113,7 +116,7 @@ const isInPast = (timestamp) => {
 
 const toggleTaskValue = (task) => {
   if (isInPast(task.timestamp)) return
-  task.value = task.value === true ? null : true
+  task.value = task.value ? null : true
 }
 
 const updateNumericTaskValue = (task) => {
@@ -153,21 +156,27 @@ const getTimeStamp = (seconds) => {
 }
 
 const startCountdown = (task) => {
-  if (isInPast(task.timestamp)) return
-    task.timerInterval = setInterval(() => {
-      if (task.timer <= 0) {
-        clearInterval(task.timerInterval)
-        task.value = true
-      } else {
-        task.timer--
-      }
-    }, 1000)
+  if (isInPast(task.timestamp) || isTimerRunning.value) return
+  if (task.value === true || task.value == false) return
+  isTimerRunning.value = true
+  task.timerInterval = setInterval(() => {
+    if (task.timer <= 1) {
+      // UI: the buttons turn green when the timer hits 0 (1s in code)
+      task.value = true
+      isTimerRunning.value = null
+      task.timer--
+      clearInterval(task.timerInterval)
+    } else {
+      isTimerRunning.value = true
+      task.timer--
+    }
+  }, 1000)
 }
 
 const pauseCountdown = (task) => {
-  if (isInPast(task.timestamp)) return
-  if (task.value === true) return
-  task.value = false
+  if (isInPast(task.timestamp) || !isTimerRunning.value) return
+  if (task.value === true || task.value === false) return
+  isTimerRunning.value = false
   clearInterval(task.timerInterval)
 }
 </script>
