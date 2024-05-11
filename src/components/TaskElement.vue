@@ -203,4 +203,8 @@ p.timer {
   left: 55%;
   white-space: nowrap;
 }
+
+.rounded-circle:active {
+  transform: scale(0.9);
+}
 </style>
