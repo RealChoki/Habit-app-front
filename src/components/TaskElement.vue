@@ -20,7 +20,7 @@
     </div>
     <div v-if="task.type === 'yesno'">
       <font-awesome-icon
-        class="cursor-pointer rounded-circle no-select"
+        class="cursor-pointer rounded-circle btn-click no-select"
         :icon="['fas', 'check']"
         :class="{
           'text-success': task.value,
@@ -32,13 +32,13 @@
     <div v-else-if="task.type === 'numeric'">
       <div class="position-relative pt-2">
         <font-awesome-icon
-          class="cursor-pointer rounded-circle no-select"
+          class="cursor-pointer rounded-circle btn-click no-select"
           :icon="['fas', 'minus']"
           :class="{ 'text-success': task.value, 'text-danger': task.value === false }"
           @click="adjustCount(task, false)"
         />
         <font-awesome-icon
-          class="cursor-pointer rounded-circle no-select"
+          class="cursor-pointer rounded-circle btn-click no-select"
           :icon="['fas', 'plus']"
           :class="{ 'text-success': task.value, 'text-danger': task.value === false }"
           @click="adjustCount(task, true)"
@@ -57,13 +57,13 @@
     <div v-else-if="task.type === 'timer'">
       <div class="position-relative pt-2">
         <font-awesome-icon
-          class="cursor-pointer rounded-circle no-select"
+          class="cursor-pointer rounded-circle btn-click no-select"
           :icon="['fas', 'pause']"
           :class="{ 'text-success': task.value, 'text-danger': task.value === false }"
           @click="pauseCountdown(task)"
         />
         <font-awesome-icon
-          class="cursor-pointer rounded-circle no-select"
+          class="cursor-pointer rounded-circle btn-click no-select"
           :icon="['fas', 'play']"
           :class="{ 'text-success': task.value, 'text-danger': task.value === false }"
           @click="startCountdown(task)"
@@ -202,9 +202,5 @@ p.timer {
   top: -5%;
   left: 55%;
   white-space: nowrap;
-}
-
-.rounded-circle:active {
-  transform: scale(0.9);
 }
 </style>

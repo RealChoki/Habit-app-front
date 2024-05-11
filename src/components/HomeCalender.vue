@@ -3,7 +3,7 @@
     <!-- Arrow icon to the left -->
     <font-awesome-icon
       :icon="['fas', 'chevron-left']"
-      class="arrow-icon mt-0 me-2 cursor-pointer text-white"
+      class="arrow-icon mt-0 me-2 cursor-pointer text-white btn-click no-select"
       @click="previousWeek"
     />
 
@@ -17,7 +17,7 @@
     <!-- Arrow icon to the right -->
     <font-awesome-icon
       :icon="['fas', 'chevron-right']"
-      class="arrow-icon mt-0 ms-2 cursor-pointer text-white"
+      class="arrow-icon mt-0 ms-2 cursor-pointer text-white btn-click no-select"
       @click="nextWeek"
     />
   </div>
@@ -32,15 +32,47 @@ import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons
 // Add the arrow icons to the library
 library.add(faChevronLeft, faChevronRight)
 
-const days = ref([
-  { day: 'Mon', date: 1 },
-  { day: 'Tue', date: 2 },
-  { day: 'Wed', date: 3 },
-  { day: 'Thu', date: 4 },
-  { day: 'Fr', date: 5 },
-  { day: 'Sat', date: 6 },
-  { day: 'Sun', date: 7 }
-])
+const days = ref([])
+let weekOffset = 0
+
+const calculateDates = (offset) => {
+  const today = new Date()
+  const monday = new Date(today)
+  const currentDay = today.getDay()
+
+  // Calculate Monday of the current week with offset
+  monday.setDate(today.getDate() - currentDay + 1 + offset * 7)
+
+  // Generate dates for Monday to Sunday
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(monday)
+    date.setDate(monday.getDate() + i)
+    days.value.push({
+      day: getDayName(date.getDay()),
+      date: date.getDate()
+    })
+  }
+}
+
+const getDayName = (dayIndex) => {
+  const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  return daysOfWeek[dayIndex]
+}
+
+const previousWeek = () => {
+  weekOffset++
+  days.value = [] // Clear previous dates
+  calculateDates(weekOffset)
+}
+
+const nextWeek = () => {
+  weekOffset--
+  days.value = [] // Clear previous dates
+  calculateDates(weekOffset)
+}
+
+// Initial call to calculate dates
+calculateDates(weekOffset)
 </script>
 
 <style scoped>
@@ -82,6 +114,6 @@ const days = ref([
 .date p {
   font-size: 13px;
   font-weight: bold;
-  color: #FEFFF7;
+  color: #fefff7;
 }
 </style>
