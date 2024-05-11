@@ -8,15 +8,17 @@
     />
 
     <div
-      class="day cursor-pointer text-center"
+      class="day pt-0 cursor-pointer d-flex flex-column justify-content-between align-items-center rounded-4 no-select"
       v-for="(day, index) in days"
       :key="day.date"
       :class="{ 'border border-white': isToday(index) }"
       @click="selectDate(index)"
     >
-      <p>{{ day.day }}</p>
-      <div class="date">
-        <p>{{ day.date }}</p>
+      <p class="m-0 mt-1">{{ day.day }}</p>
+      <div class="date rounded-top-2 rounded-bottom-4 w-100">
+        <p class="my-1 fw-bold">
+          <span class="d-flex justify-content-center align-items-center">{{ day.date }}</span>
+        </p>
       </div>
     </div>
 
@@ -100,39 +102,29 @@ calculateDates(weekOffset)
   gap: 4px;
 }
 
-.day {
-  width: 40px;
-  height: 50px;
-  border-radius: 15px;
-  background-color: #1a1a1b;
-  padding: 0;
-  position: relative;
-}
-
 .day p {
   font-size: 10px;
-  margin: 0;
-  padding-top: 5px;
   color: #c5c5c5;
 }
 
-.date {
+.day {
   width: 40px;
-  height: 28.85px;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
-  border-top-right-radius: 8px;
-  border-top-left-radius: 8px;
+  height: 50px;
+  background-color: #1a1a1b;
+  border: 1px solid transparent;
+  border-left: none;
+  border-right: none;
+  /** border-bottom: none; **/
+}
+
+.date {
   background-color: #232323;
-  margin: 0;
-  padding: 0;
-  position: absolute;
-  bottom: 0;
+  z-index: 0;
+  padding-bottom: 2px;
 }
 
 .date p {
   font-size: 13px;
-  font-weight: bold;
   color: #fefff7;
 }
 </style>

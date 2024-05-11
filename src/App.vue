@@ -7,6 +7,10 @@
 </template>
 
 <style>
+* {
+  box-sizing: border-box;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
