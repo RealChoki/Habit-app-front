@@ -84,14 +84,12 @@ const getDayName = (dayIndex) => {
 const previousWeek = () => {
   weekOffset++
   days.value = []
-  selectedDateIndex.value = null
   calculateDates(weekOffset)
 }
 
 const nextWeek = () => {
   weekOffset--
   days.value = []
-  selectedDateIndex.value = null
   calculateDates(weekOffset)
 }
 
