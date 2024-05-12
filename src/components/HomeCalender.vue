@@ -46,13 +46,11 @@ const selectedDate = ref(null) // Initially, no date is selected
 const today = new Date()
 today.setDate(today.getDate() - 1) // temporary
 
-// Function to check if the date at the given index is today
 const isActiveDay = (day) => {
-  return (
-    selectedDate.value !== null &&
-    day.date === selectedDate.value.date &&
-    day.month === selectedDate.value.month
-  )
+  const currentDate = new Date()
+  const isToday = day.date === currentDate.getDate() && day.month === currentDate.getMonth() + 1
+  const isSelected = selectedDate.value !== null && day.date === selectedDate.value.date && day.month === selectedDate.value.month
+  return isSelected || (!selectedDate.value && isToday)
 }
 
 const selectDate = (date) => {
