@@ -9,10 +9,10 @@
 
     <div
       class="day pt-0 cursor-pointer d-flex flex-column justify-content-between align-items-center rounded-4 no-select"
-      v-for="(day, index) in days"
+      v-for="day in days"
       :key="day.date"
-      :class="{ 'border border-white': isToday(index) }"
-      @click="selectDate(index)"
+      :class="{ 'border border-white': isActiveDay(day) }"
+      @click="selectDate(day)"
     >
       <p class="m-0 mt-1">{{ day.day }}</p>
       <div class="date rounded-top-2 rounded-bottom-4 w-100">
@@ -42,20 +42,21 @@ library.add(faChevronLeft, faChevronRight)
 
 const days = ref([])
 let weekOffset = 0
-const selectedDateIndex = ref(null) // Initially, no date is selected
+const selectedDate = ref(null) // Initially, no date is selected
 const today = new Date()
-today.setDate(today.getDate() - 1) // tem
+today.setDate(today.getDate() - 1) // temporary
 
 // Function to check if the date at the given index is today
-const isToday = (index) => {
+const isActiveDay = (day) => {
   return (
-    index === selectedDateIndex.value ||
-    (selectedDateIndex.value === null && new Date().getDate() === days.value[index].date)
+    selectedDate.value !== null &&
+    day.date === selectedDate.value.date &&
+    day.month === selectedDate.value.month
   )
 }
 
-const selectDate = (index) => {
-  selectedDateIndex.value = index
+const selectDate = (date) => {
+  selectedDate.value = date
 }
 
 const calculateDates = (offset) => {
@@ -71,7 +72,8 @@ const calculateDates = (offset) => {
     date.setDate(monday.getDate() + i)
     days.value.push({
       day: getDayName(date.getDay()),
-      date: date.getDate()
+      date: date.getDate(),
+      month: date.getMonth() + 1
     })
   }
 }
