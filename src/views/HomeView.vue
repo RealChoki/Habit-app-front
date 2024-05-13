@@ -4,12 +4,20 @@
     <div>
       <HomeCalender />
       <div class="max-width-500">
-        <TaskElement :task="gymTask" @click="openTaskModal(gymTask)" />
-        <TaskElement :task="waterTask" @click="openTaskModal(waterTask)" />
-        <TaskElement :task="pianoTask" @click="openTaskModal(pianoTask)" />
+        <TaskElement
+          v-for="(task, key) in data.tasks"
+          :key="key"
+          :task="task"
+          @click="openTaskModal(task)"
+        />
       </div>
     </div>
-    <TaskModal :showModal="showModal" :task="selectedTask" :closeModal="closeModal" />
+    <TaskModal
+      :showModal="showModal"
+      :task="selectedTask"
+      :metadata="data.metadata"
+      :closeModal="closeModal"
+    />
   </div>
 </template>
 
@@ -20,60 +28,52 @@ import TaskModal from '@/components/TaskModal.vue'
 import HeaderNavbar from '@/components/HeaderNavbar.vue'
 import TaskElement from '@/components/TaskElement.vue'
 
-const gymTask = ref({
-  id: 1,
-  timestamp: new Date(),
-  type: 'yesno',
-  title: 'Go to gym',
-  value: null
-})
-const waterTask = ref({
-  id: 2,
-  timestamp: new Date(),
-  type: 'numeric',
-  subtype: 'increment', // 'increment' or 'decrement
-  title: 'Drink 5 Glasses of Water',
-  count: 0,
-  goal: 5,
-  value: null
-})
-const pianoTask = ref({
-  id: 3,
-  timestamp: new Date(),
-  type: 'timer',
-  title: 'Play 1 hour of Piano',
-  timer: 3,
-  value: null
-})
+// Define tasks
+const data = {
+  metadata: {
+    timestamp: '2024-05-16T08:00:00.000Z'
+  },
+  tasks: {
+    gymTask: {
+      id: 1,
+      type: 'yesno',
+      title: 'Go to gym',
+      value: null
+    },
+    waterTask: {
+      id: 2,
+      type: 'numeric',
+      subtype: 'increment',
+      title: 'Drink 5 Glasses of Water',
+      count: 0,
+      goal: 5,
+      value: null
+    },
+    pianoTask: {
+      id: 3,
+      type: 'timer',
+      title: 'Play 1 hour of Piano',
+      timer: 3,
+      value: null
+    }
+  }
+}
 
-// Define a reactive variable to control the modal visibility
+// Define reactive variables
 const showModal = ref(false)
-// Define a reactive variable to store the selected task
 const selectedTask = ref(null)
 
-// Method to toggle the modal visibility and set the selected task
+// Method to open task modal
 const openTaskModal = (task) => {
   selectedTask.value = task
   showModal.value = true
 }
 
-// Method to set showModal to false
+// Method to close modal
 const closeModal = () => {
   showModal.value = false
 }
 </script>
-
-<style scoped>
-.max-width-500 {
-  max-width: 500px;
-}
-</style>
-
-<style scoped>
-.max-width-500 {
-  max-width: 500px;
-}
-</style>
 
 <style scoped>
 .max-width-500 {

@@ -13,12 +13,20 @@
           <button type="button" class="btn-close" aria-label="Close" @click="closeModal"></button>
         </div>
         <div class="modal-body">
-          <p>Date: {{ formatDate(task.timestamp) }}</p>
+          <p>Date: {{ formatDate(metadata.timestamp) }}</p>
           <p v-if="task.type === 'numeric'">Count: {{ task.count }}</p>
           <p v-if="task.type === 'numeric'">Goal: {{ task.goal }}</p>
           <p v-if="task.type === 'timer'">Timer: {{ getTimeStamp(task.timer) }}</p>
           <p v-if="task.type === 'yesno' && task.value">Status: Done</p>
           <p v-if="task.type === 'yesno' && !task.value">Status: Not done</p>
+          <button
+            v-if="task.type === 'timer'"
+            type="button"
+            class="btn btn-primary"
+            @click="restartTimer"
+          >
+            Restart Timer
+          </button>
           <!-- You can display other task information here based on the task type -->
         </div>
         <div class="modal-footer">
@@ -37,7 +45,8 @@ import { defineProps } from 'vue'
 const props = defineProps({
   showModal: Boolean,
   task: Object,
-  closeModal: Function
+  closeModal: Function,
+  metadata: Object
 })
 
 // Function to translate timestamp into DD/MM/YYYY format
@@ -55,6 +64,14 @@ const getTimeStamp = (seconds) => {
   const paddedMinutes = minutes.toString().padStart(2, '0')
   const paddedSeconds = (seconds % 60).toString().padStart(2, '0')
   return `${hours}:${paddedMinutes}:${paddedSeconds}`
+}
+
+// Method to restart the timer
+const restartTimer = () => {
+  // Reset the timer to its initial value
+  if (task.type === 'timer') {
+    task.timer = initialTimerValue // Replace initialTimerValue with your initial timer value
+  }
 }
 </script>
 
