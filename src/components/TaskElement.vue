@@ -1,6 +1,6 @@
 <template>
-  <div class="container d-flex align-items-center justify-content-between p-2 py-3">
-    <div class="d-flex align-items-center" @click="openTaskModal(task)">
+  <div class="container d-flex align-items-center justify-content-between p-2 py-3" @click="openTaskModal(task)">
+    <div class="d-flex align-items-center cursor-pointer">
       <font-awesome-icon
         class="tasktype-icon rounded-square"
         :icon="['fas', 'list-check']"
@@ -26,7 +26,7 @@
           'text-success': task.value,
           'text-danger': task.value === false
         }"
-        @click="toggleTaskValue(task)"
+        @click.stop="toggleTaskValue(task)"
       />
     </div>
     <div v-else-if="task.type === 'numeric'">
@@ -35,13 +35,13 @@
           class="cursor-pointer rounded-circle btn-click no-select"
           :icon="['fas', 'minus']"
           :class="{ 'text-success': task.value, 'text-danger': task.value === false }"
-          @click="adjustCount(task, false)"
+          @click.stop="adjustCount(task, false)"
         />
         <font-awesome-icon
           class="cursor-pointer rounded-circle btn-click no-select"
           :icon="['fas', 'plus']"
           :class="{ 'text-success': task.value, 'text-danger': task.value === false }"
-          @click="adjustCount(task, true)"
+          @click.stop="adjustCount(task, true)"
         />
         <p
           class="timer position-absolute translate-middle p-0 m-0"
@@ -60,13 +60,13 @@
           class="cursor-pointer rounded-circle btn-click no-select"
           :icon="['fas', 'pause']"
           :class="{ 'text-success': task.value, 'text-danger': task.value === false }"
-          @click="pauseCountdown(task)"
+          @click.stop="pauseCountdown(task)"
         />
         <font-awesome-icon
           class="cursor-pointer rounded-circle btn-click no-select"
           :icon="['fas', 'play']"
           :class="{ 'text-success': task.value, 'text-danger': task.value === false }"
-          @click="startCountdown(task)"
+          @click.stop="startCountdown(task)"
         />
         <p
           class="timer position-absolute translate-middle p-0 m-0"
