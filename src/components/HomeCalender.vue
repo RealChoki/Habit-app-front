@@ -49,7 +49,10 @@ today.setDate(today.getDate() - 1) // temporary
 const isActiveDay = (day) => {
   const currentDate = new Date()
   const isToday = day.date === currentDate.getDate() && day.month === currentDate.getMonth() + 1
-  const isSelected = selectedDate.value !== null && day.date === selectedDate.value.date && day.month === selectedDate.value.month
+  const isSelected =
+    selectedDate.value !== null &&
+    day.date === selectedDate.value.date &&
+    day.month === selectedDate.value.month
   return isSelected || (!selectedDate.value && isToday)
 }
 
