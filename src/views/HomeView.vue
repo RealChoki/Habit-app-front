@@ -8,15 +8,15 @@
           v-for="(task, key) in data.tasks"
           :key="key"
           :task="task"
-          @click="openTaskModal(task)"
+          :openTaskModal="openTaskModal"
         />
       </div>
     </div>
     <TaskModal
       :showModal="showModal"
-      :task="selectedTask"
-      :metadata="data.metadata"
       :closeModal="closeModal"
+      :metadata="data.metadata"
+      :task="selectedTask"
     />
   </div>
 </template>
@@ -31,7 +31,7 @@ import TaskElement from '@/components/TaskElement.vue'
 // Define tasks
 const data = {
   metadata: {
-    timestamp: '2024-05-16T08:00:00.000Z'
+    timestamp: new Date()
   },
   tasks: {
     gymTask: {
@@ -59,17 +59,14 @@ const data = {
   }
 }
 
-// Define reactive variables
 const showModal = ref(false)
 const selectedTask = ref(null)
 
-// Method to open task modal
 const openTaskModal = (task) => {
   selectedTask.value = task
   showModal.value = true
 }
 
-// Method to close modal
 const closeModal = () => {
   showModal.value = false
 }

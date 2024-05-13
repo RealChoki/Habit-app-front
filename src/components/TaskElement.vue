@@ -1,6 +1,6 @@
 <template>
   <div class="container d-flex align-items-center justify-content-between p-2 py-3">
-    <div class="d-flex align-items-center">
+    <div class="d-flex align-items-center" @click="openTaskModal(task)">
       <font-awesome-icon
         class="tasktype-icon rounded-square"
         :icon="['fas', 'list-check']"
@@ -102,7 +102,8 @@ library.add(faPlus, faMinus, faCheck, faListCheck, faClock, faPlay, faPause, faP
 
 // Define props
 const props = defineProps({
-  task: Object
+  task: Object,
+  openTaskModal: Function
 })
 
 // Define a variable to track timer running state
