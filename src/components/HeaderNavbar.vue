@@ -12,24 +12,44 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <p class="navbar-brand">{{ currentDate }}</p>
+      <p class="navbar-brand">{{ activeDate }}</p>
     </div>
   </header>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, watch, onMounted } from 'vue'
+import { selectedDate } from '@/stores/selectedDate'
 
-const currentDate = ref('')
-
-const updateCurrentDate = () => {
-  const today = new Date()
-  const options = { month: 'long', day: 'numeric', year: 'numeric' }
-  currentDate.value = today.toLocaleDateString('en-US', options)
+const activeDate = ref('')
+const updateActiveDate = () => {
+  if (selectedDate.value) {
+    activeDate.value = formatedHeaderDate(selectedDate.value)
+  } else {
+    getCurrentDate()
+  }
 }
 
+const getCurrentDate = () => {
+  const today = new Date()
+  const options = { month: 'long', day: 'numeric', year: 'numeric' }
+  activeDate.value = today.toLocaleDateString('en-US', options)
+}
+
+const formatedHeaderDate = (date) => {
+  const options = { month: 'long', day: 'numeric', year: 'numeric' }
+  const formattedDate = new Intl.DateTimeFormat('en-US', options).format(
+    new Date(date.year, date.month - 1, date.date)
+  )
+  return formattedDate
+}
+
+watch(selectedDate, () => {
+  updateActiveDate()
+})
+
 onMounted(() => {
-  updateCurrentDate()
+  updateActiveDate()
 })
 </script>
 

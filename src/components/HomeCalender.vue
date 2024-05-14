@@ -36,15 +36,15 @@ import { ref } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { selectedDate } from '@/stores/selectedDate'
 
 // Add the arrow icons to the library
 library.add(faChevronLeft, faChevronRight)
 
 const days = ref([])
 let weekOffset = 0
-const selectedDate = ref(null) // Initially, no date is selected
 const today = new Date()
-today.setDate(today.getDate() - 1) // temporary
+today.setDate(today.getDate()) // temporary
 
 const isActiveDay = (day) => {
   const currentDate = new Date()
@@ -74,7 +74,8 @@ const calculateDates = (offset) => {
     days.value.push({
       day: getDayName(date.getDay()),
       date: date.getDate(),
-      month: date.getMonth() + 1
+      month: date.getMonth() + 1,
+      year: date.getFullYear()
     })
   }
 }

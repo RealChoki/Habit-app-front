@@ -66,9 +66,8 @@ const openTaskModal = (task) => {
   selectedTask.value = task
   showModal.value = true
 }
-
 const closeModal = () => {
-  showModal.value = false
+  showModal.value = false 
 }
 </script>
 
