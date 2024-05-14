@@ -14,11 +14,12 @@
         </div>
         <div class="modal-body">
           <p>Date: {{ formatDate(metadata.timestamp) }}</p>
+          <p>Description: {{ task.description }}</p>
           <p v-if="task.type === 'numeric'">Count: {{ task.count }}</p>
           <p v-if="task.type === 'numeric'">Goal: {{ task.goal }}</p>
           <p v-if="task.type === 'timer'">Timer: {{ getTimeStamp(task.timer) }}</p>
-          <p v-if="task.type === 'yesno' && task.value">Status: Done</p>
-          <p v-if="task.type === 'yesno' && !task.value">Status: Not done</p>
+          <p v-if="task.value">Status: Done</p>
+          <p v-if="!task.value">Status: Not done</p>
           <button
             v-if="task.type === 'timer'"
             type="button"

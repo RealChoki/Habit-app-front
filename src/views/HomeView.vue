@@ -37,14 +37,18 @@ const data = {
     gymTask: {
       id: 1,
       type: 'yesno',
+      frequency: 'daily',
       title: 'Go to gym',
+      description: 'Go to the gym and workout for at least 1 hour',
       value: null
     },
     waterTask: {
       id: 2,
       type: 'numeric',
-      subtype: 'increment',
+      frequency: 'daily',
       title: 'Drink 5 Glasses of Water',
+      description: 'Drink at least 5 glasses of water today',
+      subtype: 'increment',
       count: 0,
       goal: 5,
       value: null
@@ -52,7 +56,10 @@ const data = {
     pianoTask: {
       id: 3,
       type: 'timer',
+      frequency: 'daily',
       title: 'Play 1 hour of Piano',
+      description: 'Play the piano for at least 1 hour today',
+      default: 3,
       timer: 3,
       value: null
     }
@@ -67,7 +74,7 @@ const openTaskModal = (task) => {
   showModal.value = true
 }
 const closeModal = () => {
-  showModal.value = false 
+  showModal.value = false
 }
 </script>
 
