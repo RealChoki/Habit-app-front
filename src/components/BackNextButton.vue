@@ -1,24 +1,41 @@
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+import { defineProps } from 'vue'
+
+defineProps({
+  showNext: {
+    type: Boolean,
+    default: true
+  }
+})
+
+const router = useRouter()
+
+const goBack = () => {
+  router.back()
+}
+</script>
+
 <template>
-    <div class="back-next">
-        <RouterLink class="back" to="/">BACK</RouterLink>
-        <img alt="ellipsis" />
-        <RouterLink class="next" to="/">NEXT</RouterLink>
+    <div class="back-next" :class="{ 'no-next': !showNext }">
+        <a class="back text-decoration-none fw-bold fs-6" @click.prevent="goBack">BACK</a>
+        <div class="d-flex justify-content-center align-items-center gap-1">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
+        <RouterLink v-if="showNext" class="next back text-decoration-none fw-bold fs-6" to="/">NEXT</RouterLink>
     </div>
 </template>
 
 <style scoped>
     .back {
-        text-decoration: none;
         color: #5B5B5B;
-        font-weight: bold;
-        font-size:12px;
     }
 
     .next {
-        text-decoration: none;
         color: #FEFFF7;
-        font-weight: bold;
-        font-size:12px;
     }
 
     .back-next {
@@ -28,6 +45,19 @@
         right: 0;
         display: flex;
         gap: 67px;
+        justify-content: center;
+    }
+
+    .circle {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #131213;
+        border: 1px solid #5B5B5B; /* change to the color you want */
+    }
+
+    .back-next.no-next {
+        width: 72%;
         justify-content: center;
     }
 </style>

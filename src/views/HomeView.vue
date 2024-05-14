@@ -18,6 +18,9 @@
       :metadata="data.metadata"
       :task="selectedTask"
     />
+    <div class="position-absolute custom-div d-flex justify-content-center align-items-center" @click="navigateToEvaluateView">
+      <font-awesome-icon :icon="['fas', 'plus']" style="color: #5b5b5b; width: 35px; height: 35px" />
+    </div>
   </div>
 </template>
 
@@ -27,6 +30,9 @@ import HomeCalender from '@/components/HomeCalender.vue'
 import TaskModal from '@/components/TaskModal.vue'
 import HeaderNavbar from '@/components/HeaderNavbar.vue'
 import TaskElement from '@/components/TaskElement.vue'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { useRouter } from 'vue-router'
+
 
 // Define tasks
 const data = {
@@ -76,10 +82,26 @@ const openTaskModal = (task) => {
 const closeModal = () => {
   showModal.value = false
 }
+
+const router = useRouter()
+
+const navigateToEvaluateView = () => {
+  router.push({ name: 'EvaluateView' })
+}
 </script>
 
 <style scoped>
 .max-width-500 {
   max-width: 500px;
+}
+
+.custom-div {
+  width: 50px;
+  height: 50px;
+  background-color: #232323;
+  border-radius: 15px;
+  right: 2.5em;
+  bottom: 5em;
+  padding: 30px;
 }
 </style>
