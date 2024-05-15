@@ -5,7 +5,7 @@
       <HomeCalender />
       <div class="max-width-500">
         <TaskElement
-          v-for="(task, key) in data.tasks"
+          v-for="(task, key) in filteredTasks"
           :key="key"
           :task="task"
           :openTaskModal="openTaskModal"
@@ -18,21 +18,20 @@
       :metadata="data.metadata"
       :task="selectedTask"
     />
-    <div class="position-absolute custom-div d-flex justify-content-center align-items-center" @click="navigateToEvaluateView">
+    <!-- <div class="position-absolute custom-div d-flex justify-content-center align-items-center" @click="navigateToEvaluateView">
       <font-awesome-icon :icon="['fas', 'plus']" style="color: #5b5b5b; width: 35px; height: 35px" />
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import HomeCalender from '@/components/HomeCalender.vue'
 import TaskModal from '@/components/TaskModal.vue'
 import HeaderNavbar from '@/components/HeaderNavbar.vue'
 import TaskElement from '@/components/TaskElement.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { useRouter } from 'vue-router'
-
 
 // Define tasks
 const data = {
@@ -88,6 +87,26 @@ const router = useRouter()
 const navigateToEvaluateView = () => {
   router.push({ name: 'EvaluateView' })
 }
+const filteredTasks = ref([])
+
+const updateFilteredTasks = () => {
+  const urlDate = router.currentRoute.value.params.date
+  const metadataDate = data.metadata.timestamp.toISOString().split('T')[0]
+
+  if (urlDate === metadataDate) {
+    filteredTasks.value = Object.values(data.tasks)
+  } else {
+    filteredTasks.value = []
+  }
+}
+
+onMounted(() => {
+  updateFilteredTasks()
+})
+
+watch(router.currentRoute, () => {
+  updateFilteredTasks()
+})
 </script>
 
 <style scoped>

@@ -65,7 +65,8 @@ const selectDate = (date) => {
 }
 
 const updateRoute = (date) => {
-  const formattedDate = `${date.year}-${date.month}-${date.date}`
+  const formattedMonth = date.month < 10 ? `0${date.month}` : date.month
+  const formattedDate = `${date.year}-${formattedMonth}-${date.date}`
   router.push({ name: 'home', params: { date: formattedDate } })
 }
 

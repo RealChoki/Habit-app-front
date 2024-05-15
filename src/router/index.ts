@@ -9,9 +9,9 @@ const router = createRouter({
     {
       path: '/',
       redirect: () => {
-        // Redirect to the current date
         const today = new Date()
-        const formattedDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
+        const month = String(today.getMonth() + 1).padStart(2, '0')
+        const formattedDate = `${today.getFullYear()}-${month}-${today.getDate()}`
         return { name: 'home', params: { date: formattedDate } }
       }
     },
