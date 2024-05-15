@@ -6,7 +6,7 @@
     <HabitField />
     <p class="text-center mt-2">eg., Go to the Gym.</p>
     <DescriptionField />
-    <BackNextButton />
+    <BackNextButton :filledCircle="2"/>
   </div>
   </div>
 </template>

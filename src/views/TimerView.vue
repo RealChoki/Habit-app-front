@@ -9,7 +9,7 @@
         <p class="a-day">a day.</p>
         <p class="text-center mt-2">eg., Play the piano for 1 hour per day.</p>
         <DescriptionField />
-        <BackNextButton />
+        <BackNextButton :filledCircle="2"/>
       </div>
       </div>
     </template>

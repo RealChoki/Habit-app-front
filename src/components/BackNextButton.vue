@@ -6,6 +6,10 @@ defineProps({
   showNext: {
     type: Boolean,
     default: true
+  },
+  filledCircle: {
+    type: Number,
+    default: 0
   }
 })
 
@@ -20,10 +24,10 @@ const goBack = () => {
     <div class="back-next" :class="{ 'no-next': !showNext }">
         <a class="back text-decoration-none fw-bold fs-6" @click.prevent="goBack">BACK</a>
         <div class="d-flex justify-content-center align-items-center gap-1">
-            <div class="circle"></div>
-            <div class="circle"></div>
-            <div class="circle"></div>
-            <div class="circle"></div>
+            <div class="circle" :class="{ 'filled': filledCircle >= 1 }"></div>
+            <div class="circle" :class="{ 'filled': filledCircle >= 2 }"></div>
+            <div class="circle" :class="{ 'filled': filledCircle >= 3 }"></div>
+            <div class="circle" :class="{ 'filled': filledCircle >= 4 }"></div>
         </div>
         <RouterLink v-if="showNext" class="next back text-decoration-none fw-bold fs-6" to="/">NEXT</RouterLink>
     </div>
@@ -54,6 +58,10 @@ const goBack = () => {
         border-radius: 50%;
         background-color: #131213;
         border: 1px solid #5B5B5B; /* change to the color you want */
+    }
+
+    .circle.filled {
+        background-color: #5B5B5B; /* change to the color you want */
     }
 
     .back-next.no-next {

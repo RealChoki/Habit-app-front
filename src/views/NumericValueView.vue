@@ -8,7 +8,7 @@
         <HabitField class="goal"/>
         <p class="text-center mt-2">eg., Drink 5 glasses of water per day.</p>
         <DescriptionField />
-        <BackNextButton />
+        <BackNextButton :filledCircle="2"/>
       </div>
       </div>
     </template>
