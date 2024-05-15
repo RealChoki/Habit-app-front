@@ -18,9 +18,15 @@
       :metadata="data.metadata"
       :task="selectedTask"
     />
-    <!-- <div class="position-absolute custom-div d-flex justify-content-center align-items-center" @click="navigateToEvaluateView">
-      <font-awesome-icon :icon="['fas', 'plus']" style="color: #5b5b5b; width: 35px; height: 35px" />
-    </div> -->
+    <div
+      class="position-absolute custom-div d-flex justify-content-center align-items-center cursor-pointer"
+      @click="navigateToEvaluateView"
+    >
+      <font-awesome-icon
+        :icon="['fas', 'plus']"
+        style="color: #5b5b5b; width: 35px; height: 35px"
+      />
+    </div>
   </div>
 </template>
 
@@ -31,7 +37,11 @@ import TaskModal from '@/components/TaskModal.vue'
 import HeaderNavbar from '@/components/HeaderNavbar.vue'
 import TaskElement from '@/components/TaskElement.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { useRouter } from 'vue-router'
+
+library.add(faPlus)
 
 // Define tasks
 const data = {
