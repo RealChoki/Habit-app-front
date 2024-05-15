@@ -1,5 +1,8 @@
 <template>
-  <div class="container d-flex align-items-center justify-content-between p-2 py-3" @click="openTaskModal(task)">
+  <div
+    class="container d-flex align-items-center justify-content-between p-2 py-3"
+    @click="openTaskModal(task)"
+  >
     <div class="d-flex align-items-center cursor-pointer">
       <font-awesome-icon
         class="tasktype-icon rounded-square"
@@ -107,7 +110,7 @@ const props = defineProps({
 })
 
 // Make task UI reactive
-const {task} = toRefs(props)
+const { task } = toRefs(props)
 
 // Define a variable to track timer running state
 const isTimerRunning = ref(null)
