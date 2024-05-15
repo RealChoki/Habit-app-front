@@ -9,13 +9,14 @@
           :key="key"
           :task="task"
           :openTaskModal="openTaskModal"
+          :metadata="metadata"
         />
       </div>
     </div>
     <TaskModal
       :showModal="showModal"
       :closeModal="closeModal"
-      :metadata="data.metadata"
+      :metadata="metadata"
       :task="selectedTask"
     />
     <div
@@ -43,70 +44,40 @@ import { useRouter } from 'vue-router'
 
 library.add(faPlus)
 
-// Define tasks
-const data = {
-  metadata: {
-    timestamp: new Date()
-  },
-  tasks: {
-    gymTask: {
-      id: 1,
-      type: 'yesno',
-      frequency: 'daily',
-      title: 'Go to gym',
-      description: 'Go to the gym and workout for at least 1 hour',
-      value: null
-    },
-    waterTask: {
-      id: 2,
-      type: 'numeric',
-      frequency: 'daily',
-      title: 'Drink 5 Glasses of Water',
-      description: 'Drink at least 5 glasses of water today',
-      subtype: 'increment',
-      count: 0,
-      goal: 5,
-      value: null
-    },
-    pianoTask: {
-      id: 3,
-      type: 'timer',
-      frequency: 'daily',
-      title: 'Play 1 hour of Piano',
-      description: 'Play the piano for at least 1 hour today',
-      default: 3,
-      timer: 3,
-      value: null
-    }
-  }
-}
+import { weekData } from '@/data/data.js'
 
+const filteredTasks = ref([])
+const router = useRouter()
 const showModal = ref(false)
 const selectedTask = ref(null)
+const metadata = ref(null)
 
 const openTaskModal = (task) => {
   selectedTask.value = task
   showModal.value = true
 }
+
 const closeModal = () => {
   showModal.value = false
 }
 
-const router = useRouter()
-
 const navigateToEvaluateView = () => {
   router.push({ name: 'EvaluateView' })
 }
-const filteredTasks = ref([])
 
 const updateFilteredTasks = () => {
+  console.log(weekData)
   const urlDate = router.currentRoute.value.params.date
-  const metadataDate = data.metadata.timestamp.toISOString().split('T')[0]
+  const filteredData = weekData.find((item) => {
+    return item.metadata.timestamp.toISOString().split('T')[0] === urlDate
+  })
 
-  if (urlDate === metadataDate) {
-    filteredTasks.value = Object.values(data.tasks)
+  if (filteredData) {
+    filteredTasks.value = Object.values(filteredData.tasks)
+    metadata.value = filteredData.metadata
   } else {
     filteredTasks.value = []
+    metadata.value = null
   }
 }
 

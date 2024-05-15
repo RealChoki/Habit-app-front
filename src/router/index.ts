@@ -21,7 +21,7 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/EvaluateView',
+      path: '/evaluateview',
       name: 'EvaluateView',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
@@ -29,7 +29,7 @@ const router = createRouter({
       component: () => import('../views/EvaluateView.vue')
     },
     {
-      path: '/YesNoView',
+      path: '/yesnoView',
       name: 'YesNoView',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
@@ -37,7 +37,7 @@ const router = createRouter({
       component: () => import('../views/YesNoView.vue')
     },
     {
-      path: '/NumericValueView',
+      path: '/numericvalueview',
       name: 'NumericValueView',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
@@ -45,7 +45,7 @@ const router = createRouter({
       component: () => import('../views/NumericValueView.vue')
     },
     {
-      path: '/TimerView',
+      path: '/timerview',
       name: 'TimerView',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
