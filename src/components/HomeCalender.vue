@@ -33,6 +33,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
@@ -46,6 +47,8 @@ let weekOffset = 0
 const today = new Date()
 today.setDate(today.getDate()) // temporary
 
+const router = useRouter()
+
 const isActiveDay = (day) => {
   const currentDate = new Date()
   const isToday = day.date === currentDate.getDate() && day.month === currentDate.getMonth() + 1
@@ -58,6 +61,12 @@ const isActiveDay = (day) => {
 
 const selectDate = (date) => {
   selectedDate.value = date
+  updateRoute(date)
+}
+
+const updateRoute = (date) => {
+  const formattedDate = `${date.year}-${date.month}-${date.date}`
+  router.push({ name: 'home', params: { date: formattedDate } })
 }
 
 const calculateDates = (offset) => {

@@ -8,6 +8,15 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      redirect: () => {
+        // Redirect to the current date
+        const today = new Date()
+        const formattedDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
+        return { name: 'home', params: { date: formattedDate } }
+      }
+    },
+    {
+      path: '/home/:date?',
       name: 'home',
       component: HomeView
     },
