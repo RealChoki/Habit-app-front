@@ -16,9 +16,18 @@ const router = createRouter({
       }
     },
     {
-      path: '/home/:date?',
+      path: '/home/:date',
       name: 'home',
       component: HomeView
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: () => {
+        const today = new Date()
+        const month = String(today.getMonth() + 1).padStart(2, '0')
+        const formattedDate = `${today.getFullYear()}-${month}-${today.getDate()}`
+        return { name: 'home', params: { date: formattedDate } }
+      }
     },
     {
       path: '/evaluateview',
