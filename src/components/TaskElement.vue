@@ -95,7 +95,7 @@ import {
   faPause,
   faPlusMinus
 } from '@fortawesome/free-solid-svg-icons'
-import { defineProps, ref, reactive } from 'vue'
+import { defineProps, ref, toRefs } from 'vue'
 
 // Add the icons to the library
 library.add(faPlus, faMinus, faCheck, faListCheck, faClock, faPlay, faPause, faPlusMinus)
@@ -107,7 +107,7 @@ const props = defineProps({
 })
 
 // Make task UI reactive
-const task = reactive(props.task)
+const {task} = toRefs(props)
 
 // Define a variable to track timer running state
 const isTimerRunning = ref(null)
