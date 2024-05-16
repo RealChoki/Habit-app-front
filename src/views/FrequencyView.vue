@@ -15,6 +15,8 @@
   const selectedDaysOfWeek = ref([]);
   const daysOfMonth = Array.from({ length: 31 }, (_, i) => i + 1);
   const selectedDaysOfMonth = ref([]);
+
+  console.log(frequency);
 </script>
 
 <template>
@@ -33,12 +35,12 @@
       
       <div v-if="frequency === 'specificDaysWeek'" class="days-of-week">
         <div v-for="day in daysOfWeek" :key="day.value">
-          <input type="checkbox" :id="day.value" :value="day.value" v-model="selectedDaysOfWeek">
+          <input class="weekly-checkbox" type="checkbox" :id="day.value" :value="day.value" v-model="selectedDaysOfWeek">
           <label class="week-day-label d-flex align-items-center mb-3" :for="day.value">{{ day.label }}</label>
         </div>
       </div>
       
-      <div>
+      <div class="mb-3">
         <input type="radio" id="specific-days-month" value="specificDaysMonth" v-model="frequency">
         <label class="d-flex align-items-center" for="specific-days-month">Specific days of the month</label>
       </div>
@@ -56,6 +58,7 @@
   
   
   <style scoped>
+  
   .habit-goal-form {
     color: white;
     padding: 0px 40px 0px 40px;
@@ -73,53 +76,28 @@
   }
 
   .days-of-month {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-left: 1em;
   }
-  
-  .days-of-month .day-button {
-    margin: 5px;
-  }
-  
+
   .day-button input {
     display: none;
   }
   
   .day-button label {
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
+    width: 28px;
+    height: 28px;
     text-align: center;
-    border: 1px solid #ccc;
-    border-radius: 50%;
-    cursor: pointer;
-  }
+    border: 2px solid #5B5B5B;
+    border-radius: 10px;
+    font-size: 12px;
+    margin-bottom: 9px;
+    padding-top: 2px;
+    }
   
   .day-button input:checked + label {
-    background-color: #555;
-    color: white;
-  }
-  
-  .navigation {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-  }
-  
-  button {
-    background-color: #333;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  
-  button:hover {
-    background-color: #555;
+    background-color: #5B5B5B;
   }
 
   .title {
@@ -154,11 +132,11 @@
     background-color: #5B5B5B;
   }
 
-  input[type="checkbox"] {
+  .weekly-checkbox {
     display: none;
   }
 
-  input[type="checkbox"] + label:before {
+  .weekly-checkbox + label:before {
     content: "";
     display: inline-block;
     width: 15px;
@@ -169,11 +147,11 @@
     position: relative;
   }
 
-  input[type="checkbox"]:checked + label:before {
+  .weekly-checkbox:checked + label:before {
     background-color: #5B5B5B;
   }
   
-  input[type="checkbox"]:checked + label:after {
+  .weekly-checkbox:checked + label:after {
     content: "\2713";
     position: absolute;
     transform: translate(50%, 0%);
