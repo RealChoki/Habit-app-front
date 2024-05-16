@@ -29,7 +29,7 @@ const goBack = () => {
             <div class="circle" :class="{ 'filled': filledCircle >= 3 }"></div>
             <div class="circle" :class="{ 'filled': filledCircle >= 4 }"></div>
         </div>
-        <RouterLink v-if="showNext" class="next back text-decoration-none fw-bold fs-6" to="/">NEXT</RouterLink>
+        <RouterLink v-if="showNext" class="next back text-decoration-none fw-bold fs-6" to="FrequencyView">NEXT</RouterLink>
     </div>
 </template>
 
