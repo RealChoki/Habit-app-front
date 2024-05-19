@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { defineProps } from 'vue'
+import { computed } from 'vue'
 
 defineProps({
   showNext: {
@@ -14,6 +15,19 @@ defineProps({
 })
 
 const router = useRouter()
+
+const nextRoute = computed(() => {
+  switch (router.currentRoute.value.name) {
+    case 'YesNoView':
+    case 'TimerView':
+    case 'NumericValueView':
+      return 'FrequencyView'
+    case 'FrequencyView':
+      return 'TimeFrame' // replace with the actual name of your DateView route
+    default:
+      return ''
+  }
+})
 
 const goBack = () => {
   router.back()
@@ -29,7 +43,7 @@ const goBack = () => {
             <div class="circle" :class="{ 'filled': filledCircle >= 3 }"></div>
             <div class="circle" :class="{ 'filled': filledCircle >= 4 }"></div>
         </div>
-        <RouterLink v-if="showNext" class="next back text-decoration-none fw-bold fs-6" to="FrequencyView">NEXT</RouterLink>
+        <RouterLink v-if="showNext" class="next back text-decoration-none fw-bold fs-6" :to="nextRoute">NEXT</RouterLink>
     </div>
 </template>
 
