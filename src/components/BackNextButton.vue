@@ -24,6 +24,8 @@ const nextRoute = computed(() => {
       return 'FrequencyView'
     case 'FrequencyView':
       return 'TimeFrame' // replace with the actual name of your DateView route
+    case 'TimeFrame':
+      return 'HomeView'
     default:
       return ''
   }
@@ -79,7 +81,7 @@ const goBack = () => {
     }
 
     .back-next.no-next {
-        width: 72%;
+        width: 71%;
         justify-content: center;
     }
 </style>

@@ -1,20 +1,24 @@
 <template>
-  <div class="d-flex flex-column ml-3">
-    <h2 class="title pt-5 mb-4 text-center font-weight-bold">
+    <h2 class="title pt-5 mb-5 text-center font-weight-bold">
       What time frame do you want <br />
       for this habit?
     </h2>
-    <div class="d-flex flex-column align-items-start justify-content-start">
-      <div class="d-flex align-items-center mb-3">
-        <font-awesome-icon class="rounded-square" :icon="['fas', 'calendar-days']" style="color: #5b5b5b"/>
-        <p class="mb-0 ms-2 text-white">Start date</p>
+    <div class="d-flex flex-column">
+      <div class="d-flex align-items-center justify-content-between changethis bor-bot">
+        <div class="d-flex align-items-center">
+          <font-awesome-icon class="rounded-square" :icon="['fas', 'calendar-days']" style="color: #5b5b5b"/>
+          <p class="mb-0 ms-2 text-white fs-6">Start date</p>
+        </div>
+        <HabitField style="width: 5em;"/>
       </div>
-      <div class="d-flex align-items-center mb-3">
-        <font-awesome-icon class="rounded-square" :icon="['fas', 'calendar-check']" style="color: #5b5b5b"/>
-        <p class="mb-0 ms-2 text-white">End date</p>
+      <div class="d-flex align-items-center justify-content-between changethis">
+        <div class="d-flex align-items-center">
+          <font-awesome-icon class="rounded-square" :icon="['fas', 'calendar-check']" style="color: #5b5b5b"/>
+          <p class="mb-0 ms-2 text-white fs-6">End date</p>
+        </div>
+        <HabitField style="width: 5em;"/>
       </div>
     </div>
-  </div>
   <BackNextButton :filledCircle="4" />
 </template>
 
@@ -23,6 +27,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCalendarCheck, faCalendarDays } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import BackNextButton from '../components/BackNextButton.vue'
+import HabitField from '@/components/HabitField.vue'
 import { defineComponent } from 'vue';
 
 library.add(faCalendarCheck, faCalendarDays)
@@ -36,14 +41,18 @@ defineComponent({
 </script>
 
 <style scoped>
+.changethis{
+  margin: 0 1em;
+  padding: 16px 8px;
+}
+
+.bor-bot{
+  border-bottom: 1px solid #232323;
+}
+
 .title {
   color: #fefff7;
   font-size: 18px;
-}
-
-.max-width-500 {
-  max-width: 500px;
-  width: 300px;
 }
 
 p {
@@ -63,4 +72,5 @@ label {
   color: #5b5b5b;
   padding: 10px;
 }
+
 </style>
