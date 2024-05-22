@@ -1,25 +1,29 @@
 <template>
-    <h2 class="title pt-5 mb-5 text-center font-weight-bold">
-      What time frame do you want <br />
-      for this habit?
-    </h2>
-    <div class="d-flex flex-column">
-      <div class="d-flex align-items-center justify-content-between changethis bor-bot">
-        <div class="d-flex align-items-center">
-          <font-awesome-icon class="rounded-square" :icon="['fas', 'calendar-days']" style="color: #5b5b5b"/>
-          <p class="mb-0 ms-2 text-white fs-6">Start date</p>
+    <div class="d-flex justify-content-center align-items-center flex-column">
+      <div class="width">
+        <h2 class="title pt-5 mb-5 text-center font-weight-bold">
+          What time frame do you want <br />
+          for this habit?
+        </h2>
+        <div class="d-flex flex-column">
+          <div class="d-flex align-items-center justify-content-between changethis bor-bot">
+            <div class="d-flex align-items-center">
+              <font-awesome-icon class="rounded-square" :icon="['fas', 'calendar-days']" style="color: #5b5b5b"/>
+              <p class="mb-0 ms-2 text-white fs-6">Start date</p>
+            </div>
+            <HabitField style="width: 5em;"/>
+          </div>
+          <div class="d-flex align-items-center justify-content-between changethis">
+            <div class="d-flex align-items-center">
+              <font-awesome-icon class="rounded-square" :icon="['fas', 'calendar-check']" style="color: #5b5b5b"/>
+              <p class="mb-0 ms-2 text-white fs-6">End date</p>
+            </div>
+            <HabitField style="width: 5em;"/>
+          </div>
         </div>
-        <HabitField style="width: 5em;"/>
-      </div>
-      <div class="d-flex align-items-center justify-content-between changethis">
-        <div class="d-flex align-items-center">
-          <font-awesome-icon class="rounded-square" :icon="['fas', 'calendar-check']" style="color: #5b5b5b"/>
-          <p class="mb-0 ms-2 text-white fs-6">End date</p>
-        </div>
-        <HabitField style="width: 5em;"/>
-      </div>
+        <BackNextButton :filledCircle="4" />
+     </div>
     </div>
-  <BackNextButton :filledCircle="4" />
 </template>
 
 <script setup lang="ts">
@@ -44,6 +48,11 @@ defineComponent({
 .changethis{
   margin: 0 1em;
   padding: 16px 8px;
+}
+
+.width{
+  width: 100%;
+  max-width: 365px;
 }
 
 .bor-bot{

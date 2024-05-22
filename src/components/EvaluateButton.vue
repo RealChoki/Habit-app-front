@@ -16,11 +16,11 @@ const navigateToView = (route: RouteRecordName) => {
 </script>
 
 <template>
-    <div class="contain" v-for="option in options" :key="option.id">
+    <div class="d-flex flex-column align-items-center m-0" v-for="option in options" :key="option.id">
         <div class="Evaluate-button" @click="navigateToView(option.route)">
             <h1 class="small-title">{{ option.name }}</h1>
         </div>
-        <p>{{ option.description }}</p>
+        <p class="desc">{{ option.description }}</p>
     </div>
 </template>
 
@@ -42,7 +42,7 @@ const navigateToView = (route: RouteRecordName) => {
         font-size: 24px;
     }
     
-    .contain p{
+    .desc{
         font-size: 9px;
         color: #C5C5C5;
         margin-top: 8px;
@@ -51,10 +51,5 @@ const navigateToView = (route: RouteRecordName) => {
         margin-bottom: 20px;
     }
 
-    .contain {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin:0;
-    }
+
 </style>

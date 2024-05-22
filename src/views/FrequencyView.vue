@@ -1,51 +1,53 @@
 <template>
-  <div class="habit-goal-form">
-    <h2 class="title pt-5 mb-4 text-center font-weight-bold">
-      What is your Future Goal regarding this Habit?
-    </h2>
+  <div class="d-flex justify-content-center align-items-center flex-column">
+    <div class="habit-goal-form">
+      <h2 class="title pt-5 mb-4 text-center font-weight-bold">
+        What is your Future Goal regarding this Habit?
+      </h2>
 
-    <div class="mt-5 mb-3">
-      <input type="radio" id="every-day" value="everyday" v-model="frequency" />
-      <label class="d-flex align-items-center" for="every-day">Every day</label>
-    </div>
-
-    <div class="mb-3">
-      <input type="radio" id="specific-days-week" value="specificDaysWeek" v-model="frequency" />
-      <label class="d-flex align-items-center" for="specific-days-week"
-        >Specific days of the week</label
-      >
-    </div>
-
-    <div v-if="frequency === 'specificDaysWeek'" class="days-of-week">
-      <div v-for="day in daysOfWeek" :key="day.value">
-        <input
-          class="weekly-checkbox"
-          type="checkbox"
-          :id="day.value"
-          :value="day.value"
-          v-model="selectedDaysOfWeek"
-        />
-        <label class="week-day-label d-flex align-items-center mb-3" :for="day.value">{{
-          day.label
-        }}</label>
+      <div class="mt-5 mb-3">
+        <input type="radio" id="every-day" value="everyday" v-model="frequency" />
+        <label class="d-flex align-items-center" for="every-day">Every day</label>
       </div>
-    </div>
 
-    <div class="mb-3">
-      <input type="radio" id="specific-days-month" value="specificDaysMonth" v-model="frequency" />
-      <label class="d-flex align-items-center" for="specific-days-month"
-        >Specific days of the month</label
-      >
-    </div>
-
-    <div v-if="frequency === 'specificDaysMonth'" class="days-of-month">
-      <div v-for="day in daysOfMonth" :key="day" class="day-button">
-        <input type="checkbox" :id="'day-' + day" :value="day" v-model="selectedDaysOfMonth" />
-        <label :for="'day-' + day">{{ day }}</label>
+      <div class="mb-3">
+        <input type="radio" id="specific-days-week" value="specificDaysWeek" v-model="frequency" />
+        <label class="d-flex align-items-center" for="specific-days-week"
+          >Specific days of the week</label
+        >
       </div>
-    </div>
 
-    <BackNextButton :filledCircle="3" />
+      <div v-if="frequency === 'specificDaysWeek'" class="days-of-week">
+        <div v-for="day in daysOfWeek" :key="day.value">
+          <input
+            class="weekly-checkbox"
+            type="checkbox"
+            :id="day.value"
+            :value="day.value"
+            v-model="selectedDaysOfWeek"
+          />
+          <label class="week-day-label d-flex align-items-center mb-3" :for="day.value">{{
+            day.label
+          }}</label>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <input type="radio" id="specific-days-month" value="specificDaysMonth" v-model="frequency" />
+        <label class="d-flex align-items-center" for="specific-days-month"
+          >Specific days of the month</label
+        >
+      </div>
+
+      <div v-if="frequency === 'specificDaysMonth'" class="days-of-month">
+        <div v-for="day in daysOfMonth" :key="day" class="day-button">
+          <input type="checkbox" :id="'day-' + day" :value="day" v-model="selectedDaysOfMonth" />
+          <label :for="'day-' + day">{{ day }}</label>
+        </div>
+      </div>
+
+      <BackNextButton :filledCircle="3" />
+    </div>
   </div>
 </template>
 
@@ -74,7 +76,7 @@ console.log(frequency)
 .habit-goal-form {
   color: white;
   padding: 0px 40px 0px 40px;
-  max-width: 400px;
+  max-width: 370px;
 }
 
 h2 {

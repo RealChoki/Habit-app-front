@@ -20,11 +20,20 @@
       :task="selectedTask"
     />
     <div
-      class="position-absolute custom-div d-flex justify-content-center align-items-center cursor-pointer"
+      class="position-absolute plus-div d-flex justify-content-center align-items-center cursor-pointer"
       @click="navigateToEvaluateView"
     >
       <font-awesome-icon
         :icon="['fas', 'plus']"
+        style="color: #5b5b5b; width: 35px; height: 35px"
+      />
+    </div>
+    <div
+      class="position-absolute minus-div d-flex justify-content-center align-items-center cursor-pointer"
+      @click="navigateToDeleteHabitsView"
+    >
+      <font-awesome-icon
+        :icon="['fas', 'minus']"
         style="color: #5b5b5b; width: 35px; height: 35px"
       />
     </div>
@@ -65,6 +74,10 @@ const navigateToEvaluateView = () => {
   router.push({ name: 'EvaluateView' })
 }
 
+const navigateToDeleteHabitsView = () => {
+  router.push({ name: 'DeleteHabitsView' })
+}
+
 const updateFilteredTasks = () => {
   console.log(weekData)
   const urlDate = router.currentRoute.value.params.date
@@ -95,12 +108,22 @@ watch(router.currentRoute, () => {
   max-width: 500px;
 }
 
-.custom-div {
+.plus-div {
   width: 50px;
   height: 50px;
   background-color: #232323;
   border-radius: 15px;
   right: 2.5em;
+  bottom: 5em;
+  padding: 30px;
+}
+
+.minus-div {
+  width: 50px;
+  height: 50px;
+  background-color: #232323;
+  border-radius: 15px;
+  left: 2.5em;
   bottom: 5em;
   padding: 30px;
 }

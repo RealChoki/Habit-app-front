@@ -81,7 +81,8 @@ const goBack = () => {
     }
 
     .back-next.no-next {
-        width: 71%;
-        justify-content: center;
+        justify-content: end;
+        width: 50vw;
+        margin-left: 1.3em;
     }
 </style>
