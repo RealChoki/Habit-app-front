@@ -49,9 +49,11 @@ import TaskElement from '@/components/TaskElement.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faMinus } from '@fortawesome/free-solid-svg-icons'
 import { useRouter } from 'vue-router'
 
 library.add(faPlus)
+library.add(faMinus)
 
 import { weekData } from '@/data/data.js'
 

@@ -1,5 +1,8 @@
 <template>
-    <HeaderNavbar />
+    <h2 class="title pt-5 mb-5 text-center font-weight-bold">
+          Which Habits do you want <br />
+          to delete?
+    </h2>
     <div class="container-fluid d-flex justify-content-center">
       <div>
         <div class="max-width-500">
@@ -18,6 +21,24 @@
         :metadata="metadata"
         :task="selectedTask"
       />
+      <div
+        class="position-absolute plus-div d-flex justify-content-center align-items-center cursor-pointer"
+        @click="navigateToEvaluateView"
+      >
+        <font-awesome-icon
+          :icon="['fas', 'plus']"
+          style="color: #5b5b5b; width: 35px; height: 35px"
+        />
+      </div>
+      <div
+        class="position-absolute minus-div d-flex justify-content-center align-items-center cursor-pointer"
+        @click="navigateToDeleteHabitsView"
+      >
+        <font-awesome-icon
+          :icon="['fas', 'minus']"
+          style="color: #5b5b5b; width: 35px; height: 35px"
+        />
+      </div>
     </div>
   </template>
   
@@ -30,9 +51,11 @@
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
   import { library } from '@fortawesome/fontawesome-svg-core'
   import { faPlus } from '@fortawesome/free-solid-svg-icons'
+  import { faMinus } from '@fortawesome/free-solid-svg-icons'
   import { useRouter } from 'vue-router'
   
   library.add(faPlus)
+  library.add(faMinus)
   
   import { weekData } from '@/data/data.js'
   
@@ -53,6 +76,10 @@
   
   const navigateToEvaluateView = () => {
     router.push({ name: 'EvaluateView' })
+  }
+  
+  const navigateToDeleteHabitsView = () => {
+    router.push({ name: 'DeleteHabitsView' })
   }
   
   const updateFilteredTasks = () => {
@@ -85,6 +112,11 @@
     max-width: 500px;
   }
   
+    .title {
+    color: #fefff7;
+    font-size: 18px; 
+    }
+
   .plus-div {
     width: 50px;
     height: 50px;
