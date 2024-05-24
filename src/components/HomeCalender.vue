@@ -55,7 +55,8 @@ const isActiveDay = (day) => {
   const isSelected =
     selectedDate.value !== null &&
     day.date === selectedDate.value.date &&
-    day.month === selectedDate.value.month
+    day.month === selectedDate.value.month &&
+    day.year === selectedDate.value.year
   return isSelected || (!selectedDate.value && isToday)
 }
 
