@@ -81,7 +81,6 @@ const navigateToDeleteHabitsView = () => {
 }
 
 const updateFilteredTasks = () => {
-  console.log(weekData)
   const urlDate = router.currentRoute.value.params.date
   const filteredData = weekData.find((item) => {
     return item.metadata.timestamp.toISOString().split('T')[0] === urlDate
