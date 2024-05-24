@@ -1,38 +1,44 @@
 <template>
-  <div class="calender d-flex align-items-center mb-2">
-    <!-- Arrow icon to the left -->
-    <font-awesome-icon
-      :icon="['fas', 'chevron-left']"
-      class="arrow-icon mt-0 me-2 cursor-pointer text-white btn-click no-select"
-      @click="previousWeek"
-    />
-
-    <div
-      class="day pt-0 cursor-pointer d-flex flex-column justify-content-between align-items-center rounded-4 no-select"
-      v-for="day in days"
-      :key="day.date"
-      :class="{ 'border border-white': isActiveDay(day) }"
-      @click="selectDate(day)"
-    >
-      <p class="m-0 mt-1">{{ day.day }}</p>
-      <div class="date rounded-top-2 rounded-bottom-4 w-100">
-        <p class="my-1 fw-bold">
-          <span class="d-flex justify-content-center align-items-center">{{ day.date }}</span>
-        </p>
-      </div>
+  <div>
+    <div class="d-flex justify-content-between">
+      <div></div>
+      <p class="month-paragraph m-0 me-4 mb-1 p-0 fst-italic text-white">{{ currentMonth }}</p>
     </div>
+    <div class="calender d-flex align-items-center mb-2">
+      <!-- Arrow icon to the left -->
+      <font-awesome-icon
+        :icon="['fas', 'chevron-left']"
+        class="arrow-icon mt-0 me-2 cursor-pointer text-white btn-click no-select"
+        @click="previousWeek"
+      />
 
-    <!-- Arrow icon to the right -->
-    <font-awesome-icon
-      :icon="['fas', 'chevron-right']"
-      class="arrow-icon mt-0 ms-2 cursor-pointer text-white btn-click no-select"
-      @click="nextWeek"
-    />
+      <div
+        class="day pt-0 cursor-pointer d-flex flex-column justify-content-between align-items-center rounded-4 no-select"
+        v-for="day in days"
+        :key="day.date"
+        :class="{ 'border border-white': isActiveDay(day) }"
+        @click="selectDate(day)"
+      >
+        <p class="m-0 mt-1">{{ day.day }}</p>
+        <div class="date rounded-top-2 rounded-bottom-4 w-100">
+          <p class="my-1 fw-bold">
+            <span class="d-flex justify-content-center align-items-center">{{ day.date }}</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Arrow icon to the right -->
+      <font-awesome-icon
+        :icon="['fas', 'chevron-right']"
+        class="arrow-icon mt-0 ms-2 cursor-pointer text-white btn-click no-select"
+        @click="nextWeek"
+      />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -43,11 +49,22 @@ import { selectedDate } from '@/stores/selectedDate'
 library.add(faChevronLeft, faChevronRight)
 
 const days = ref([])
-let weekOffset = 0
+const weekOffset = ref(0)
 const today = new Date()
 today.setDate(today.getDate()) // temporary
 
 const router = useRouter()
+
+const currentMonth = computed(() => {
+  const monday = new Date(today)
+  const currentDay = today.getDay()
+
+  // Calculate Monday of the current week with offset
+  monday.setDate(today.getDate() - currentDay + 1 + weekOffset.value * 7)
+
+  // The month would be the month of the Monday of the week
+  return getMonthName(monday.getMonth())
+})
 
 const isActiveDay = (day) => {
   const currentDate = new Date()
@@ -96,20 +113,38 @@ const getDayName = (dayIndex) => {
   return daysOfWeek[dayIndex]
 }
 
+const getMonthName = (monthIndex) => {
+  const monthsOfYear = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ]
+  return monthsOfYear[monthIndex]
+}
+
 const previousWeek = () => {
-  weekOffset--
+  weekOffset.value--
   days.value = []
-  calculateDates(weekOffset)
+  calculateDates(weekOffset.value)
 }
 
 const nextWeek = () => {
-  weekOffset++
+  weekOffset.value++
   days.value = []
-  calculateDates(weekOffset)
+  calculateDates(weekOffset.value)
 }
 
 // Initial call to calculate dates
-calculateDates(weekOffset)
+calculateDates(weekOffset.value)
 </script>
 
 <style scoped>
@@ -141,5 +176,9 @@ calculateDates(weekOffset)
 .date p {
   font-size: 13px;
   color: #fefff7;
+}
+
+.month-paragraph {
+  font-size: 12px;
 }
 </style>
