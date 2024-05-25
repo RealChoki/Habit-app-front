@@ -2,7 +2,8 @@
   <div>
     <div class="d-flex justify-content-between">
       <div></div>
-      <p class="month-paragraph m-0 me-4 mb-1 p-0 fst-italic text-white">{{ currentMonth }}</p>
+      <div v-if="hoveredDay" class="month-paragraph m-0 me-4 mb-1 p-0 fst-italic text-white">{{ getFormattedDate(hoveredDay) }}</div>
+      <p v-else class="month-paragraph m-0 me-4 mb-1 p-0 fst-italic text-white">{{ currentMonth }}</p>
     </div>
     <div class="calender d-flex align-items-center mb-2">
       <!-- Arrow icon to the left -->
@@ -18,6 +19,8 @@
         :key="day.date"
         :class="{ 'border border-white': isActiveDay(day) }"
         @click="selectDate(day)"
+        @mouseover="showHoverDiv(day)"
+        @mouseleave="hideHoverDiv(day)"
       >
         <p class="m-0 mt-1">{{ day.day }}</p>
         <div class="date rounded-top-2 rounded-bottom-4 w-100">
@@ -66,6 +69,8 @@ const currentMonth = computed(() => {
   return getMonthName(monday.getMonth())
 })
 
+const hoveredDay = ref('')
+
 const isActiveDay = (day) => {
   const currentDate = new Date()
   const isToday = day.date === currentDate.getDate() && day.month === currentDate.getMonth() + 1
@@ -103,7 +108,8 @@ const calculateDates = (offset) => {
       day: getDayName(date.getDay()),
       date: date.getDate(),
       month: date.getMonth() + 1,
-      year: date.getFullYear()
+      year: date.getFullYear(),
+      hovered: false // Added hovered property
     })
   }
 }
@@ -131,6 +137,12 @@ const getMonthName = (monthIndex) => {
   return monthsOfYear[monthIndex]
 }
 
+const getFormattedDate = (day) => {
+  const formattedDay = day.date < 10 ? `0${day.date}` : day.date
+  const formattedMonth = day.month < 10 ? `0${day.month}` : day.month
+  return `${formattedDay}/${formattedMonth}/${day.year}`
+}
+
 const previousWeek = () => {
   weekOffset.value--
   days.value = []
@@ -141,6 +153,14 @@ const nextWeek = () => {
   weekOffset.value++
   days.value = []
   calculateDates(weekOffset.value)
+}
+
+const showHoverDiv = (day) => {
+  hoveredDay.value = day // Set the hovered day
+}
+
+const hideHoverDiv = () => {
+  hoveredDay.value = '' // Clear the hovered day
 }
 
 // Initial call to calculate dates
