@@ -52,10 +52,12 @@ const goBack = () => {
 <style scoped>
     .back {
         color: #5B5B5B;
+        cursor: pointer;
     }
 
     .next {
         color: #FEFFF7;
+        cursor: pointer;
     }
 
     .back-next {

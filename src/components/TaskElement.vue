@@ -1,7 +1,7 @@
 <template>
   <div
     class="container d-flex align-items-center justify-content-between p-2 py-3"
-    @click="openTaskModal && openTaskModal(task)"
+    @click="openTaskModal(task)"
   >
     <div class="d-flex align-items-center cursor-pointer">
       <font-awesome-icon
@@ -107,8 +107,14 @@ library.add(faPlus, faMinus, faCheck, faListCheck, faClock, faPlay, faPause, faP
 
 // Define props
 const props = defineProps({
-  task: Object,
-  openTaskModal: Function as PropType<((task: Task) => void) | undefined>
+  task: {
+    type: Object as () => Task,
+    required: true
+  },
+  openTaskModal: { 
+    type: Function as PropType<((task: Task) => void)>,
+    required: true
+  }
 })
 
 
@@ -138,7 +144,7 @@ const updateNumericTaskValue = (task: Task) => {
   }
 }
 
-const adjustCount = (task: Task, increment: Task) => {
+const adjustCount = (task: Task, increment: boolean) => {
   if (isInPast(task.timestamp)) return
   if (increment) {
     task.count += 1

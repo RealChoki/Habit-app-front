@@ -34,6 +34,7 @@ const navigateToView = (route: RouteRecordName) => {
         display: flex;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
     }
 
     .small-title{

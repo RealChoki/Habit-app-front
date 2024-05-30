@@ -9,16 +9,16 @@
           <div class="d-flex align-items-center justify-content-between changethis bor-bot">
             <div class="d-flex align-items-center">
               <font-awesome-icon class="rounded-square" :icon="['fas', 'calendar-days']" style="color: #5b5b5b"/>
-              <p class="mb-0 ms-2 text-white fs-6" >Start date</p>
+              <label class="mb-0 ms-2 text-white fs-6" for="start-input" >Start date</label>
             </div>
-            <HabitField style="width: 5em;"/>
+            <input type="text" class="input-common" id="start-input"/>
           </div>
           <div class="d-flex align-items-center justify-content-between changethis">
             <div class="d-flex align-items-center">
               <font-awesome-icon class="rounded-square" :icon="['fas', 'calendar-check']" style="color: #5b5b5b"/>
-              <p class="mb-0 ms-2 text-white fs-6">End date</p>
+              <label class="mb-0 ms-2 text-white fs-6" for="end-input">End date</label>
             </div>
-            <HabitField style="width: 5em;"/>
+            <input type="text" class="input-common" id="end-input"/>
           </div>
         </div>
         <BackNextButton :filledCircle="4" />
@@ -81,6 +81,23 @@ label {
   background-color: #232323;
   color: #5b5b5b;
   padding: 10px;
+}
+
+.input-common {
+  height: 29px;
+  background: #131213;
+  border: 1px solid #ffffff;
+  border-radius: 5px;
+  color: #ffffff;
+  width: 5em;
+}
+
+.input-common:focus {
+  outline: none;
+  box-shadow: none;
+  background-color: #131213;
+  color: #ffffff;
+  border-color: #ffffff;
 }
 
 </style>

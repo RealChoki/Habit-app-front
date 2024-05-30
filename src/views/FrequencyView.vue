@@ -5,7 +5,7 @@
         What is your Future Goal regarding this Habit?
       </h2>
 
-      <div class="mt-5 mb-3">
+      <div class="mt-5 mb-3 cursor-pointer">
         <input type="radio" id="every-day" value="everyday" v-model="frequency" />
         <label class="d-flex align-items-center" for="every-day">Every day</label>
       </div>

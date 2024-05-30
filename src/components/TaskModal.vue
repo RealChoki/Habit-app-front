@@ -9,19 +9,19 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content min-width-350">
         <div class="modal-header">
-          <h5 class="modal-title">{{ task?.title }}</h5>
+          <h5 class="modal-title">{{ task.title }}</h5>
           <button type="button" class="btn-close" aria-label="Close" @click="closeModal"></button>
         </div>
         <div class="modal-body">
           <p>Date: {{ formatDate(timestamp) }}</p>
-          <p>Description: {{ task?.description }}</p>
-          <p v-if="task?.type === 'numeric'">Count: {{ task?.count }}</p>
-          <p v-if="task?.type === 'numeric'">Goal: {{ task?.goal }}</p>
-          <p v-if="task?.type === 'timer'">Timer: {{ getTimeStamp(task.timer) }}</p>
-          <p v-if="task?.value">Status: Done</p>
-          <p v-if="!task?.value">Status: Not done</p>
+          <p>Description: {{ task.description }}</p>
+          <p v-if="task.type === 'numeric'">Count: {{ task.count }}</p>
+          <p v-if="task.type === 'numeric'">Goal: {{ task.goal }}</p>
+          <p v-if="task.type === 'timer'">Timer: {{ getTimeStamp(task.timer) }}</p>
+          <p v-if="task.value">Status: Done</p>
+          <p v-if="!task.value">Status: Not done</p>
           <button
-            v-if="task?.type === 'timer'"
+            v-if="task.type === 'timer'"
             type="button"
             class="btn btn-primary"
             @click="restartTimer(task)"
@@ -47,7 +47,7 @@ import type { PropType } from 'vue'
 const props = defineProps({
   showModal: Boolean,
   task: {
-    type: Object as () => Task | null,
+    type: Object as () => Task,
     required: true
   },
   closeModal: {
