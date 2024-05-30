@@ -3,66 +3,60 @@
           Which Habits do you want <br />
           to delete?
     </h2>
-    <div class="container-fluid d-flex justify-content-center">
-      <div>
-        <div class="max-width-500">
-          <TaskElement
-            v-for="(task, key) in filteredTasks"
-            :key="key"
-            :task="task"
-            :openTaskModal="openTaskModal"
-            :metadata="metadata"
-          />
-        </div>
-      </div>
-      <TaskModal
-        :showModal="showModal"
-        :closeModal="closeModal"
-        :metadata="metadata"
-        :task="selectedTask"
+    
+    <div class="max-width-500">
+        <TaskElement
+          v-for="(task, key) in filteredTasks"
+          :key="key"
+          :task="task"
+          :openTaskModal="openTaskModal"
+          :timestamp="timestamp"
+        />
+    </div>
+
+    <div
+      class="position-absolute plus-div d-flex justify-content-center align-items-center cursor-pointer"
+      @click="navigateToEvaluateView"
+    >
+      <font-awesome-icon
+        :icon="['fas', 'plus']"
+        style="color: #5b5b5b; width: 35px; height: 35px"
       />
-      <div
-        class="position-absolute plus-div d-flex justify-content-center align-items-center cursor-pointer"
-        @click="navigateToEvaluateView"
-      >
-        <font-awesome-icon
-          :icon="['fas', 'plus']"
-          style="color: #5b5b5b; width: 35px; height: 35px"
-        />
-      </div>
-      <div
-        class="position-absolute minus-div d-flex justify-content-center align-items-center cursor-pointer"
-        @click="navigateToDeleteHabitsView"
-      >
-        <font-awesome-icon
-          :icon="['fas', 'minus']"
-          style="color: #5b5b5b; width: 35px; height: 35px"
-        />
-      </div>
+    </div>
+    <div
+      class="position-absolute minus-div d-flex justify-content-center align-items-center cursor-pointer"
+      @click="navigateToDeleteHabitsView"
+    >
+      <font-awesome-icon
+        :icon="['fas', 'minus']"
+        style="color: #5b5b5b; width: 35px; height: 35px"
+      />
     </div>
   </template>
   
   <script setup lang="ts">
   import { ref, onMounted, watch } from 'vue'
+  import HomeCalender from '@/components/HomeCalender.vue'
   import TaskModal from '@/components/TaskModal.vue'
+  import HeaderNavbar from '@/components/HeaderNavbar.vue'
   import TaskElement from '@/components/TaskElement.vue'
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
   import { library } from '@fortawesome/fontawesome-svg-core'
   import { faPlus } from '@fortawesome/free-solid-svg-icons'
   import { faMinus } from '@fortawesome/free-solid-svg-icons'
+  import type { Task } from '@/types/types.d.ts'
   import { useRouter } from 'vue-router'
   
-  library.add(faPlus)
   library.add(faMinus)
+  library.add(faPlus)
   
   import { weekData } from '@/data/data.js'
-  import type { Task } from '@/types/types.d.ts'
-    
-  const filteredTasks = ref([])
+  
+  const filteredTasks = ref<Task[]>([])
   const router = useRouter()
   const showModal = ref(false)
-  const selectedTask = ref(null)
-  const metadata = ref(null)
+  const selectedTask = ref<Task | null>(null)
+  const timestamp = ref<Date | null>(null)
   
   const openTaskModal = (task: Task) => {
     selectedTask.value = task
@@ -82,18 +76,17 @@
   }
   
   const updateFilteredTasks = () => {
-    console.log(weekData)
     const urlDate = router.currentRoute.value.params.date
     const filteredData = weekData.find((item) => {
-      return item.metadata.timestamp.toISOString().split('T')[0] === urlDate
+      return item.metadata && item.metadata.timestamp && item.metadata.timestamp.toISOString().split('T')[0] === urlDate
     })
   
     if (filteredData) {
       filteredTasks.value = Object.values(filteredData.tasks)
-      metadata.value = filteredData.metadata
+      timestamp.value = filteredData.metadata.timestamp
     } else {
       filteredTasks.value = []
-      metadata.value = null
+      timestamp.value = null
     }
   }
   
@@ -111,11 +104,6 @@
     max-width: 500px;
   }
   
-    .title {
-    color: #fefff7;
-    font-size: 18px; 
-    }
-
   .plus-div {
     width: 50px;
     height: 50px;

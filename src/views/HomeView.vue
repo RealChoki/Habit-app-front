@@ -90,7 +90,6 @@ const updateFilteredTasks = () => {
   if (filteredData) {
     filteredTasks.value = Object.values(filteredData.tasks)
     timestamp.value = filteredData.metadata.timestamp
-    console.log(timestamp.value)
   } else {
     filteredTasks.value = []
     timestamp.value = null

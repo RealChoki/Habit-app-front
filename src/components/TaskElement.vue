@@ -1,43 +1,43 @@
 <template>
   <div
     class="container d-flex align-items-center justify-content-between p-2 py-3"
-    @click="openTaskModal(task)"
+    @click="openTaskModal && openTaskModal(task)"
   >
     <div class="d-flex align-items-center cursor-pointer">
       <font-awesome-icon
         class="tasktype-icon rounded-square"
         :icon="['fas', 'list-check']"
-        v-if="task.type === 'yesno'"
+        v-if="task?.type === 'yesno'"
       />
       <font-awesome-icon
         class="tasktype-icon rounded-square"
         :icon="['fas', 'plus-minus']"
-        v-else-if="task.type === 'numeric'"
+        v-else-if="task?.type === 'numeric'"
       />
       <font-awesome-icon
         class="tasktype-icon rounded-square"
         :icon="['fas', 'clock']"
-        v-else-if="task.type === 'timer'"
+        v-else-if="task?.type === 'timer'"
       />
-      <p class="mb-0 ms-2 text-white">{{ task.title }}</p>
+      <p class="mb-0 ms-2 text-white">{{ task?.title }}</p>
     </div>
-    <div v-if="task.type === 'yesno'">
+    <div v-if="task?.type === 'yesno'">
       <font-awesome-icon
         class="cursor-pointer rounded-circle btn-click no-select"
         :icon="['fas', 'check']"
         :class="{
-          'text-success': task.value,
-          'text-danger': task.value === false
+          'text-success': task?.value,
+          'text-danger': task?.value === false
         }"
         @click.stop="toggleTaskValue(task)"
       />
     </div>
-    <div v-else-if="task.type === 'numeric'">
+    <div v-else-if="task?.type === 'numeric'">
       <div class="position-relative pt-2">
         <font-awesome-icon
           class="cursor-pointer rounded-circle btn-click no-select"
           :icon="['fas', 'minus']"
-          :class="{ 'text-success': task.value, 'text-danger': task.value === false }"
+          :class="{ 'text-success': task?.value, 'text-danger': task?.value === false }"
           @click.stop="adjustCount(task, false)"
         />
         <font-awesome-icon
@@ -57,25 +57,25 @@
         </p>
       </div>
     </div>
-    <div v-else-if="task.type === 'timer'">
+    <div v-else-if="task?.type === 'timer'">
       <div class="position-relative pt-2">
         <font-awesome-icon
           class="cursor-pointer rounded-circle btn-click no-select"
           :icon="['fas', 'pause']"
-          :class="{ 'text-success': task.value, 'text-danger': task.value === false }"
+          :class="{ 'text-success': task?.value, 'text-danger': task?.value === false }"
           @click.stop="pauseCountdown(task)"
         />
         <font-awesome-icon
           class="cursor-pointer rounded-circle btn-click no-select"
           :icon="['fas', 'play']"
-          :class="{ 'text-success': task.value, 'text-danger': task.value === false }"
+          :class="{ 'text-success': task?.value, 'text-danger': task?.value === false }"
           @click.stop="startCountdown(task)"
         />
         <p
           class="timer position-absolute translate-middle p-0 m-0"
           :class="{
-            'text-success': isTimerRunning || task.value,
-            'text-danger': isTimerRunning === false || task.value === false
+            'text-success': isTimerRunning || task?.value,
+            'text-danger': isTimerRunning === false || task?.value === false
           }"
         >
           {{ getTimeStamp(task.timer) }}
@@ -100,6 +100,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import type { Task } from '@/types/types'
 import { defineProps, ref, toRefs } from 'vue'
+import type { PropType } from 'vue'
 
 // Add the icons to the library
 library.add(faPlus, faMinus, faCheck, faListCheck, faClock, faPlay, faPause, faPlusMinus)
@@ -107,8 +108,9 @@ library.add(faPlus, faMinus, faCheck, faListCheck, faClock, faPlay, faPause, faP
 // Define props
 const props = defineProps({
   task: Object,
-  openTaskModal: Function
+  openTaskModal: Function as PropType<((task: Task) => void) | undefined>
 })
+
 
 // Make task UI reactive
 const { task } = toRefs(props)

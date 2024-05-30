@@ -14,7 +14,7 @@
       />
 
       <div
-        class="day pt-0 cursor-pointer d-flex flex-column justify-content-between align-items-center rounded-4 no-select"
+        class="day p-0 cursor-pointer d-flex flex-column justify-content-between align-items-center rounded-4 no-select"
         v-for="day in days"
         :key="day.date"
         :class="{ 'border border-white': isActiveDay(day) }"
@@ -22,8 +22,8 @@
         @mouseover="showHoverDiv(day)"
         @mouseleave="hideHoverDiv(day)"
       >
-        <p class="m-0 mt-1">{{ day.day }}</p>
-        <div class="date rounded-top-2 rounded-bottom-4 w-100">
+        <p class="test">{{ day.day }}</p>
+        <div class="date rounded-top-2 rounded-bottom-4 w-100 ">
           <p class="my-1 fw-bold">
             <span class="d-flex justify-content-center align-items-center">{{ day.date }}</span>
           </p>
@@ -168,6 +168,11 @@ calculateDates(weekOffset.value)
 <style scoped>
 .calender {
   gap: 4px;
+}
+
+.test{
+  margin: 0;
+  margin-top: 3px;
 }
 
 .day p {

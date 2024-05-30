@@ -20,5 +20,13 @@
   label{
       font-size: 10px;
   }
+
+  input:focus {
+  outline: none;
+  box-shadow: none;
+  background-color: #131213;
+  color: #ffffff;
+  border-color: #ffffff;
+}
   </style>
   

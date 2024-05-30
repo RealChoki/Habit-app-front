@@ -50,7 +50,7 @@ const getCurrentDate = () => {
   activeDate.value = today.toLocaleDateString('en-US', options)
 }
 
-const formatedHeaderDate = (date) => {
+const formatedHeaderDate = (date: any) => {
   const options = { month: 'long', day: 'numeric', year: 'numeric' }
   const formattedDate = new Intl.DateTimeFormat('en-US', options).format(
     new Date(date.year, date.month - 1, date.date)

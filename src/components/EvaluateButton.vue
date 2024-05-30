@@ -40,6 +40,7 @@ const navigateToView = (route: RouteRecordName) => {
         color: #FEFFF7;
         font-weight: 400;
         font-size: 24px;
+        margin-bottom: 0px;
     }
     
     .desc{

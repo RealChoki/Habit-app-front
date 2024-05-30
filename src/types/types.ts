@@ -5,10 +5,13 @@ export interface Task {
   title: string;
   description: string;
   value: boolean | null;
+  // For numeric tasks
   count?: number;
-  timer?: number;
-  subtype?: 'increment' | 'decrement';
   goal?: number;
+  subtype?: 'increment' | 'decrement';
+  // For timer tasks
+  timer?: number;
+  default?: number;
 }
 
 export interface DayData {

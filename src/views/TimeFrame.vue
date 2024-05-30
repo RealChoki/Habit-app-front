@@ -9,7 +9,7 @@
           <div class="d-flex align-items-center justify-content-between changethis bor-bot">
             <div class="d-flex align-items-center">
               <font-awesome-icon class="rounded-square" :icon="['fas', 'calendar-days']" style="color: #5b5b5b"/>
-              <p class="mb-0 ms-2 text-white fs-6">Start date</p>
+              <p class="mb-0 ms-2 text-white fs-6" >Start date</p>
             </div>
             <HabitField style="width: 5em;"/>
           </div>
@@ -31,7 +31,8 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCalendarCheck, faCalendarDays } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import BackNextButton from '../components/BackNextButton.vue'
-import HabitField from '@/components/HabitField.vue'
+import CommonInput from '@/common/CommonInput.vue'
+
 import { defineComponent } from 'vue';
 
 library.add(faCalendarCheck, faCalendarDays)

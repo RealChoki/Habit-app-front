@@ -26,4 +26,20 @@
 .btn-click:active {
   transform: scale(0.9);
 }
+
+.input-common input {
+  height: 29px;
+  background: #131213;
+  border: 1px solid #ffffff;
+  border-radius: 5px;
+  color: #ffffff;
+}
+
+.input-common input:focus {
+  outline: none;
+  box-shadow: none;
+  background-color: #131213;
+  color: #ffffff;
+  border-color: #ffffff;
+}
 </style>

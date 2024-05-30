@@ -9,22 +9,22 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content min-width-350">
         <div class="modal-header">
-          <h5 class="modal-title">{{ task.title }}</h5>
+          <h5 class="modal-title">{{ task?.title }}</h5>
           <button type="button" class="btn-close" aria-label="Close" @click="closeModal"></button>
         </div>
         <div class="modal-body">
-          <p>Date: {{ formatDate(metadata.timestamp) }}</p>
-          <p>Description: {{ task.description }}</p>
-          <p v-if="task.type === 'numeric'">Count: {{ task.count }}</p>
-          <p v-if="task.type === 'numeric'">Goal: {{ task.goal }}</p>
-          <p v-if="task.type === 'timer'">Timer: {{ getTimeStamp(task.timer) }}</p>
-          <p v-if="task.value">Status: Done</p>
-          <p v-if="!task.value">Status: Not done</p>
+          <p>Date: {{ formatDate(timestamp) }}</p>
+          <p>Description: {{ task?.description }}</p>
+          <p v-if="task?.type === 'numeric'">Count: {{ task?.count }}</p>
+          <p v-if="task?.type === 'numeric'">Goal: {{ task?.goal }}</p>
+          <p v-if="task?.type === 'timer'">Timer: {{ getTimeStamp(task.timer) }}</p>
+          <p v-if="task?.value">Status: Done</p>
+          <p v-if="!task?.value">Status: Not done</p>
           <button
-            v-if="task.type === 'timer'"
+            v-if="task?.type === 'timer'"
             type="button"
             class="btn btn-primary"
-            @click="restartTimer"
+            @click="restartTimer(task)"
           >
             Restart Timer
           </button>
@@ -42,24 +42,27 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
 import type { Task } from '@/types/types'
+import type { PropType } from 'vue'
 
-// Define props
-// Remove the unused props variable declaration
-// const props = defineProps({
-
-// Update the defineProps function call with the correct prop types
 const props = defineProps({
   showModal: Boolean,
   task: {
     type: Object as () => Task | null,
     required: true
   },
-  closeModal: Function,
-  metadata: Object
+  closeModal: {
+    type: Function as PropType<() => void>,
+    required: true
+  },
+  timestamp: {
+    type: Date as PropType<Date | null>,
+    default: null
+  }
 })
 
 // Function to translate timestamp into DD/MM/YYYY format
-const formatDate = (timestamp: number): string => {
+const formatDate = (timestamp: Date | null): string => {
+  if (!timestamp) return ''
   const date = new Date(timestamp)
   const day = date.getDate().toString().padStart(2, '0')
   const month = (date.getMonth() + 1).toString().padStart(2, '0')
@@ -67,7 +70,8 @@ const formatDate = (timestamp: number): string => {
   return `${day}/${month}/${year}`
 }
 
-const getTimeStamp = (seconds) => {
+const getTimeStamp = (seconds: number | undefined) => {
+  if (seconds == undefined) return ''
   const hours = Math.floor(seconds / 3600)
   const minutes = Math.floor((seconds % 3600) / 60)
   const paddedMinutes = minutes.toString().padStart(2, '0')
@@ -76,11 +80,10 @@ const getTimeStamp = (seconds) => {
 }
 
 // Method to restart the timer
-const restartTimer = () => {
+const restartTimer = (task: Task) => {
   // Reset the timer to its initial value
-  if (task.type === 'timer') {
-    task.timer = initialTimerValue // Replace initialTimerValue with your initial timer value
-  }
+  task.timer = task.default 
+  task.value = null
 }
 </script>
 
