@@ -1,18 +1,30 @@
 <template>
   <header class="navbar navbar-dark py-3 mb-3">
     <div class="container">
-      <button
-        class="navbar-toggler border-1"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
+      <button class="navbar-toggler" type="button" @click="toggleMenu">
         <span class="navbar-toggler-icon"></span>
       </button>
       <p class="navbar-brand">{{ activeDate }}</p>
+      <!-- Burger menu content -->
+       <div class="navbar-menu collapse px-5 w-100 text-center" :class="{ show: isOpen }">
+         <ul class="navbar-nav">
+           <li class="nav-item">
+             <a class="nav-link" href="#">Home</a>
+           </li>
+           <li class="nav-item">
+             <a class="nav-link" href="#">Profile</a>
+           </li>
+           <li class="nav-item">
+             <a class="nav-link" href="#">Add Habits</a>
+           </li>
+           <li class="nav-item">
+             <a class="nav-link" href="#">Delete Habits</a>
+           </li>
+           <li class="nav-item">
+             <a class="nav-link" href="#">Settings</a>
+           </li>
+         </ul>
+       </div>
     </div>
   </header>
 </template>
@@ -20,6 +32,8 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue'
 import { selectedDate } from '@/stores/selectedDate'
+
+const isOpen = ref(false)
 
 const activeDate = ref('')
 const updateActiveDate = () => {
@@ -42,6 +56,10 @@ const formatedHeaderDate = (date) => {
     new Date(date.year, date.month - 1, date.date)
   )
   return formattedDate
+}
+
+const toggleMenu = () => {
+   isOpen.value = !isOpen.value
 }
 
 watch(selectedDate, () => {
@@ -75,4 +93,49 @@ header p {
   color: #fefff7;
   font-size: 16px;
 }
+
+.navbar-toggler {
+   border: none;
+   background: none;
+   cursor: pointer;
+ }
+ .navbar-toggler:focus {
+   outline: none;
+ }
+ .navbar-menu {
+   position: absolute;
+   top: 100%;
+   left: 0;
+   background-color: #343a40;
+   border-radius: 5px;
+   padding: 10px;
+   transition: all 0.3s;
+   opacity: 0;
+   visibility: hidden;
+   height: 0; /* Initially hide the menu */
+   overflow: hidden; /* Hide overflow content */
+ }
+ .navbar-menu.show {
+   z-index: 1;
+   opacity: 1;
+   visibility: visible;
+   background-color: #232323;
+   height: auto; /* Auto height for the menu */
+ }
+ .navbar-nav {
+   list-style-type: none;
+   padding: 0;
+   margin: 0;
+ }
+ .nav-item {
+   margin-bottom: 5px;
+ }
+ .nav-link {
+   color: white;
+   text-decoration: none;
+   font-size: 16px;
+ }
+ .nav-link:hover {
+   color: #adb5bd;
+ }
 </style>
