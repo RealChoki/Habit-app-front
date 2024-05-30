@@ -41,11 +41,19 @@
 
 <script setup lang="ts">
 import { defineProps } from 'vue'
+import type { Task } from '@/types/types'
 
 // Define props
+// Remove the unused props variable declaration
+// const props = defineProps({
+
+// Update the defineProps function call with the correct prop types
 const props = defineProps({
   showModal: Boolean,
-  task: Object,
+  task: {
+    type: Object as () => Task | null,
+    required: true
+  },
   closeModal: Function,
   metadata: Object
 })

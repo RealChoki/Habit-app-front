@@ -44,9 +44,7 @@
   
   <script setup lang="ts">
   import { ref, onMounted, watch } from 'vue'
-  import HomeCalender from '@/components/HomeCalender.vue'
   import TaskModal from '@/components/TaskModal.vue'
-  import HeaderNavbar from '@/components/HeaderNavbar.vue'
   import TaskElement from '@/components/TaskElement.vue'
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
   import { library } from '@fortawesome/fontawesome-svg-core'
@@ -58,14 +56,15 @@
   library.add(faMinus)
   
   import { weekData } from '@/data/data.js'
-  
+  import type { Task } from '@/types/types.d.ts'
+    
   const filteredTasks = ref([])
   const router = useRouter()
   const showModal = ref(false)
   const selectedTask = ref(null)
   const metadata = ref(null)
   
-  const openTaskModal = (task) => {
+  const openTaskModal = (task: Task) => {
     selectedTask.value = task
     showModal.value = true
   }

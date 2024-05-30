@@ -9,14 +9,14 @@
           :key="key"
           :task="task"
           :openTaskModal="openTaskModal"
-          :metadata="metadata"
+          :timestamp="timestamp"
         />
       </div>
     </div>
     <TaskModal
       :showModal="showModal"
       :closeModal="closeModal"
-      :metadata="metadata"
+      :timestamp="timestamp"
       :task="selectedTask"
     />
     <div
@@ -50,20 +50,21 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { faMinus } from '@fortawesome/free-solid-svg-icons'
+import type { Task } from '@/types/types.d.ts'
 import { useRouter } from 'vue-router'
 
-library.add(faPlus)
 library.add(faMinus)
+library.add(faPlus)
 
 import { weekData } from '@/data/data.js'
 
-const filteredTasks = ref([])
+const filteredTasks = ref<Task[]>([])
 const router = useRouter()
 const showModal = ref(false)
-const selectedTask = ref(null)
-const metadata = ref(null)
+const selectedTask = ref<Task | null>(null)
+const timestamp = ref<Date | null>(null)
 
-const openTaskModal = (task) => {
+const openTaskModal = (task: Task) => {
   selectedTask.value = task
   showModal.value = true
 }
@@ -83,15 +84,16 @@ const navigateToDeleteHabitsView = () => {
 const updateFilteredTasks = () => {
   const urlDate = router.currentRoute.value.params.date
   const filteredData = weekData.find((item) => {
-    return item.metadata.timestamp.toISOString().split('T')[0] === urlDate
+    return item.metadata && item.metadata.timestamp && item.metadata.timestamp.toISOString().split('T')[0] === urlDate
   })
 
   if (filteredData) {
     filteredTasks.value = Object.values(filteredData.tasks)
-    metadata.value = filteredData.metadata
+    timestamp.value = filteredData.metadata.timestamp
+    console.log(timestamp.value)
   } else {
     filteredTasks.value = []
-    metadata.value = null
+    timestamp.value = null
   }
 }
 

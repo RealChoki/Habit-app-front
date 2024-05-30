@@ -98,6 +98,7 @@ import {
   faPause,
   faPlusMinus
 } from '@fortawesome/free-solid-svg-icons'
+import type { Task } from '@/types/types'
 import { defineProps, ref, toRefs } from 'vue'
 
 // Add the icons to the library
@@ -117,14 +118,14 @@ const isTimerRunning = ref(null)
 const beginningOfDay = new Date()
 beginningOfDay.setHours(0, 0, 0, 0)
 
-const isInPast = (timestamp) => timestamp <= beginningOfDay.getTime()
+const isInPast = (timestamp: number) => timestamp <= beginningOfDay.getTime()
 
-const toggleTaskValue = (task) => {
+const toggleTaskValue = (task: Task) => {
   if (isInPast(task.timestamp)) return
   task.value = task.value ? null : true
 }
 
-const updateNumericTaskValue = (task) => {
+const updateNumericTaskValue = (task: Task) => {
   if (
     (task.subtype === 'increment' && task.count >= task.goal) ||
     (task.subtype !== 'increment' && task.count <= task.goal)
@@ -135,7 +136,7 @@ const updateNumericTaskValue = (task) => {
   }
 }
 
-const adjustCount = (task, increment) => {
+const adjustCount = (task: Task, increment: Task) => {
   if (isInPast(task.timestamp)) return
   if (increment) {
     task.count += 1
@@ -145,7 +146,7 @@ const adjustCount = (task, increment) => {
   updateNumericTaskValue(task)
 }
 
-const getTimeStamp = (seconds) => {
+const getTimeStamp = (seconds: number) => {
   const hours = Math.floor(seconds / 3600)
   const minutes = Math.floor((seconds % 3600) / 60)
   const paddedMinutes = minutes.toString().padStart(2, '0')
@@ -153,7 +154,7 @@ const getTimeStamp = (seconds) => {
   return `${hours}:${paddedMinutes}:${paddedSeconds}`
 }
 
-const startCountdown = (task) => {
+const startCountdown = (task: Task) => {
   if (isInPast(task.timestamp) || isTimerRunning.value || task.value !== null) return
   isTimerRunning.value = true
   task.timerInterval = setInterval(() => {
@@ -168,7 +169,7 @@ const startCountdown = (task) => {
   }, 1000)
 }
 
-const pauseCountdown = (task) => {
+const pauseCountdown = (task: Task) => {
   if (isInPast(task.timestamp) || !isTimerRunning.value) return
   isTimerRunning.value = false
   clearInterval(task.timerInterval)

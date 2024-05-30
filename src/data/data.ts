@@ -1,4 +1,5 @@
-export const weekData: any[] = []
+import type { DayData } from '@/types/types'
+export const weekData: DayData[] = [];
 
 const generateWeekData = (weekOffset: number): void => {
   const currentDate = new Date()
