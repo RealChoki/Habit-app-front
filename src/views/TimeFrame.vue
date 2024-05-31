@@ -30,19 +30,9 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCalendarCheck, faCalendarDays } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import BackNextButton from '../components/BackNextButton.vue'
+import BackNextButton from '@/components/BackNextButton.vue'
 import CommonInput from '@/common/CommonInput.vue'
-
-import { defineComponent } from 'vue';
-
 library.add(faCalendarCheck, faCalendarDays)
-
-defineComponent({
-  components: {
-    FontAwesomeIcon,
-    BackNextButton
-  }
-})
 </script>
 
 <style scoped>

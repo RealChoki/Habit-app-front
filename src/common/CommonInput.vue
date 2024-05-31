@@ -1,7 +1,7 @@
 <template>
   <div class="form-group">
     <label class="text-white" :for="id">{{ label }}</label>
-    <input type="text" class="form-control" :id="id" required/>
+    <input type="text" class="form-control" :id="id" required />
   </div>
 </template>
 
@@ -11,7 +11,7 @@ import { defineProps } from 'vue'
 // Define props
 const props = defineProps({
   id: String,
-  label: String,
+  label: String
 })
 </script>
 

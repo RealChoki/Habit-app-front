@@ -47,7 +47,7 @@ import type { PropType } from 'vue'
 const props = defineProps({
   showModal: Boolean,
   task: {
-    type: Object as () => Task,
+    type: Object as PropType<Task>,
     required: true
   },
   closeModal: {
@@ -70,8 +70,8 @@ const formatDate = (timestamp: Date | null): string => {
   return `${day}/${month}/${year}`
 }
 
-const getTimeStamp = (seconds: number | undefined) => {
-  if (seconds == undefined) return ''
+const getTimeStamp = (seconds: number | undefined): string => {
+  if (seconds === undefined) return ''
   const hours = Math.floor(seconds / 3600)
   const minutes = Math.floor((seconds % 3600) / 60)
   const paddedMinutes = minutes.toString().padStart(2, '0')
@@ -80,9 +80,9 @@ const getTimeStamp = (seconds: number | undefined) => {
 }
 
 // Method to restart the timer
-const restartTimer = (task: Task) => {
+const restartTimer = (task: Task): void => {
   // Reset the timer to its initial value
-  task.timer = task.default 
+  task.timer = task.default
   task.value = null
 }
 </script>

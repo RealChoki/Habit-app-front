@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import CommonInput from '@/common/CommonInput.vue'
 import DescriptionField from '@/common/CommonDescription.vue'
-import BackNextButton from '../components/BackNextButton.vue'
+import BackNextButton from '@/components/BackNextButton.vue'
 </script>
 
 <style scoped>

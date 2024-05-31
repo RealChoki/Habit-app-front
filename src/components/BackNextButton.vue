@@ -1,7 +1,21 @@
+
+<template>
+  <div class="back-next" :class="{ 'no-next': !showNext }">
+    <a class="back text-decoration-none fw-bold fs-6" @click.prevent="goBack">BACK</a>
+    <div class="d-flex justify-content-center align-items-center gap-1">
+      <div class="circle" :class="{ filled: filledCircle >= 1 }"></div>
+      <div class="circle" :class="{ filled: filledCircle >= 2 }"></div>
+      <div class="circle" :class="{ filled: filledCircle >= 3 }"></div>
+      <div class="circle" :class="{ filled: filledCircle >= 4 }"></div>
+    </div>
+    <RouterLink v-if="showNext" class="next back text-decoration-none fw-bold fs-6" :to="nextRoute"
+      >NEXT</RouterLink
+    >
+  </div>
+</template>
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-import { defineProps } from 'vue'
-import { computed } from 'vue'
+import { useRouter, Router } from 'vue-router'
+import { defineProps, ComputedRef, computed } from 'vue'
 
 defineProps({
   showNext: {
@@ -14,9 +28,9 @@ defineProps({
   }
 })
 
-const router = useRouter()
+const router: Router = useRouter()
 
-const nextRoute = computed(() => {
+const nextRoute: ComputedRef<string> = computed(() => {
   switch (router.currentRoute.value.name) {
     case 'YesNoView':
     case 'TimerView':
@@ -31,60 +45,48 @@ const nextRoute = computed(() => {
   }
 })
 
-const goBack = () => {
+const goBack = (): void => {
   router.back()
 }
 </script>
 
-<template>
-    <div class="back-next" :class="{ 'no-next': !showNext }">
-        <a class="back text-decoration-none fw-bold fs-6" @click.prevent="goBack">BACK</a>
-        <div class="d-flex justify-content-center align-items-center gap-1">
-            <div class="circle" :class="{ 'filled': filledCircle >= 1 }"></div>
-            <div class="circle" :class="{ 'filled': filledCircle >= 2 }"></div>
-            <div class="circle" :class="{ 'filled': filledCircle >= 3 }"></div>
-            <div class="circle" :class="{ 'filled': filledCircle >= 4 }"></div>
-        </div>
-        <RouterLink v-if="showNext" class="next back text-decoration-none fw-bold fs-6" :to="nextRoute">NEXT</RouterLink>
-    </div>
-</template>
 
 <style scoped>
-    .back {
-        color: #5B5B5B;
-        cursor: pointer;
-    }
+.back {
+  color: #5b5b5b;
+  cursor: pointer;
+}
 
-    .next {
-        color: #FEFFF7;
-        cursor: pointer;
-    }
+.next {
+  color: #fefff7;
+  cursor: pointer;
+}
 
-    .back-next {
-        position: absolute;
-        bottom: 50px;
-        left: 0;
-        right: 0;
-        display: flex;
-        gap: 67px;
-        justify-content: center;
-    }
+.back-next {
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 67px;
+  justify-content: center;
+}
 
-    .circle {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background-color: #131213;
-        border: 1px solid #5B5B5B; /* change to the color you want */
-    }
+.circle {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #131213;
+  border: 1px solid #5b5b5b; /* change to the color you want */
+}
 
-    .circle.filled {
-        background-color: #5B5B5B; /* change to the color you want */
-    }
+.circle.filled {
+  background-color: #5b5b5b; /* change to the color you want */
+}
 
-    .back-next.no-next {
-        justify-content: end;
-        width: 50vw;
-        margin-left: 1.3em;
-    }
+.back-next.no-next {
+  justify-content: end;
+  width: 50vw;
+  margin-left: 1.3em;
+}
 </style>

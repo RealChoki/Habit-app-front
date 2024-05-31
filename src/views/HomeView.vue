@@ -17,7 +17,7 @@
       :showModal="showModal"
       :closeModal="closeModal"
       :timestamp="timestamp"
-      :task="selectedTask"
+      :task="selectedTask || {}"
     />
     <div
       class="position-absolute plus-div d-flex justify-content-center align-items-center cursor-pointer"
@@ -48,43 +48,44 @@ import HeaderNavbar from '@/components/HeaderNavbar.vue'
 import TaskElement from '@/components/TaskElement.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import { faMinus } from '@fortawesome/free-solid-svg-icons'
-import type { Task } from '@/types/types.d.ts'
+import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
+import type { Task, DayData } from '@/types/types'
 import { useRouter } from 'vue-router'
-
-library.add(faMinus)
-library.add(faPlus)
-
 import { weekData } from '@/data/data.js'
+
+library.add(faMinus, faPlus)
 
 const filteredTasks = ref<Task[]>([])
 const router = useRouter()
-const showModal = ref(false)
+const showModal = ref<boolean>(false)
 const selectedTask = ref<Task | null>(null)
 const timestamp = ref<Date | null>(null)
 
-const openTaskModal = (task: Task) => {
+const openTaskModal = (task: Task): void => {
   selectedTask.value = task
   showModal.value = true
 }
 
-const closeModal = () => {
+const closeModal = (): void => {
   showModal.value = false
 }
 
-const navigateToEvaluateView = () => {
+const navigateToEvaluateView = (): void => {
   router.push({ name: 'EvaluateView' })
 }
 
-const navigateToDeleteHabitsView = () => {
+const navigateToDeleteHabitsView = (): void => {
   router.push({ name: 'DeleteHabitsView' })
 }
 
-const updateFilteredTasks = () => {
+const updateFilteredTasks = (): void => {
   const urlDate = router.currentRoute.value.params.date
-  const filteredData = weekData.find((item) => {
-    return item.metadata && item.metadata.timestamp && item.metadata.timestamp.toISOString().split('T')[0] === urlDate
+  const filteredData = weekData.find((item: DayData) => {
+    return (
+      item.metadata &&
+      item.metadata.timestamp &&
+      item.metadata.timestamp.toISOString().split('T')[0] === urlDate
+    )
   })
 
   if (filteredData) {

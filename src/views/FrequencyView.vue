@@ -33,7 +33,12 @@
       </div>
 
       <div class="mb-3">
-        <input type="radio" id="specific-days-month" value="specificDaysMonth" v-model="frequency" />
+        <input
+          type="radio"
+          id="specific-days-month"
+          value="specificDaysMonth"
+          v-model="frequency"
+        />
         <label class="d-flex align-items-center" for="specific-days-month"
           >Specific days of the month</label
         >
@@ -53,10 +58,16 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import BackNextButton from '../components/BackNextButton.vue'
+import BackNextButton from '@/components/BackNextButton.vue'
 
-const frequency = ref(null)
-const daysOfWeek = [
+// ! not clean?
+interface DayOption {
+  label: string
+  value: string
+}
+
+const frequency = ref<string | null>(null)
+const daysOfWeek: DayOption[] = [
   { label: 'Monday', value: 'monday' },
   { label: 'Tuesday', value: 'tuesday' },
   { label: 'Wednesday', value: 'wednesday' },
@@ -65,12 +76,11 @@ const daysOfWeek = [
   { label: 'Saturday', value: 'saturday' },
   { label: 'Sunday', value: 'sunday' }
 ]
-const selectedDaysOfWeek = ref([])
-const daysOfMonth = Array.from({ length: 31 }, (_, i) => i + 1)
-const selectedDaysOfMonth = ref([])
-
-console.log(frequency)
+const selectedDaysOfWeek = ref<string[]>([])
+const daysOfMonth: number[] = Array.from({ length: 31 }, (_, i) => i + 1)
+const selectedDaysOfMonth = ref<number[]>([])
 </script>
+
 
 <style scoped>
 .habit-goal-form {

@@ -2,8 +2,12 @@
   <div>
     <div class="d-flex justify-content-between">
       <div></div>
-      <div v-if="hoveredDay" class="month-paragraph m-0 me-4 mb-1 p-0 fst-italic text-white">{{ getFormattedDate(hoveredDay) }}</div>
-      <p v-else class="month-paragraph m-0 me-4 mb-1 p-0 fst-italic text-white">{{ currentMonth }}</p>
+      <div v-if="hoveredDay" class="month-paragraph m-0 me-4 mb-1 p-0 fst-italic text-white">
+        {{ getFormattedDate(hoveredDay) }}
+      </div>
+      <p v-else class="month-paragraph m-0 me-4 mb-1 p-0 fst-italic text-white">
+        {{ currentMonth }}
+      </p>
     </div>
     <div class="calender d-flex align-items-center mb-2">
       <!-- Arrow icon to the left -->
@@ -23,7 +27,7 @@
         @mouseleave="hideHoverDiv(day)"
       >
         <p class="test">{{ day.day }}</p>
-        <div class="date rounded-top-2 rounded-bottom-4 w-100 ">
+        <div class="date rounded-top-2 rounded-bottom-4 w-100">
           <p class="my-1 fw-bold">
             <span class="d-flex justify-content-center align-items-center">{{ day.date }}</span>
           </p>
@@ -47,12 +51,13 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { selectedDate } from '@/stores/selectedDate'
+import type { DayData, DateInfo } from '@/types/types'
 
 // Add the arrow icons to the library
 library.add(faChevronLeft, faChevronRight)
 
-const days = ref([])
-const weekOffset = ref(0)
+const days = ref<DayData[]>([])
+const weekOffset = ref<number>(0)
 const today = new Date()
 today.setDate(today.getDate()) // temporary
 
@@ -69,31 +74,31 @@ const currentMonth = computed(() => {
   return getMonthName(monday.getMonth())
 })
 
-const hoveredDay = ref('')
+const hoveredDay = ref<string>('')
 
-const isActiveDay = (day) => {
+const isActiveDay = (date: DateInfo): boolean => {
   const currentDate = new Date()
-  const isToday = day.date === currentDate.getDate() && day.month === currentDate.getMonth() + 1
+  const isToday = date.date === currentDate.getDate() && date.month === currentDate.getMonth() + 1
   const isSelected =
     selectedDate.value !== null &&
-    day.date === selectedDate.value.date &&
-    day.month === selectedDate.value.month &&
-    day.year === selectedDate.value.year
+    date.date === selectedDate.value.date &&
+    date.month === selectedDate.value.month &&
+    date.year === selectedDate.value.year
   return isSelected || (!selectedDate.value && isToday)
 }
 
-const selectDate = (date) => {
+const selectDate = (date: DateInfo): void => {
   selectedDate.value = date
   updateRoute(date)
 }
 
-const updateRoute = (date) => {
+const updateRoute = (date: DateInfo): void => {
   const formattedMonth = date.month < 10 ? `0${date.month}` : date.month
   const formattedDate = `${date.year}-${formattedMonth}-${date.date}`
   router.push({ name: 'home', params: { date: formattedDate } })
 }
 
-const calculateDates = (offset) => {
+const calculateDates = (offset: number): void => {
   const monday = new Date(today)
   const currentDay = today.getDay()
 
@@ -113,12 +118,12 @@ const calculateDates = (offset) => {
   }
 }
 
-const getDayName = (dayIndex) => {
+const getDayName = (dayIndex: number): string => {
   const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   return daysOfWeek[dayIndex]
 }
 
-const getMonthName = (monthIndex) => {
+const getMonthName = (monthIndex: number): string => {
   const monthsOfYear = [
     'January',
     'February',
@@ -136,30 +141,30 @@ const getMonthName = (monthIndex) => {
   return monthsOfYear[monthIndex]
 }
 
-const getFormattedDate = (day) => {
-   const formattedDay = day.date < 10 ? `0${day.date}` : day.date
-   const formattedMonth = day.month < 10 ? `0${day.month}` : day.month
-   return `${formattedDay}/${formattedMonth}/${day.year}`
- }
+const getFormattedDate = (day: DateInfo): string => {
+  const formattedDay = day.date < 10 ? `0${day.date}` : day.date
+  const formattedMonth = day.month < 10 ? `0${day.month}` : day.month
+  return `${formattedDay}/${formattedMonth}/${day.year}`
+}
 
-const previousWeek = () => {
+const previousWeek = (): void => {
   weekOffset.value--
   days.value = []
   calculateDates(weekOffset.value)
 }
 
-const nextWeek = () => {
+const nextWeek = (): void => {
   weekOffset.value++
   days.value = []
   calculateDates(weekOffset.value)
 }
 
-const showHoverDiv = (day) => {
-   hoveredDay.value = day // Set the hovered day
- }
- const hideHoverDiv = () => {
-   hoveredDay.value = '' // Clear the hovered day
- }
+const showHoverDiv = (day: string): void => {
+  hoveredDay.value = day // Set the hovered day
+}
+const hideHoverDiv = (): void => {
+  hoveredDay.value = '' // Clear the hovered day
+}
 
 // Initial call to calculate dates
 calculateDates(weekOffset.value)
@@ -170,7 +175,7 @@ calculateDates(weekOffset.value)
   gap: 4px;
 }
 
-.test{
+.test {
   margin: 0;
   margin-top: 3px;
 }
