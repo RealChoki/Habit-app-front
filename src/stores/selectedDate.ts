@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import type { DateType } from '@/types'
+import type { DateInfo } from '@/types/types'
 
-export const selectedDate = ref<DateType | null>(null)
+export const selectedDate = ref<DateInfo | null>(null)
 

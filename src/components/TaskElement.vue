@@ -98,7 +98,7 @@ import {
   faPause,
   faPlusMinus
 } from '@fortawesome/free-solid-svg-icons'
-import type { Task } from '@/types/types'
+import type { Task } from '../types/types'
 import { defineProps, ref, toRefs } from 'vue'
 import type { PropType } from 'vue'
 

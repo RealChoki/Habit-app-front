@@ -42,16 +42,16 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
-import HomeCalender from '@/components/HomeCalender.vue'
-import TaskModal from '@/components/TaskModal.vue'
-import HeaderNavbar from '@/components/HeaderNavbar.vue'
-import TaskElement from '@/components/TaskElement.vue'
+import HomeCalender from '../components/HomeCalender.vue'
+import TaskModal from '../components/TaskModal.vue'
+import HeaderNavbar from '../components/HeaderNavbar.vue'
+import TaskElement from '../components/TaskElement.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
-import type { Task, DayData } from '@/types/types'
+import type { Task, DayData } from '../types/types'
 import { useRouter } from 'vue-router'
-import { weekData } from '@/data/data.js'
+import { weekData } from '../data/data.js'
 
 library.add(faMinus, faPlus)
 

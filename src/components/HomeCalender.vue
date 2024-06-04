@@ -24,7 +24,7 @@
         :class="{ 'border border-white': isActiveDay(day) }"
         @click="selectDate(day)"
         @mouseover="showHoverDiv(day)"
-        @mouseleave="hideHoverDiv(day)"
+        @mouseleave="hideHoverDiv()"
       >
         <p class="test">{{ day.day }}</p>
         <div class="date rounded-top-2 rounded-bottom-4 w-100">
@@ -50,13 +50,13 @@ import { useRouter } from 'vue-router'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
-import { selectedDate } from '@/stores/selectedDate'
-import type { DayData, DateInfo } from '@/types/types'
+import { selectedDate } from '../stores/selectedDate'
+import type { DateInfo } from '../types/types'
 
 // Add the arrow icons to the library
 library.add(faChevronLeft, faChevronRight)
 
-const days = ref<DayData[]>([])
+const days = ref<DateInfo[]>([])
 const weekOffset = ref<number>(0)
 const today = new Date()
 today.setDate(today.getDate()) // temporary
@@ -141,10 +141,12 @@ const getMonthName = (monthIndex: number): string => {
   return monthsOfYear[monthIndex]
 }
 
-const getFormattedDate = (day: DateInfo): string => {
-  const formattedDay = day.date < 10 ? `0${day.date}` : day.date
-  const formattedMonth = day.month < 10 ? `0${day.month}` : day.month
-  return `${formattedDay}/${formattedMonth}/${day.year}`
+const getFormattedDate = (dateString: string): string => {
+  const [year, month, day] = dateString.split('-').map(Number)
+  const date = new Date(year, month - 1, day)
+  const formattedDay = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()
+  const formattedMonth = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1
+  return `${formattedDay}/${formattedMonth}/${date.getFullYear()}`
 }
 
 const previousWeek = (): void => {
@@ -159,11 +161,13 @@ const nextWeek = (): void => {
   calculateDates(weekOffset.value)
 }
 
-const showHoverDiv = (day: string): void => {
-  hoveredDay.value = day // Set the hovered day
+const showHoverDiv = (day: DateInfo): void => {
+  const dateString = `${day.year}-${day.month}-${day.date}`
+  hoveredDay.value = dateString
 }
+
 const hideHoverDiv = (): void => {
-  hoveredDay.value = '' // Clear the hovered day
+  hoveredDay.value = ''
 }
 
 // Initial call to calculate dates
