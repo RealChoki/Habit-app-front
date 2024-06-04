@@ -14,8 +14,8 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useRouter, Router } from 'vue-router'
-import { defineProps, ComputedRef, computed } from 'vue'
+import { useRouter, type Router } from 'vue-router'
+import { defineProps, type ComputedRef, computed } from 'vue'
 
 defineProps({
   showNext: {
