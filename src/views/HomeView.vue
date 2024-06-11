@@ -14,11 +14,13 @@
       </div>
     </div>
     <TaskModal
+      v-if="selectedTask !== null"
       :showModal="showModal"
       :closeModal="closeModal"
       :timestamp="timestamp"
-      :task="selectedTask || {}"
+      :task="selectedTask"
     />
+
     <div
       class="position-absolute plus-div d-flex justify-content-center align-items-center cursor-pointer"
       @click="navigateToEvaluateView"

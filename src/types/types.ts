@@ -1,3 +1,5 @@
+type TimerInterval = number | ReturnType<typeof setInterval>;
+
 export interface Task {
   id: number
   type: 'yesno' | 'numeric' | 'timer'
@@ -12,6 +14,7 @@ export interface Task {
   // For timer tasks
   timer?: number
   default?: number
+  timerInterval?: TimerInterval
 }
 
 export interface DayData {

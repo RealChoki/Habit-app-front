@@ -78,7 +78,7 @@
             'text-danger': isTimerRunning === false || task?.value === false
           }"
         >
-          {{ getTimeStamp(task.timer) }}
+          {{ getTimeStamp(task.timer ?? 0) }}
         </p>
       </div>
     </div>
@@ -111,32 +111,37 @@ const props = defineProps({
     type: Object as () => Task,
     required: true
   },
-  openTaskModal: { 
-    type: Function as PropType<((task: Task) => void)>,
+  openTaskModal: {
+    type: Function as PropType<(task: Task) => void>,
     required: true
+  },
+  timestamp: {
+    type: Date as PropType<Date | null>,
+    default: null
   }
 })
-
+// Destructure props to use them directly
+const { openTaskModal, timestamp } = props
 
 // Make task UI reactive
 const { task } = toRefs(props)
 
 // Define a variable to track timer running state
-const isTimerRunning = ref(null)
+const isTimerRunning = ref<null | boolean>(null)
 const beginningOfDay = new Date()
 beginningOfDay.setHours(0, 0, 0, 0)
 
-const isInPast = (timestamp: number) => timestamp <= beginningOfDay.getTime()
+const isInPast = (timestamp: Date) => timestamp.getTime() <= beginningOfDay.getTime()
 
 const toggleTaskValue = (task: Task) => {
-  if (isInPast(task.timestamp)) return
+  if (timestamp === null || isInPast(timestamp)) return
   task.value = task.value ? null : true
 }
 
 const updateNumericTaskValue = (task: Task) => {
   if (
-    (task.subtype === 'increment' && task.count >= task.goal) ||
-    (task.subtype !== 'increment' && task.count <= task.goal)
+    (task.subtype === 'increment' && (task.count ?? 0) >= (task.goal ?? 0)) ||
+    (task.subtype !== 'increment' && (task.count ?? 0) <= (task.goal ?? 0))
   ) {
     task.value = true
   } else {
@@ -145,11 +150,19 @@ const updateNumericTaskValue = (task: Task) => {
 }
 
 const adjustCount = (task: Task, increment: boolean) => {
-  if (isInPast(task.timestamp)) return
+  if (timestamp === null || isInPast(timestamp)) return
+  if (task.count !== undefined) {
+    task.count = (task.count ?? 0) + 1
+  }
+
   if (increment) {
-    task.count += 1
-  } else if (task.count > 0) {
-    task.count -= 1
+    if (task.count !== undefined) {
+      task.count = (task.count ?? 0) + 1
+    }
+  } else {
+    if (task.count !== undefined && task.count > 0) {
+      task.count -= 1
+    }
   }
   updateNumericTaskValue(task)
 }
@@ -163,22 +176,24 @@ const getTimeStamp = (seconds: number) => {
 }
 
 const startCountdown = (task: Task) => {
-  if (isInPast(task.timestamp) || isTimerRunning.value || task.value !== null) return
-  isTimerRunning.value = true
+  if (timestamp === null || isInPast(timestamp) || isTimerRunning.value || task.value !== null)
+    return;
+  isTimerRunning.value = true;
   task.timerInterval = setInterval(() => {
-    if (task.timer <= 1) {
-      task.value = true
-      isTimerRunning.value = null
-      task.timer = 0
-      clearInterval(task.timerInterval)
+    const timer = task.timer ?? 0;
+    if (timer <= 1) {
+      task.value = true;
+      isTimerRunning.value = null;
+      task.timer = 0;
+      clearInterval(task.timerInterval);
     } else {
-      task.timer--
+      task.timer = timer - 1;
     }
-  }, 1000)
+  }, 1000);
 }
 
 const pauseCountdown = (task: Task) => {
-  if (isInPast(task.timestamp) || !isTimerRunning.value) return
+  if (timestamp === null ||isInPast(timestamp) || !isTimerRunning.value) return
   isTimerRunning.value = false
   clearInterval(task.timerInterval)
 }

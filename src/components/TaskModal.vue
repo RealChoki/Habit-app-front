@@ -46,12 +46,12 @@ import type { PropType } from 'vue'
 
 const props = defineProps({
   showModal: Boolean,
-  task: {
-    type: Object as PropType<Task>,
-    required: true
-  },
   closeModal: {
     type: Function as PropType<() => void>,
+    required: true
+  },
+  task: {
+    type: Object as PropType<Task>,
     required: true
   },
   timestamp: {
