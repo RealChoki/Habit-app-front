@@ -54,8 +54,18 @@ import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 import type { Task, DayData } from '../types/types'
 import { useRouter } from 'vue-router'
 import { weekData } from '../data/data.js'
+import { getHabits, addHabit } from '../api/habits'
 
 library.add(faMinus, faPlus)
+
+onMounted(async () => {
+  try {
+    const habits = await getHabits()
+    console.log('Habits:', habits)
+  } catch (error) {
+    console.error('Error fetching habits:', error)
+  }
+})
 
 const filteredTasks = ref<Task[]>([])
 const router = useRouter()
