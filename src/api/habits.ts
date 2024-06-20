@@ -3,7 +3,9 @@ import apiClient from './axios';
 // Fetch all habits
 export const getHabits = async () => {
   try {
+    console.log('Fetching habits...');
     const response = await apiClient.get('/habits');
+    console.log('Habits fetched:', response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching habits:', error);
