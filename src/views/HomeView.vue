@@ -1,4 +1,5 @@
 <template>
+<div>
   <HeaderNavbar />
   <div class="container-fluid d-flex justify-content-center">
     <div>
@@ -40,6 +41,7 @@
       />
     </div>
   </div>
+</div>
 </template>
 
 <script setup lang="ts">
@@ -58,10 +60,14 @@ import { getHabits, addHabit } from '../api/habits'
 
 library.add(faMinus, faPlus)
 
+const habitsFetched = ref<DayData>()
+
 onMounted(async () => {
   try {
     const habits = await getHabits()
+    habitsFetched.value = habits
     console.log('Habits:', habits)
+    console.log('HabitsFetched:', habitsFetched.value)
   } catch (error) {
     console.error('Error fetching habits:', error)
   }
