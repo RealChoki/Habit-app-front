@@ -31,8 +31,8 @@
 
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue'
-import { selectedDate } from '@/stores/selectedDate'
-import type { DateInfo } from '@/types/types'
+import { selectedDate } from '../services/selectedDate'
+import type { DateInfo } from '../types/types'
 
 const isOpen = ref<boolean>(false)
 

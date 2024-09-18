@@ -50,7 +50,8 @@ import { useRouter } from 'vue-router'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
-import { selectedDate } from '../stores/selectedDate'
+import { selectedDate } from '../services/selectedDate'
+import { setWeekRange } from '../services/weekService'
 import type { DateInfo } from '../types/types'
 
 // Add the arrow icons to the library
@@ -116,6 +117,13 @@ const calculateDates = (offset: number): void => {
       year: date.getFullYear()
     })
   }
+
+  // Update week range in service
+  const startDate = monday.toISOString().split('T')[0]
+  const endDate = new Date(monday)
+  endDate.setDate(monday.getDate() + 6)
+  const endDateStr = endDate.toISOString().split('T')[0]
+  setWeekRange(startDate, endDateStr)
 }
 
 const getDayName = (dayIndex: number): string => {
