@@ -151,9 +151,6 @@ const updateNumericTaskValue = (task: Task) => {
 
 const adjustCount = (task: Task, increment: boolean) => {
   if (timestamp === null || isInPast(timestamp)) return
-  if (task.count !== undefined) {
-    task.count = (task.count ?? 0) + 1
-  }
 
   if (increment) {
     if (task.count !== undefined) {
@@ -177,23 +174,23 @@ const getTimeStamp = (seconds: number) => {
 
 const startCountdown = (task: Task) => {
   if (timestamp === null || isInPast(timestamp) || isTimerRunning.value || task.value !== null)
-    return;
-  isTimerRunning.value = true;
+    return
+  isTimerRunning.value = true
   task.timerInterval = setInterval(() => {
-    const timer = task.timer ?? 0;
+    const timer = task.timer ?? 0
     if (timer <= 1) {
-      task.value = true;
-      isTimerRunning.value = null;
-      task.timer = 0;
-      clearInterval(task.timerInterval);
+      task.value = true
+      isTimerRunning.value = null
+      task.timer = 0
+      clearInterval(task.timerInterval)
     } else {
-      task.timer = timer - 1;
+      task.timer = timer - 1
     }
-  }, 1000);
+  }, 1000)
 }
 
 const pauseCountdown = (task: Task) => {
-  if (timestamp === null ||isInPast(timestamp) || !isTimerRunning.value) return
+  if (timestamp === null || isInPast(timestamp) || !isTimerRunning.value) return
   isTimerRunning.value = false
   clearInterval(task.timerInterval)
 }
