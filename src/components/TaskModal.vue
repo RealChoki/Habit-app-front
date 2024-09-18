@@ -18,8 +18,8 @@
           <p v-if="task.type === 'numeric'">Count: {{ task.count }}</p>
           <p v-if="task.type === 'numeric'">Goal: {{ task.goal }}</p>
           <p v-if="task.type === 'timer'">Timer: {{ getTimeStamp(task.timer) }}</p>
-          <p v-if="task.value">Status: Done</p>
-          <p v-if="!task.value">Status: Not done</p>
+          <p v-if="task.completed">Status: Done</p>
+          <p v-if="!task.completed">Status: Not done</p>
           <button
             v-if="task.type === 'timer'"
             type="button"
@@ -83,7 +83,7 @@ const getTimeStamp = (seconds: number | undefined): string => {
 const restartTimer = (task: Task): void => {
   // Reset the timer to its initial value
   task.timer = task.default
-  task.value = null
+  task.completed = null
 }
 </script>
 

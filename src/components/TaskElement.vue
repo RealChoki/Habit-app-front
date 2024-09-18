@@ -43,14 +43,14 @@
         <font-awesome-icon
           class="cursor-pointer rounded-circle btn-click no-select"
           :icon="['fas', 'plus']"
-          :class="{ 'text-success': task.value, 'text-danger': task.value === false }"
+          :class="{ 'text-success': task.completed, 'text-danger': task.completed === false }"
           @click.stop="adjustCount(task, true)"
         />
         <p
           class="timer position-absolute translate-middle p-0 m-0"
           :class="{
-            'text-success': task.value,
-            'text-danger': task.value === false
+            'text-success': task.completed,
+            'text-danger': task.completed === false
           }"
         >
           Count: {{ task.count }}
@@ -135,7 +135,7 @@ const isInPast = (timestamp: Date) => timestamp.getTime() <= beginningOfDay.getT
 
 const toggleTaskValue = (task: Task) => {
   if (timestamp === null || isInPast(timestamp)) return
-  task.value = task.value ? null : true
+  task.completed = task.completed ? null : true
 }
 
 const updateNumericTaskValue = (task: Task) => {
@@ -143,9 +143,9 @@ const updateNumericTaskValue = (task: Task) => {
     (task.subtype === 'increment' && (task.count ?? 0) >= (task.goal ?? 0)) ||
     (task.subtype !== 'increment' && (task.count ?? 0) <= (task.goal ?? 0))
   ) {
-    task.value = true
+    task.completed = true
   } else {
-    task.value = null
+    task.completed = null
   }
 }
 
@@ -173,13 +173,13 @@ const getTimeStamp = (seconds: number) => {
 }
 
 const startCountdown = (task: Task) => {
-  if (timestamp === null || isInPast(timestamp) || isTimerRunning.value || task.value !== null)
+  if (timestamp === null || isInPast(timestamp) || isTimerRunning.value || task.completed !== null)
     return
   isTimerRunning.value = true
   task.timerInterval = setInterval(() => {
     const timer = task.timer ?? 0
     if (timer <= 1) {
-      task.value = true
+      task.completed = true
       isTimerRunning.value = null
       task.timer = 0
       clearInterval(task.timerInterval)

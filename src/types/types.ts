@@ -6,7 +6,7 @@ export interface Task {
   frequency: 'daily' | 'weekly' | 'monthly'
   title: string
   description: string
-  value: boolean | null
+  completed: boolean | null
   // For numeric tasks
   count?: number
   goal?: number
@@ -21,6 +21,7 @@ export interface DayData {
   metadata: {
     timestamp: Date
   }
+  completed: boolean
   tasks: { [taskId: string]: Task }
 }
 

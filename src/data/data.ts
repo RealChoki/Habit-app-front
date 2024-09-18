@@ -20,7 +20,7 @@ const generateWeekData = (weekOffset: number): void => {
         frequency: 'daily',
         title: 'Go to gym',
         description: 'Go to the gym and workout for at least 1 hour',
-        value: null
+        completed: null
       },
       2: {
         id: 2,
@@ -31,7 +31,7 @@ const generateWeekData = (weekOffset: number): void => {
         subtype: 'increment',
         count: 0,
         goal: 5,
-        value: null
+        completed: null
       },
       3: {
         id: 3,
@@ -41,7 +41,7 @@ const generateWeekData = (weekOffset: number): void => {
         description: 'Play the piano for at least 1 hour today',
         default: 3,
         timer: 3,
-        value: null
+        completed: null
       }
     }
 
@@ -58,9 +58,11 @@ const generateWeekData = (weekOffset: number): void => {
     // Add the metadata object and tasks for the day to the weekData array
     weekData.push({
       metadata: metadata,
-      tasks: tasksForDay
+      tasks: tasksForDay,
+      completed: false
     })
   }
+  console.log(weekData)
 }
 
 // Generate week data for the current week (offset 0)
