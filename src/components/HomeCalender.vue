@@ -45,13 +45,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { selectedDate } from '../services/selectedDate'
-import { setWeekRange } from '../services/weekService'
+import { setWeekOffset, getWeekOffset, setWeekRange } from '../services/weekService'
 import type { DateInfo } from '../types/types'
 
 // Add the arrow icons to the library
@@ -157,15 +157,19 @@ const getFormattedDate = (dateString: string): string => {
   return `${formattedDay}/${formattedMonth}/${date.getFullYear()}`
 }
 
-const previousWeek = (): void => {
-  weekOffset.value--
+const previousWeek = () => {
+  const currentOffset = getWeekOffset()
   days.value = []
+  setWeekOffset(currentOffset - 1)
+  weekOffset.value--
   calculateDates(weekOffset.value)
 }
 
-const nextWeek = (): void => {
-  weekOffset.value++
+const nextWeek = () => {
+  const currentOffset = getWeekOffset()
   days.value = []
+  setWeekOffset(currentOffset + 1)
+  weekOffset.value++
   calculateDates(weekOffset.value)
 }
 

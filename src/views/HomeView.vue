@@ -63,17 +63,23 @@ library.add(faMinus, faPlus)
 
 const habitsFetched = ref<DayData>()
 
-onMounted(async () => {
-  const { startDate, endDate } = getWeekRange()
-  try {
-    const habits = await getWeekData(startDate, endDate)
-    habitsFetched.value = habits
-    console.log('Days:', habits)
-    console.log('Days fetched:', habitsFetched.value)
-  } catch (error) {
-    console.error('Error fetching week data:', error)
-  }
-})
+watch(
+  getWeekRange,
+  async (newRange) => {
+    const { startDate, endDate } = newRange
+    if (startDate && endDate) {
+      try {
+        const habits = await getWeekData(startDate, endDate)
+        habitsFetched.value = habits
+        console.log('Days:', habits)
+        console.log('Days fetched:', habitsFetched.value)
+      } catch (error) {
+        console.error('Error fetching week data:', error)
+      }
+    }
+  },
+  { immediate: true }
+)
 
 const filteredTasks = ref<Task[]>([])
 const router = useRouter()
