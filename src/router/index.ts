@@ -17,12 +17,12 @@ const router = createRouter({
         const today = new Date()
         const month = String(today.getMonth() + 1).padStart(2, '0')
         const formattedDate = `${today.getFullYear()}-${month}-${today.getDate()}`
-        return { name: 'home', params: { date: formattedDate } }
+        return { name: 'HomeView', params: { date: formattedDate } }
       }
     },
     {
-      path: '/home/:date',
-      name: 'home',
+      path: '/homeview/:date',
+      name: 'HomeView',
       component: HomeView
     },
     {
@@ -31,64 +31,44 @@ const router = createRouter({
         const today = new Date()
         const month = String(today.getMonth() + 1).padStart(2, '0')
         const formattedDate = `${today.getFullYear()}-${month}-${today.getDate()}`
-        return { name: 'home', params: { date: formattedDate } }
+        return { name: 'HomeView', params: { date: formattedDate } }
       }
     },
     {
       path: '/evaluateview',
       name: 'EvaluateView',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: EvaluateView
     },
     {
       path: '/yesnoview',
       name: 'YesNoView',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: YesNoView
     },
     {
       path: '/numericvalueview',
       name: 'NumericValueView',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: NumericValueView
     },
     {
       path: '/timerview',
       name: 'TimerView',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: TimerView
     },
     {
       path: '/frequencyview',
       name: 'FrequencyView',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: FrequencyView
     },
     {
       path: '/timeframe',
       name: 'TimeFrame',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: TimeFrame
     },
     {
-      path: '/deletehabitsview',
+      path: '/deletehabitsview/:date',
       name: 'DeleteHabitsView',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: DeleteHabitsView
+      component: DeleteHabitsView,
+      props: true // Ensure props are passed
     }
   ]
 })

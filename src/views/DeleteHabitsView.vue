@@ -1,64 +1,59 @@
 <template>
-  <div>
+  <div class="max-width-500">
     <h2 class="text-white font-weight-bold text-center pt-5 mb-3 pb-5 fs-5">
-    Which habits do you want to  <br />
-    delete?
+      Which habits do you want to <br />
+      delete?
     </h2>
     <div class="container-fluid d-flex justify-content-center">
-      <div>
-        <div class="border-bottom border-white">
-          <p class="text-white text-left">1 selected</p>
-          <font-awesome-icon 
-            :icon="['fas', 'trash']" 
-            style="color: #ffffff;" />
-        </div>
-        <div class="max-width-500">
-          <TaskElement
-            v-for="(task, key) in filteredTasks"
-            :key="key"
-            :task="task"
-            :openTaskModal="openTaskModal"
-            :timestamp="timestamp"
-          />
-        </div>
-      </div>
-      <TaskModal
-        v-if="selectedTask !== null"
-        :showModal="showModal"
-        :closeModal="closeModal"
-        :timestamp="timestamp"
-        :task="selectedTask"
-      />
-
-      <div
-        class="position-absolute plus-div d-flex justify-content-center align-items-center cursor-pointer"
-        @click="navigateToEvaluateView"
-      >
-        <font-awesome-icon
-          :icon="['fas', 'plus']"
-          style="color: #5b5b5b; width: 35px; height: 35px"
+      <div class="border-bottom border-white w-100 d-flex justify-content-between align-items-center">
+        <p class="text-white mb-0">{{ selectedTasks.length }} selected</p>
+        <font-awesome-icon 
+          :icon="['fas', 'trash']" 
+          class="mb-1"
+          style="color: #ffffff; width: 23px; height: 23px" 
+          @click="deleteSelectedTasks"
         />
       </div>
+    </div>
+    <div class="container-fluid d-flex justify-content-center">
+      <div>
+        <TaskCheckboxElement
+          v-for="(task, key) in filteredTasks"
+          :key="key"
+          :task="task"
+          :openTaskModal="openTaskModal"
+          :toggleTaskSelection="toggleTaskSelection"
+          :isSelected="selectedTasks.includes(task)"
+        />
+      </div>
+    </div>
+    <div
+      class="position-absolute plus-div d-flex justify-content-center align-items-center cursor-pointer"
+      @click="navigateToHomeView"
+    >
+      <font-awesome-icon
+        :icon="['fas', 'house']"
+        style="color: #5b5b5b; width: 29px; height: 29px"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
-import HomeCalender from '../components/HomeCalender.vue'
-import TaskModal from '../components/TaskModal.vue'
-import HeaderNavbar from '../components/HeaderNavbar.vue'
-import TaskElement from '../components/TaskElement.vue'
+import { ref, onMounted, watch, defineProps } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
+import { faHouse, faTrash } from '@fortawesome/free-solid-svg-icons'
 import type { Task, DayData } from '../types/types'
 import { useRouter } from 'vue-router'
 import { weekData } from '../data/data.js'
 import { getWeekData } from '../api/weekData'
 import { getWeekRange } from '../services/weekService'
+import TaskCheckboxElement from '../components/TaskCheckboxElement.vue'
 
-library.add(faMinus, faPlus)
+library.add(faHouse, faTrash)
+
+const props = defineProps<{ date: string }>()
 
 const habitsFetched = ref<DayData>()
 
@@ -81,6 +76,7 @@ watch(
 )
 
 const filteredTasks = ref<Task[]>([])
+const selectedTasks = ref<Task[]>([])
 const router = useRouter()
 const showModal = ref<boolean>(false)
 const selectedTask = ref<Task | null>(null)
@@ -95,16 +91,17 @@ const closeModal = (): void => {
   showModal.value = false
 }
 
-const navigateToEvaluateView = (): void => {
-  router.push({ name: 'EvaluateView' })
-}
-
-const navigateToDeleteHabitsView = (): void => {
-  router.push({ name: 'DeleteHabitsView' })
+const navigateToHomeView = (): void => {
+  const date = timestamp.value ? timestamp.value.toISOString().split('T')[0] : null
+  if (date) {
+    router.push({ name: 'HomeView', params: { date } })
+  } else {
+    console.error('Date parameter is missing')
+  }
 }
 
 const updateFilteredTasks = (): void => {
-  const urlDate = router.currentRoute.value.params.date
+  const urlDate = props.date
   const filteredData = weekData.find((item: DayData) => {
     return (
       item.metadata &&
@@ -122,6 +119,20 @@ const updateFilteredTasks = (): void => {
   }
 }
 
+const toggleTaskSelection = (task: Task): void => {
+  const index = selectedTasks.value.indexOf(task)
+  if (index === -1) {
+    selectedTasks.value.push(task)
+  } else {
+    selectedTasks.value.splice(index, 1)
+  }
+}
+
+const deleteSelectedTasks = (): void => {
+  filteredTasks.value = filteredTasks.value.filter(task => !selectedTasks.value.includes(task))
+  selectedTasks.value = []
+}
+
 onMounted(() => {
   updateFilteredTasks()
 })
@@ -133,7 +144,7 @@ watch(router.currentRoute, () => {
 
 <style scoped>
 .max-width-500 {
-  max-width: 500px;
+  max-width: 380px;
 }
 
 .plus-div {
