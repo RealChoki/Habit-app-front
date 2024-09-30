@@ -1,4 +1,4 @@
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 
 const weekRange = ref<{ startDate: string | null; endDate: string | null }>({
   startDate: null,
