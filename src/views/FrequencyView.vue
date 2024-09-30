@@ -58,7 +58,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import BackNextButton from '@/components/BackNextButton.vue'
+import BackNextButton from '@/common/BackNextButton.vue'
 
 // ! not clean?
 interface DayOption {

@@ -1,47 +1,47 @@
 <template>
-<div>
-  <HeaderNavbar />
-  <div class="container-fluid d-flex justify-content-center">
-    <div>
-      <HomeCalender />
-      <div class="max-width-500">
-        <TaskElement
-          v-for="(task, key) in filteredTasks"
-          :key="key"
-          :task="task"
-          :openTaskModal="openTaskModal"
-          :timestamp="timestamp"
+  <div>
+    <HeaderNavbar />
+    <div class="container-fluid d-flex justify-content-center">
+      <div>
+        <HomeCalender />
+        <div class="max-width-500">
+          <TaskElement
+            v-for="(task, key) in filteredTasks"
+            :key="key"
+            :task="task"
+            :openTaskModal="openTaskModal"
+            :timestamp="timestamp"
+          />
+        </div>
+      </div>
+      <TaskModal
+        v-if="selectedTask !== null"
+        :showModal="showModal"
+        :closeModal="closeModal"
+        :timestamp="timestamp"
+        :task="selectedTask"
+      />
+
+      <div
+        class="position-absolute plus-div d-flex justify-content-center align-items-center cursor-pointer"
+        @click="navigateToEvaluateView"
+      >
+        <font-awesome-icon
+          :icon="['fas', 'plus']"
+          style="color: #5b5b5b; width: 35px; height: 35px"
+        />
+      </div>
+      <div
+        class="position-absolute minus-div d-flex justify-content-center align-items-center cursor-pointer"
+        @click="navigateToDeleteHabitsView"
+      >
+        <font-awesome-icon
+          :icon="['fas', 'minus']"
+          style="color: #5b5b5b; width: 35px; height: 35px"
         />
       </div>
     </div>
-    <TaskModal
-      v-if="selectedTask !== null"
-      :showModal="showModal"
-      :closeModal="closeModal"
-      :timestamp="timestamp"
-      :task="selectedTask"
-    />
-
-    <div
-      class="position-absolute plus-div d-flex justify-content-center align-items-center cursor-pointer"
-      @click="navigateToEvaluateView"
-    >
-      <font-awesome-icon
-        :icon="['fas', 'plus']"
-        style="color: #5b5b5b; width: 35px; height: 35px"
-      />
-    </div>
-    <div
-      class="position-absolute minus-div d-flex justify-content-center align-items-center cursor-pointer"
-      @click="navigateToDeleteHabitsView"
-    >
-      <font-awesome-icon
-        :icon="['fas', 'minus']"
-        style="color: #5b5b5b; width: 35px; height: 35px"
-      />
-    </div>
   </div>
-</div>
 </template>
 
 <script setup lang="ts">
