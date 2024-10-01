@@ -74,8 +74,8 @@ label {
 
 .rounded-square {
   border-radius: 5px;
-  width: 12px;
-  height: 12px;
+  width: 13px;
+  height: 13px;
   background-color: #232323;
   color: #5b5b5b;
   padding: 10px;

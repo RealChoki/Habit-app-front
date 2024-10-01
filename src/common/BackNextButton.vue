@@ -35,10 +35,10 @@ const nextRoute: ComputedRef<string> = computed(() => {
     case 'YesNoView':
     case 'TimerView':
     case 'NumericValueView':
-      return 'FrequencyView'
+      return 'Frequency'
     case 'FrequencyView':
-      return 'TimeFrame' // replace with the actual name of your DateView route
-    case 'TimeFrame':
+      return 'TimeFrame'
+    case 'TimeFrameView':
       return 'HomeView'
     default:
       return ''

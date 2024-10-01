@@ -1,22 +1,26 @@
 <template>
-  <div class="task-checkbox-element d-flex align-items-center justify-content-between p-2 py-3">
-    <div class="d-flex align-items-center cursor-pointer" @click="openTaskModal(task)">
-      <font-awesome-icon
-        class="tasktype-icon rounded-square"
-        :icon="taskIcon"
-      />
+  <div class="task-checkbox-element d-flex align-items-center justify-content-between p-2">
+    <div class="d-flex align-items-center">
+      <font-awesome-icon class="tasktype-icon rounded-square" :icon="taskIcon" />
       <p class="mb-0 ms-2 text-white">{{ task.title }}</p>
     </div>
-    <input type="checkbox" :checked="isSelected" @change="onCheckboxChange" />
+    <input
+      type="checkbox"
+      :id="'customCheckbox-' + task.id"
+      class="custom-checkbox"
+      v-model="isChecked"
+      @change="onCheckboxChange"
+    />
+    <label :for="'customCheckbox-' + task.id" class="custom-checkbox-label"></label>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed, defineEmits } from 'vue'
+import { defineProps, computed, ref, watch } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faListCheck, faPlusMinus, faClock } from '@fortawesome/free-solid-svg-icons'
-import type { Task } from '@/types/types'
+import type { Task } from '../types/types'
 import type { PropType } from 'vue'
 
 // Add the icons to the library
@@ -41,7 +45,14 @@ const props = defineProps({
   }
 })
 
-const emits = defineEmits(['update:isSelected'])
+const isChecked = ref(props.isSelected)
+
+watch(
+  () => props.isSelected,
+  (newVal) => {
+    isChecked.value = newVal
+  }
+)
 
 const taskIcon = computed(() => {
   switch (props.task.type) {
@@ -56,16 +67,16 @@ const taskIcon = computed(() => {
   }
 })
 
-const onCheckboxChange = (event: Event) => {
-  const target = event.target as HTMLInputElement
-  emits('update:isSelected', target.checked)
+const onCheckboxChange = () => {
   props.toggleTaskSelection(props.task)
+  isChecked.value = !isChecked.value
 }
 </script>
 
 <style scoped>
 .task-checkbox-element {
   border-bottom: 1px solid #232323;
+  height: 72.71px;
 }
 .cursor-pointer {
   cursor: pointer;
@@ -80,5 +91,37 @@ const onCheckboxChange = (event: Event) => {
   background-color: #232323;
   color: #5b5b5b;
   padding: 10px;
+}
+.custom-checkbox {
+  display: none;
+}
+
+.custom-checkbox-label {
+  width: 19px;
+  height: 19px;
+  cursor: pointer;
+  display: inline-block;
+  background-color: #131213;
+  border: 2px solid #ccc;
+  border-radius: 2px;
+  position: relative;
+  margin-right: 1px;
+}
+
+.custom-checkbox:checked + .custom-checkbox-label {
+  background-color: #5b5b5b;
+  border: 0px solid #5b5b5b;
+}
+
+.custom-checkbox:checked + .custom-checkbox-label::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 7px;
+  width: 5px;
+  height: 10px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }
 </style>

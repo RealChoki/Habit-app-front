@@ -5,23 +5,22 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <p class="navbar-brand">{{ activeDate }}</p>
-      <!-- Burger menu content -->
       <div class="navbar-menu collapse px-5 w-100 text-center" :class="{ show: isOpen }">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="#">Home</a>
+            <a class="nav-link" href="/home">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Profile</a>
+            <a class="nav-link" href="#" @click="navigateToProfile">Profile</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Add Habits</a>
+            <a class="nav-link" href="#" @click="navigateToAddHabits">Add Habits</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Delete Habits</a>
+            <a class="nav-link" href="#" @click="navigateToDeleteHabits">Delete Habits</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Settings</a>
+            <a class="nav-link" href="#" @click="navigateToSettings">Settings</a>
           </li>
         </ul>
       </div>
@@ -31,16 +30,17 @@
 
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { selectedDate } from '../services/selectedDate'
 import type { DateInfo } from '../types/types'
 
 const isOpen = ref<boolean>(false)
-
 const activeDate = ref<string>('')
+const router = useRouter()
 
 const updateActiveDate = (): void => {
   if (selectedDate.value) {
-    activeDate.value = formatedHeaderDate(selectedDate.value)
+    activeDate.value = formattedHeaderDate(selectedDate.value)
   } else {
     getCurrentDate()
   }
@@ -52,7 +52,7 @@ const getCurrentDate = (): void => {
   activeDate.value = today.toLocaleDateString('en-US', options)
 }
 
-const formatedHeaderDate = (date: DateInfo): string => {
+const formattedHeaderDate = (date: DateInfo): string => {
   const options: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric', year: 'numeric' }
   const formattedDate = new Intl.DateTimeFormat('en-US', options).format(
     new Date(date.year, date.month - 1, date.date)
@@ -62,6 +62,26 @@ const formatedHeaderDate = (date: DateInfo): string => {
 
 const toggleMenu = (): void => {
   isOpen.value = !isOpen.value
+}
+
+const navigateToHome = (): void => {
+  router.push({ name: 'HomeView' })
+}
+
+const navigateToProfile = (): void => {
+  router.push({ name: 'ProfileView' })
+}
+
+const navigateToAddHabits = (): void => {
+  router.push({ name: 'AddHabitsView' })
+}
+
+const navigateToDeleteHabits = (): void => {
+  router.push({ name: 'DeleteHabitsView', params: { date: activeDate.value } })
+}
+
+const navigateToSettings = (): void => {
+  router.push({ name: 'SettingsView' })
 }
 
 watch(selectedDate, () => {

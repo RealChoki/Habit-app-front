@@ -62,7 +62,6 @@ const props = defineProps({
 
 const formatDate = (dateInfo: DateInfo | null): string => {
   if (!dateInfo) return ''
-  
   const day = dateInfo.date.toString().padStart(2, '0')
   const month = dateInfo.month.toString().padStart(2, '0')
   const year = dateInfo.year.toString()

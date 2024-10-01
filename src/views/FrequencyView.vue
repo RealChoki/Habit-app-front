@@ -117,7 +117,7 @@ h2 {
   border-radius: 10px;
   font-size: 12px;
   margin-bottom: 9px;
-  padding-top: 2px;
+  padding-top: 3px;
 }
 
 .day-button input:checked + label {

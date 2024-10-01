@@ -1,30 +1,34 @@
 <template>
-  <div class="max-width-500">
+  <div>
     <h2 class="text-white font-weight-bold text-center pt-5 mb-3 pb-5 fs-5">
       Which habits do you want to <br />
       delete?
     </h2>
     <div class="container-fluid d-flex justify-content-center">
-      <div class="border-bottom border-white w-100 d-flex justify-content-between align-items-center">
-        <p class="text-white mb-0">{{ selectedTasks.length }} selected</p>
-        <font-awesome-icon 
-          :icon="['fas', 'trash']" 
-          class="mb-1"
-          style="color: #ffffff; width: 23px; height: 23px" 
+      <div
+        class="border-bottom border-white min-width-400 d-flex justify-content-between align-items-center px-2"
+      >
+        <p class="text-white mb-0 ms-1">{{ selectedTasks.length }} selected</p>
+        <font-awesome-icon
+          :icon="['fas', 'trash']"
+          class="cursor-pointer mb-2"
+          style="color: #ffffff; width: 20px; height: 20px"
           @click="deleteSelectedTasks"
         />
       </div>
     </div>
     <div class="container-fluid d-flex justify-content-center">
       <div>
-        <TaskCheckboxElement
-          v-for="(task, key) in filteredTasks"
-          :key="key"
-          :task="task"
-          :openTaskModal="openTaskModal"
-          :toggleTaskSelection="toggleTaskSelection"
-          :isSelected="selectedTasks.includes(task)"
-        />
+        <div class="min-width-400">
+          <TaskCheckboxElement
+            v-for="(task, key) in filteredTasks"
+            :key="key"
+            :task="task"
+            :openTaskModal="openTaskModal"
+            :toggleTaskSelection="toggleTaskSelection"
+            :isSelected="selectedTasks.includes(task)"
+          />
+        </div>
       </div>
     </div>
     <div
@@ -92,11 +96,11 @@ const closeModal = (): void => {
 }
 
 const navigateToHomeView = (): void => {
-  router.push({ name: 'HomeView'})
+  router.push({ name: 'HomeView' })
 }
 
 const updateFilteredTasks = (): void => {
-  const urlDate = router.currentRoute.value.params.date; // Ensure this is the correct date
+  const urlDate = props.date
   const filteredData = weekData.find((item: DayData) => {
     return (
       item.metadata &&
@@ -124,7 +128,7 @@ const toggleTaskSelection = (task: Task): void => {
 }
 
 const deleteSelectedTasks = (): void => {
-  filteredTasks.value = filteredTasks.value.filter(task => !selectedTasks.value.includes(task))
+  filteredTasks.value = filteredTasks.value.filter((task) => !selectedTasks.value.includes(task))
   selectedTasks.value = []
 }
 
@@ -138,10 +142,6 @@ watch(router.currentRoute, () => {
 </script>
 
 <style scoped>
-.max-width-500 {
-  max-width: 380px;
-}
-
 .plus-div {
   width: 50px;
   height: 50px;
@@ -160,5 +160,9 @@ watch(router.currentRoute, () => {
   left: 2.5em;
   bottom: 5em;
   padding: 30px;
+}
+
+.min-width-400 {
+  min-width: 345px;
 }
 </style>
