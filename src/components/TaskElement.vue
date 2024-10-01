@@ -26,8 +26,8 @@
         class="cursor-pointer rounded-circle btn-click no-select"
         :icon="['fas', 'check']"
         :class="{
-          'text-success': task?.value,
-          'text-danger': task?.value === false
+          'text-success': task?.completed,
+          'text-danger': task?.completed === false
         }"
         @click.stop="toggleTaskValue(task)"
       />
@@ -37,7 +37,7 @@
         <font-awesome-icon
           class="cursor-pointer rounded-circle btn-click no-select"
           :icon="['fas', 'minus']"
-          :class="{ 'text-success': task?.value, 'text-danger': task?.value === false }"
+          :class="{ 'text-success': task?.completed, 'text-danger': task?.completed === false }"
           @click.stop="adjustCount(task, false)"
         />
         <font-awesome-icon
@@ -62,20 +62,20 @@
         <font-awesome-icon
           class="cursor-pointer rounded-circle btn-click no-select"
           :icon="['fas', 'pause']"
-          :class="{ 'text-success': task?.value, 'text-danger': task?.value === false }"
+          :class="{ 'text-success': task?.completed, 'text-danger': task?.completed === false }"
           @click.stop="pauseCountdown(task)"
         />
         <font-awesome-icon
           class="cursor-pointer rounded-circle btn-click no-select"
           :icon="['fas', 'play']"
-          :class="{ 'text-success': task?.value, 'text-danger': task?.value === false }"
+          :class="{ 'text-success': task?.completed, 'text-danger': task?.completed === false }"
           @click.stop="startCountdown(task)"
         />
         <p
           class="timer position-absolute translate-middle p-0 m-0"
           :class="{
-            'text-success': isTimerRunning || task?.value,
-            'text-danger': isTimerRunning === false || task?.value === false
+            'text-success': isTimerRunning || task?.completed,
+            'text-danger': isTimerRunning === false || task?.completed === false
           }"
         >
           {{ getTimeStamp(task.timer ?? 0) }}
