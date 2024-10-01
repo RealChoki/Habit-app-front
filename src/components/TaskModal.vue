@@ -9,17 +9,16 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content min-width-350">
         <div class="modal-header">
-          <h5 class="modal-title">{{ task.title }}</h5>
+          <h5 class="modal-title">{{ task.title || 'No Title' }}</h5>
           <button type="button" class="btn-close" aria-label="Close" @click="closeModal"></button>
         </div>
         <div class="modal-body">
-          <p>Date: {{ formatDate(timestamp) }}</p>
+          <p>Date: {{ formatDate(selectedDate) }}</p>
           <p>Description: {{ task.description }}</p>
           <p v-if="task.type === 'numeric'">Count: {{ task.count }}</p>
           <p v-if="task.type === 'numeric'">Goal: {{ task.goal }}</p>
           <p v-if="task.type === 'timer'">Timer: {{ getTimeStamp(task.timer) }}</p>
-          <p v-if="task.completed">Status: Done</p>
-          <p v-if="!task.completed">Status: Not done</p>
+          <p>Status: {{ task.completed ? 'Done' : 'Not done' }}</p>
           <button
             v-if="task.type === 'timer'"
             type="button"
@@ -28,7 +27,6 @@
           >
             Restart Timer
           </button>
-          <!-- You can display other task information here based on the task type -->
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" @click="closeModal">Close</button>
@@ -43,6 +41,8 @@
 import { defineProps } from 'vue'
 import type { Task } from '@/types/types'
 import type { PropType } from 'vue'
+import { selectedDate } from '../services/selectedDate'
+import type { DateInfo } from '../types/types'
 
 const props = defineProps({
   showModal: Boolean,
@@ -60,13 +60,13 @@ const props = defineProps({
   }
 })
 
-// Function to translate timestamp into DD/MM/YYYY format
-const formatDate = (timestamp: Date | null): string => {
-  if (!timestamp) return ''
-  const date = new Date(timestamp)
-  const day = date.getDate().toString().padStart(2, '0')
-  const month = (date.getMonth() + 1).toString().padStart(2, '0')
-  const year = date.getFullYear().toString()
+const formatDate = (dateInfo: DateInfo | null): string => {
+  if (!dateInfo) return ''
+  
+  const day = dateInfo.date.toString().padStart(2, '0')
+  const month = dateInfo.month.toString().padStart(2, '0')
+  const year = dateInfo.year.toString()
+
   return `${day}/${month}/${year}`
 }
 
@@ -79,9 +79,7 @@ const getTimeStamp = (seconds: number | undefined): string => {
   return `${hours}:${paddedMinutes}:${paddedSeconds}`
 }
 
-// Method to restart the timer
 const restartTimer = (task: Task): void => {
-  // Reset the timer to its initial value
   task.timer = task.default
   task.completed = null
 }

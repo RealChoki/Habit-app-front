@@ -92,16 +92,11 @@ const closeModal = (): void => {
 }
 
 const navigateToHomeView = (): void => {
-  const date = timestamp.value ? timestamp.value.toISOString().split('T')[0] : null
-  if (date) {
-    router.push({ name: 'HomeView', params: { date } })
-  } else {
-    console.error('Date parameter is missing')
-  }
+  router.push({ name: 'HomeView'})
 }
 
 const updateFilteredTasks = (): void => {
-  const urlDate = props.date
+  const urlDate = router.currentRoute.value.params.date; // Ensure this is the correct date
   const filteredData = weekData.find((item: DayData) => {
     return (
       item.metadata &&
