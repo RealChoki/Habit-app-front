@@ -101,12 +101,7 @@ const navigateToEvaluateView = (): void => {
 }
 
 const navigateToDeleteHabitsView = (): void => {
-  const date = timestamp.value ? timestamp.value.toISOString().split('T')[0] : null
-  if (date) {
-    router.push({ name: 'DeleteHabitsView', params: { date } })
-  } else {
-    console.error('Date parameter is missing')
-  }
+  router.push({ name: 'DeleteHabitsView' })
 }
 
 const updateFilteredTasks = (): void => {

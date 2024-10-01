@@ -21,7 +21,7 @@ const router = createRouter({
       }
     },
     {
-      path: '/homeview/:date',
+      path: '/home/:date',
       name: 'HomeView',
       component: HomeView
     },
@@ -35,27 +35,27 @@ const router = createRouter({
       }
     },
     {
-      path: '/evaluateview',
+      path: '/evaluate',
       name: 'EvaluateView',
       component: EvaluateView
     },
     {
-      path: '/yesnoview',
+      path: '/yesno',
       name: 'YesNoView',
       component: YesNoView
     },
     {
-      path: '/numericvalueview',
+      path: '/numericvalue',
       name: 'NumericValueView',
       component: NumericValueView
     },
     {
-      path: '/timerview',
+      path: '/timer',
       name: 'TimerView',
       component: TimerView
     },
     {
-      path: '/frequencyview',
+      path: '/frequency',
       name: 'FrequencyView',
       component: FrequencyView
     },
@@ -65,10 +65,9 @@ const router = createRouter({
       component: TimeFrame
     },
     {
-      path: '/deletehabitsview/:date',
+      path: '/deletehabits',
       name: 'DeleteHabitsView',
       component: DeleteHabitsView,
-      props: true // Ensure props are passed
     }
   ]
 })

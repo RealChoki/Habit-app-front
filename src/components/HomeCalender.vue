@@ -95,8 +95,9 @@ const selectDate = (date: DateInfo): void => {
 
 const updateRoute = (date: DateInfo): void => {
   const formattedMonth = date.month < 10 ? `0${date.month}` : date.month
-  const formattedDate = `${date.year}-${formattedMonth}-${date.date}`
-  router.push({ name: 'home', params: { date: formattedDate } })
+  const formattedDay = date.date < 10 ? `0${date.date}` : date.date
+  const formattedDate = `${date.year}-${formattedMonth}-${formattedDay}`
+  router.push({ name: 'HomeView', params: { date: formattedDate } })
 }
 
 const calculateDates = (offset: number): void => {
