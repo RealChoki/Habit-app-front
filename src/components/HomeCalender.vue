@@ -2,12 +2,20 @@
   <div>
     <div class="d-flex justify-content-between">
       <div></div>
-      <div v-if="hoveredDay" class="month-paragraph m-0 me-4 mb-1 p-0 fst-italic text-white">
+      <div :class="['d-flex', 'align-items-center', isToday ? 'me-4' : 'me-2']">
+        <div v-if="hoveredDay" class="month-paragraph m-0 mb-1 p-0 fst-italic text-white">
         {{ getFormattedDate(hoveredDay) }}
       </div>
-      <p v-else class="month-paragraph m-0 me-4 mb-1 p-0 fst-italic text-white">
+        <p v-else class="month-paragraph m-0 mb-1 p-0 fst-italic text-white">
         {{ currentMonth }}
       </p>
+        <font-awesome-icon
+          v-if="!isToday"
+          :icon="['fas', 'fa-rotate-right']"
+          class="ms-1 mb-1 cursor-pointer text-white btn-click no-select month-paragraph"
+          @click="resetToToday"
+        />
+      </div>
     </div>
     <div class="calender d-flex align-items-center mb-2">
       <!-- Arrow icon to the left -->
@@ -49,13 +57,13 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faChevronRight, faRotateRight } from '@fortawesome/free-solid-svg-icons'
 import { selectedDate } from '../services/selectedDate'
 import { setWeekOffset, getWeekOffset, setWeekRange } from '../services/weekService'
 import type { DateInfo } from '../types/types'
 
 // Add the arrow icons to the library
-library.add(faChevronLeft, faChevronRight)
+library.add(faChevronLeft, faChevronRight, faChevronLeft, faRotateRight)
 
 const days = ref<DateInfo[]>([])
 const weekOffset = ref<number>(0)
@@ -149,6 +157,31 @@ const getMonthName = (monthIndex: number): string => {
   ]
   return monthsOfYear[monthIndex]
 }
+
+const resetToToday = () => {
+  const today = new Date()
+  selectedDate.value = {
+    day: today.toLocaleString('en-us', { weekday: 'long' }),
+    date: today.getDate(),
+    month: today.getMonth() + 1,
+    year: today.getFullYear()
+  }
+  updateRoute(selectedDate.value)
+  days.value = []
+  weekOffset.value = 0
+  calculateDates(weekOffset.value)
+}
+
+const isToday = computed(() => {
+  if (!selectedDate.value) return false
+
+  const today = new Date()
+  return (
+    selectedDate.value.date === today.getDate() &&
+    selectedDate.value.month === today.getMonth() + 1 &&
+    selectedDate.value.year === today.getFullYear()
+  )
+})
 
 const getFormattedDate = (dateString: string): string => {
   const [year, month, day] = dateString.split('-').map(Number)
