@@ -42,27 +42,47 @@ const router = createRouter({
       component: AddHabitView
     },
     {
-      path: '/yesno',
+      path: '/addhabit/yesno',
       name: 'YesNoView',
       component: YesNoView
     },
     {
-      path: '/numericvalue',
+      path: '/addhabit/numericvalue',
       name: 'NumericValueView',
       component: NumericValueView
     },
     {
-      path: '/timer',
+      path: '/addhabit/timer',
       name: 'TimerView',
       component: TimerView
     },
     {
-      path: '/frequency',
+      path: '/addhabit/yesno/frequency',
       name: 'FrequencyView',
       component: FrequencyView
     },
     {
-      path: '/timeframe',
+      path: '/addhabit/yesno/timeframe',
+      name: 'TimeFrameView',
+      component: TimeFrameView
+    },
+    {
+      path: '/addhabit/numericvalue/frequency',
+      name: 'FrequencyView',
+      component: FrequencyView
+    },
+    {
+      path: '/addhabit/numericvalue/timeframe',
+      name: 'TimeFrameView',
+      component: TimeFrameView
+    },
+    {
+      path: '/addhabit/timer/frequency',
+      name: 'FrequencyView',
+      component: FrequencyView
+    },
+    {
+      path: '/addhabit/timer/timeframe',
       name: 'TimeFrameView',
       component: TimeFrameView
     },
