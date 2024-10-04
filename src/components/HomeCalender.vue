@@ -4,11 +4,11 @@
       <div></div>
       <div :class="['d-flex', 'align-items-center', isToday ? 'me-4' : 'me-2']">
         <div v-if="hoveredDay" class="month-paragraph m-0 mb-1 p-0 fst-italic text-white">
-        {{ getFormattedDate(hoveredDay) }}
-      </div>
+          {{ getFormattedDate(hoveredDay) }}
+        </div>
         <p v-else class="month-paragraph m-0 mb-1 p-0 fst-italic text-white">
-        {{ currentMonth }}
-      </p>
+          {{ currentMonth }}
+        </p>
         <font-awesome-icon
           v-if="!isToday"
           :icon="['fas', 'fa-rotate-right']"

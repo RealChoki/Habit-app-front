@@ -24,7 +24,7 @@
 
       <div
         class="position-absolute plus-div d-flex justify-content-center align-items-center cursor-pointer"
-        @click="navigateToEvaluateView"
+        @click="navigateToAddHabitView"
       >
         <font-awesome-icon
           :icon="['fas', 'plus']"
@@ -96,8 +96,8 @@ const closeModal = (): void => {
   showModal.value = false
 }
 
-const navigateToEvaluateView = (): void => {
-  router.push({ name: 'EvaluateView' })
+const navigateToAddHabitView = (): void => {
+  router.push({ name: 'AddHabitView' })
 }
 
 const navigateToDeleteHabitsView = (): void => {

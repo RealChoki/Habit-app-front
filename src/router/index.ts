@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import EvaluateView from '@/views/EvaluateView.vue'
+import AddHabitView from '@/views/AddHabitView.vue'
 import YesNoView from '@/views/YesNoView.vue'
 import NumericValueView from '@/views/NumericValueView.vue'
 import TimerView from '@/views/TimerView.vue'
@@ -37,9 +37,9 @@ const router = createRouter({
       }
     },
     {
-      path: '/evaluate',
-      name: 'EvaluateView',
-      component: EvaluateView
+      path: '/addhabit',
+      name: 'AddHabitView',
+      component: AddHabitView
     },
     {
       path: '/yesno',

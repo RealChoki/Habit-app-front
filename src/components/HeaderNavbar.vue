@@ -14,7 +14,7 @@
             <a class="nav-link" href="#" @click="navigateToProfile">Profile</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" @click="navigateToAddHabits">Add Habits</a>
+            <a class="nav-link" href="#" @click="navigateToAddHabit">Add Habits</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#" @click="navigateToDeleteHabits">Delete Habits</a>
@@ -64,16 +64,12 @@ const toggleMenu = (): void => {
   isOpen.value = !isOpen.value
 }
 
-const navigateToHome = (): void => {
-  router.push({ name: 'HomeView' })
-}
-
 const navigateToProfile = (): void => {
   router.push({ name: 'ProfileView' })
 }
 
-const navigateToAddHabits = (): void => {
-  router.push({ name: 'AddHabitsView' })
+const navigateToAddHabit = (): void => {
+  router.push({ name: 'AddHabitView' })
 }
 
 const navigateToDeleteHabits = (): void => {
