@@ -58,32 +58,32 @@ const router = createRouter({
     },
     {
       path: '/addhabit/yesno/frequency',
-      name: 'FrequencyView',
+      name: 'YesNoFrequencyView',
       component: FrequencyView
     },
     {
       path: '/addhabit/yesno/timeframe',
-      name: 'TimeFrameView',
+      name: 'YesNoTimeFrameView',
       component: TimeFrameView
     },
     {
       path: '/addhabit/numericvalue/frequency',
-      name: 'FrequencyView',
+      name: 'NumericValueFrequencyView',
       component: FrequencyView
     },
     {
       path: '/addhabit/numericvalue/timeframe',
-      name: 'TimeFrameView',
+      name: 'NumericValueTimeFrameView',
       component: TimeFrameView
     },
     {
       path: '/addhabit/timer/frequency',
-      name: 'FrequencyView',
+      name: 'TimerFrequencyView',
       component: FrequencyView
     },
     {
       path: '/addhabit/timer/timeframe',
-      name: 'TimeFrameView',
+      name: 'TimerTimeFrameView',
       component: TimeFrameView
     },
     {

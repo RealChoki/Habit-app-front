@@ -31,15 +31,24 @@ defineProps({
 const router: Router = useRouter()
 
 const nextRoute: ComputedRef<string> = computed(() => {
-  switch (router.currentRoute.value.name) {
+  const currentRouteName = router.currentRoute.value.name
+  console.log('Current Route Name:', currentRouteName) // Debugging line
+
+  switch (currentRouteName) {
     case 'YesNoView':
+      return '/addhabit/yesno/frequency'
     case 'TimerView':
+      return '/addhabit/timer/frequency'
     case 'NumericValueView':
-      return 'Frequency'
-    case 'FrequencyView':
-      return 'TimeFrame'
-    case 'TimeFrameView':
-      return 'HomeView'
+      return '/addhabit/numericvalue/frequency'
+    case 'YesNoFrequencyView':
+    case 'NumericValueFrequencyView':
+    case 'TimerFrequencyView':
+      return '/addhabit/yesno/timeframe' // Adjust based on your logic
+    case 'YesNoTimeFrameView':
+    case 'NumericValueTimeFrameView':
+    case 'TimerTimeFrameView':
+      return '/home/:date'
     default:
       return ''
   }
