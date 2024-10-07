@@ -1,44 +1,39 @@
 <template>
   <div>
-    <div class="d-flex justify-content-center align-items-center flex-column">
-      <div class="width">
-        <h2 class="title pt-5 mb-5 text-center font-weight-bold">
+    <div class="habit-date-picker__container">
+      <div class="habit-date-picker__wrapper">
+        <h2 class="habit-date-picker__title">
           What time frame do you want <br />
           for this habit?
         </h2>
-        <div class="d-flex flex-column">
-          <div class="d-flex align-items-center justify-content-between changethis bor-bot">
-            <div class="d-flex align-items-center cursor-pointer" @click="openStartDatePicker">
-              <font-awesome-icon
-                class="rounded-square"
-                :icon="['fas', 'calendar-days']"
-                style="color: #5b5b5b"
-              />
-              <p class="mb-0 ms-2 text-white fs-6">Start date</p>
+        <div class="habit-date-picker__fields">
+          <div class="habit-date-picker__field habit-date-picker__field--with-border">
+            <div class="habit-date-picker__field-label" @click="openStartDatePicker">
+              <font-awesome-icon class="habit-date-picker__icon" :icon="['fas', 'calendar-days']" />
+              <p class="habit-date-picker__text">Start date</p>
             </div>
             <Datepicker
               v-model="startDate"
               dark
               :enable-time-picker="false"
               ref="startDatePicker"
-              class="w-48"
+              class="habit-date-picker__input"
             />
           </div>
-          <div class="d-flex align-items-center justify-content-between changethis">
-            <div class="d-flex align-items-center cursor-pointer" @click="openEndDatePicker">
+          <div class="habit-date-picker__field">
+            <div class="habit-date-picker__field-label" @click="openEndDatePicker">
               <font-awesome-icon
-                class="rounded-square"
+                class="habit-date-picker__icon"
                 :icon="['fas', 'calendar-check']"
-                style="color: #5b5b5b"
               />
-              <p class="mb-0 ms-2 text-white fs-6">End date</p>
+              <p class="habit-date-picker__text">End date</p>
             </div>
             <Datepicker
               v-model="endDate"
               dark
               :enable-time-picker="false"
               ref="endDatePicker"
-              class="w-48"
+              class="habit-date-picker__input"
             />
           </div>
         </div>
@@ -56,6 +51,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import BackNextButton from '@/common/BackNextButton.vue'
 import Datepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
+
 library.add(faCalendarCheck, faCalendarDays)
 
 const startDate = ref(new Date())
@@ -77,39 +73,54 @@ const openEndDatePicker = () => {
     datePickerInput.click()
   }
 }
-
 </script>
 
 <style>
-.changethis {
-  margin: 0 1em;
-  padding: 16px 8px;
+.habit-date-picker__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-.width {
+.habit-date-picker__wrapper {
   width: 100%;
   max-width: 365px;
 }
 
-.bor-bot {
+.habit-date-picker__title {
+  color: #fefff7;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 20px;
+  margin-bottom: 20px;
+}
+
+.habit-date-picker__fields {
+  display: flex;
+  flex-direction: column;
+}
+
+.habit-date-picker__field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 1em;
+  padding: 16px 8px;
+}
+
+.habit-date-picker__field--with-border {
   border-bottom: 1px solid #232323;
 }
 
-.title {
-  color: #fefff7;
-  font-size: 18px;
+.habit-date-picker__field-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 
-p {
-  color: #c5c5c5;
-  font-size: 10px;
-}
-
-label {
-  font-size: 10px;
-}
-
-.rounded-square {
+.habit-date-picker__icon {
   border-radius: 5px;
   width: 13px;
   height: 13px;
@@ -118,37 +129,24 @@ label {
   padding: 10px;
 }
 
-.w-48 {
+.habit-date-picker__text {
+  margin-bottom: 0;
+  margin-left: 10px;
+  color: white;
+  font-size: 16px;
+}
+
+.habit-date-picker__input {
   width: 48%;
 }
 
+/* Custom Date Picker Theme */
 .dp__theme_dark {
   --dp-background-color: #212121;
   --dp-text-color: #fff;
   --dp-hover-color: #484848;
   --dp-hover-text-color: #fff;
-  --dp-hover-icon-color: #959595;
   --dp-primary-color: #42b883;
-  --dp-primary-disabled-color: #61a8ea;
-  --dp-primary-text-color: #fff;
-  --dp-secondary-color: #a9a9a9;
   --dp-border-color: #2d2d2d;
-  --dp-menu-border-color: #2d2d2d;
-  --dp-border-color-hover: #aaaeb7;
-  --dp-border-color-focus: #aaaeb7;
-  --dp-disabled-color: #737373;
-  --dp-disabled-color-text: #d0d0d0;
-  --dp-scroll-bar-background: #212121;
-  --dp-scroll-bar-color: #484848;
-  --dp-success-color: #00701a;
-  --dp-success-color-disabled: #428f59;
-  --dp-icon-color: #959595;
-  --dp-danger-color: #e53935;
-  --dp-marker-color: #e53935;
-  --dp-tooltip-color: #3e3e3e;
-  --dp-highlight-color: rgb(0 92 178 / 20%);
-  --dp-range-between-dates-background-color: var(--dp-hover-color, #484848);
-  --dp-range-between-dates-text-color: var(--dp-hover-text-color, #fff);
-  --dp-range-between-border-color: var(--dp-hover-color, #fff);
 }
 </style>
