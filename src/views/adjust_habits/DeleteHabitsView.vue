@@ -48,12 +48,12 @@ import { ref, onMounted, watch, defineProps } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faHouse, faTrash } from '@fortawesome/free-solid-svg-icons'
-import type { Task, DayData } from '../types/types'
+import type { Task, DayData } from '../../types/types'
 import { useRouter } from 'vue-router'
-import { weekData } from '../data/data.js'
-import { getWeekData } from '../api/weekData'
-import { getWeekRange } from '../services/weekService'
-import TaskCheckboxElement from '../components/TaskCheckboxElement.vue'
+import { weekData } from '../../data/data.js'
+import { getWeekData } from '../../api/weekData'
+import { getWeekRange } from '../../services/weekService'
+import TaskCheckboxElement from '../../components/TaskCheckboxElement.vue'
 
 library.add(faHouse, faTrash)
 

@@ -10,7 +10,7 @@
           {{ currentMonth }}
         </p>
         <font-awesome-icon
-          v-if="!isToday"
+          v-if="!isToday || weekOffset !== 0"
           :icon="['fas', 'fa-rotate-right']"
           class="ms-1 mb-1 cursor-pointer text-white btn-click no-select month-paragraph"
           @click="resetToToday"
@@ -25,6 +25,7 @@
         @click="previousWeek"
       />
 
+      <!-- Calendar -->
       <div
         class="day p-0 cursor-pointer d-flex flex-column justify-content-between align-items-center rounded-4 no-select"
         v-for="day in days"
@@ -53,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -62,13 +63,12 @@ import { selectedDate } from '../services/selectedDate'
 import { setWeekOffset, getWeekOffset, setWeekRange } from '../services/weekService'
 import type { DateInfo } from '../types/types'
 
-// Add the arrow icons to the library
 library.add(faChevronLeft, faChevronRight, faChevronLeft, faRotateRight)
 
 const days = ref<DateInfo[]>([])
 const weekOffset = ref<number>(0)
 const today = new Date()
-today.setDate(today.getDate()) // temporary
+// today.setDate(today.getDate())
 
 const router = useRouter()
 
@@ -218,6 +218,10 @@ const hideHoverDiv = (): void => {
 
 // Initial call to calculate dates
 calculateDates(weekOffset.value)
+
+onMounted(() => {
+  resetToToday()
+})
 </script>
 
 <style scoped>

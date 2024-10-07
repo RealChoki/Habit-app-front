@@ -42,11 +42,15 @@ const nextRoute: ComputedRef<string> = computed(() => {
     case 'NumericValueView':
       return '/addhabit/numericvalue/frequency'
     case 'YesNoFrequencyView':
+      return '/addhabit/yesno/frequency/timeframe'
     case 'NumericValueFrequencyView':
+      return '/addhabit/numericvalue/frequency/timeframe'
     case 'TimerFrequencyView':
-      return '/addhabit/yesno/timeframe' // Adjust based on your logic
+      return '/addhabit/timer/frequency/timeframe'
     case 'YesNoTimeFrameView':
+      return '/home/:date'
     case 'NumericValueTimeFrameView':
+      return '/home/:date'
     case 'TimerTimeFrameView':
       return '/home/:date'
     default:

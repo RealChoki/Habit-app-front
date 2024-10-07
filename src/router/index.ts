@@ -1,12 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import AddHabitView from '@/views/AddHabitView.vue'
-import YesNoView from '@/views/YesNoView.vue'
-import NumericValueView from '@/views/NumericValueView.vue'
-import TimerView from '@/views/TimerView.vue'
-import FrequencyView from '../views/FrequencyView.vue'
-import TimeFrameView from '../views/TimeFrameView.vue'
-import DeleteHabitsView from '../views/DeleteHabitsView.vue'
+import HomeView from '@/views/HomeView.vue'
+import AddHabitView from '@/views/adjust_habits/AddHabitView.vue'
+import YesNoView from '@/views/adjust_habits/YesNoView.vue'
+import NumericValueView from '@/views/adjust_habits/NumericValueView.vue'
+import TimerView from '@/views/adjust_habits/TimerView.vue'
+import FrequencyView from '@/views/adjust_habits/FrequencyView.vue'
+import TimeFrameView from '@/views/adjust_habits/TimeFrameView.vue'
+import DeleteHabitsView from '@/views/adjust_habits/DeleteHabitsView.vue'
+import LoginView from '@/views/auth/LoginView.vue'
+import RegisterView from '@/views/auth/RegisterView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -62,7 +64,7 @@ const router = createRouter({
       component: FrequencyView
     },
     {
-      path: '/addhabit/yesno/timeframe',
+      path: '/addhabit/yesno/frequency/timeframe',
       name: 'YesNoTimeFrameView',
       component: TimeFrameView
     },
@@ -72,7 +74,7 @@ const router = createRouter({
       component: FrequencyView
     },
     {
-      path: '/addhabit/numericvalue/timeframe',
+      path: '/addhabit/numericvalue/frequency/timeframe',
       name: 'NumericValueTimeFrameView',
       component: TimeFrameView
     },
@@ -82,7 +84,7 @@ const router = createRouter({
       component: FrequencyView
     },
     {
-      path: '/addhabit/timer/timeframe',
+      path: '/addhabit/timer/frequency/timeframe',
       name: 'TimerTimeFrameView',
       component: TimeFrameView
     },
@@ -91,7 +93,17 @@ const router = createRouter({
       name: 'DeleteHabitsView',
       component: DeleteHabitsView,
       props: true
-    }
+    },
+    {
+      path: '/login',
+      name: 'LoginView',
+      component: LoginView,
+    },
+    {
+      path: '/register',
+      name: 'RegisterView',
+      component: RegisterView,
+    },
   ]
 })
 

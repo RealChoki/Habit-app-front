@@ -22,6 +22,9 @@
           <li class="nav-item">
             <a class="nav-link" href="#" @click="navigateToSettings">Settings</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" @click="navigateToLogin">Logout</a>
+          </li>
         </ul>
       </div>
     </div>
@@ -78,6 +81,10 @@ const navigateToDeleteHabits = (): void => {
 
 const navigateToSettings = (): void => {
   router.push({ name: 'SettingsView' })
+}
+
+const navigateToLogin = (): void => {
+  router.push({ name: 'LoginView' })
 }
 
 watch(selectedDate, () => {

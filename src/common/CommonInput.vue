@@ -1,7 +1,7 @@
 <template>
   <div class="form-group">
     <label class="text-white" :for="id">{{ label }}</label>
-    <input type="text" class="form-control" :id="id" required />
+    <input :type="type" class="form-control" :id="id" required />
   </div>
 </template>
 
@@ -11,13 +11,30 @@ import { defineProps } from 'vue'
 // Define props
 const props = defineProps({
   id: String,
-  label: String
+  label: String,
+  type: {
+    type: String,
+    default: 'text'
+  }
 })
 </script>
 
 
 <style scoped>
 label {
-  font-size: 10px;
+  font-size: 12px;
+}
+
+.input-common input {
+  background: #131213;
+  border-radius: 5px;
+  color: #ffffff;
+}
+
+.input-common input:focus {
+  outline: none;
+  box-shadow: none;
+  background-color: #131213;
+  color: #ffffff;
 }
 </style>
