@@ -27,7 +27,6 @@
           />
         </div>
 
-        <!-- Password Input -->
         <div class="form-group mb-3">
           <CommonInput
             class="input-common"
@@ -39,7 +38,6 @@
           />
         </div>
 
-        <!-- Confirm Password Input -->
         <div class="form-group mb-3">
           <CommonInput
             class="input-common"
@@ -67,7 +65,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import CommonInput from '@/common/CommonInput.vue' // Adjust path as necessary
+import CommonInput from '@/common/CommonInput.vue'
 
 const name = ref('')
 const username = ref('')
