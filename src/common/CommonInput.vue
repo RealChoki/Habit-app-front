@@ -31,7 +31,7 @@ label {
   color: #ffffff;
 }
 
-.input-common input:focus {
+.input-common:focus {
   outline: none;
   box-shadow: none;
   background-color: #131213;

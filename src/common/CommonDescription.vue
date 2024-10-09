@@ -2,7 +2,7 @@
   <div class="form-group">
     <input
       type="text"
-      class="form-control rounded-0 border-0 border-bottom"
+      class="rounded-0 border-0 border-bottom w-100"
       id="discription-input"
       placeholder="Description (optional)"
     />
@@ -13,12 +13,13 @@
 #discription-input {
   height: 29px;
   background: #131213;
+  color: #ffffff;
+  font-size: 12px;
 }
 
 #discription-input::placeholder {
-  color: #fefff7;
+  color: #c5c5c5;
   font-size: 12px;
-  padding-left: -10px;
   margin-left: 0px;
 }
 
@@ -30,7 +31,7 @@ input:focus {
   outline: none;
   box-shadow: none;
   background-color: #131213;
-  color: #ffffff;
+  color: #c5c5c5; 
   border-color: #ffffff;
 }
 </style>

@@ -1,4 +1,3 @@
-
 <template>
   <div class="back-next" :class="{ 'no-next': !showNext }">
     <a class="back text-decoration-none fw-bold fs-6" @click.prevent="goBack">BACK</a>
@@ -8,11 +7,17 @@
       <div class="circle" :class="{ filled: filledCircle >= 3 }"></div>
       <div class="circle" :class="{ filled: filledCircle >= 4 }"></div>
     </div>
-    <RouterLink v-if="showNext" class="next back text-decoration-none fw-bold fs-6" :to="nextRoute"
-      >NEXT</RouterLink
+    <RouterLink
+      v-if="showNext"
+      class="next back text-decoration-none fw-bold fs-6"
+      :to="nextRoute"
+      :class="{ 'move-left': nextButtonText === 'CREATE' }"
     >
+      {{ nextButtonText }}
+    </RouterLink>
   </div>
 </template>
+
 <script setup lang="ts">
 import { useRouter, type Router } from 'vue-router'
 import { defineProps, type ComputedRef, computed } from 'vue'
@@ -58,11 +63,15 @@ const nextRoute: ComputedRef<string> = computed(() => {
   }
 })
 
+const nextButtonText: ComputedRef<string> = computed(() => {
+  const currentRouteName = router.currentRoute.value.name
+  return typeof currentRouteName === 'string' && currentRouteName.includes('TimeFrameView') ? 'CREATE' : 'NEXT'
+})
+
 const goBack = (): void => {
   router.back()
 }
 </script>
-
 
 <style scoped>
 .back {
@@ -100,6 +109,10 @@ const goBack = (): void => {
 .back-next.no-next {
   justify-content: end;
   width: 50vw;
-  margin-left: 1.3em;
+  margin-left: 1.4em;
+}
+
+.move-left {
+  margin-left: -15px; /* Adjust this value as needed */
 }
 </style>
