@@ -20,21 +20,26 @@
               class="habit-date-picker__input"
             />
           </div>
-          <div class="habit-date-picker__field">
+          <div class="habit-date-picker__field" v-if="showEndDate">
             <div class="habit-date-picker__field-label" @click="openEndDatePicker">
               <font-awesome-icon
-                class="habit-date-picker__icon"
-                :icon="['fas', 'calendar-check']"
+              class="habit-date-picker__icon"
+              :icon="['fas', 'calendar-check']"
               />
               <p class="habit-date-picker__text">End date</p>
             </div>
             <Datepicker
-              v-model="endDate"
-              dark
-              :enable-time-picker="false"
-              ref="endDatePicker"
-              class="habit-date-picker__input"
+            v-model="endDate"
+            dark
+            :enable-time-picker="false"
+            ref="endDatePicker"
+            class="habit-date-picker__input"
             />
+            <p class="delete-enddate" @click="deleteEndDate">Delete end date</p>
+          </div>
+          <div class="d-flex align-items-center addEndDatediv" v-else @click="addEndDate">
+            <font-awesome-icon :icon="['fas', 'square-plus']" style="color: #42b883; font-size: 2.1em;" />
+            <p class="add-enddate" >Add end date</p>
           </div>
         </div>
         <BackNextButton :filledCircle="4" />
@@ -46,16 +51,17 @@
 <script setup>
 import { ref } from 'vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCalendarCheck, faCalendarDays } from '@fortawesome/free-solid-svg-icons'
+import { faCalendarCheck, faCalendarDays, faSquarePlus} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import BackNextButton from '@/common/BackNextButton.vue'
 import Datepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 
-library.add(faCalendarCheck, faCalendarDays)
+library.add(faCalendarCheck, faCalendarDays, faSquarePlus)
 
 const startDate = ref(new Date())
 const endDate = ref(new Date(new Date().setFullYear(new Date().getFullYear() + 1)))
+const showEndDate = ref(true)
 
 const endDatePicker = ref(null)
 const startDatePicker = ref(null)
@@ -72,6 +78,16 @@ const openEndDatePicker = () => {
   if (datePickerInput) {
     datePickerInput.click()
   }
+}
+
+const deleteEndDate = () => {
+  endDate.value = null
+  showEndDate.value = false
+}
+
+const addEndDate = () => {
+  endDate.value = new Date(new Date().setFullYear(new Date().getFullYear() + 1))
+  showEndDate.value = true
 }
 </script>
 
@@ -108,6 +124,7 @@ const openEndDatePicker = () => {
   justify-content: space-between;
   margin: 0 1em;
   padding: 16px 8px;
+  position: relative;
 }
 
 .habit-date-picker__field--with-border {
@@ -148,5 +165,31 @@ const openEndDatePicker = () => {
   --dp-hover-text-color: #fff;
   --dp-primary-color: #42b883;
   --dp-border-color: #2d2d2d;
+}
+
+.delete-enddate{
+  position: absolute;
+  right: 8px;
+  bottom: -16px;
+  font-size: 11px;
+  color: #b84242;
+  text-decoration: underline;
+  font-style: italic;
+  cursor: pointer;
+}
+
+.add-enddate{
+  cursor: pointer;
+  color: #42b883;
+  width: 40%;
+  font-size: 15px;
+  margin: 0px;
+}
+
+.addEndDatediv{
+  height: 3em;
+  gap: 9px;
+  margin-left: 1.6em;
+  margin-top: 0.7em;
 }
 </style>
