@@ -1,10 +1,9 @@
 import axios from 'axios'
 
-// const mongoUri = process.env.MONGODB_URI;
-const mongoUri = 'http://localhost:5000'
+const backendUrl = 'http://localhost:5000'
 
 const apiClient = axios.create({
-  baseURL: mongoUri,
+  baseURL: backendUrl,
   headers: {
     'Content-Type': 'application/json'
   }
