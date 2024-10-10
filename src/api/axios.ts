@@ -1,7 +1,10 @@
 import axios from 'axios'
 
+// const mongoUri = process.env.MONGODB_URI;
+const mongoUri = 'http://localhost:5000'
+
 const apiClient = axios.create({
-  baseURL: 'https://habit-app-back.onrender.com', // Replace with your actual backend URL
+  baseURL: mongoUri,
   headers: {
     'Content-Type': 'application/json'
   }
