@@ -8,25 +8,24 @@
       <div
         class="border-bottom border-white min-width-400 d-flex justify-content-between align-items-center px-2"
       >
-        <p class="text-white mb-0 ms-1">{{ selectedTasks.length }} selected</p>
+        <p class="text-white mb-0 goodnamingconvention">{{ selectedHabits.length }} selected</p>
         <font-awesome-icon
           :icon="['fas', 'trash']"
           class="cursor-pointer mb-2"
           style="color: #ffffff; width: 20px; height: 20px"
-          @click="deleteSelectedTasks"
+          @click="deleteSelectedHabits"
         />
       </div>
     </div>
     <div class="container-fluid d-flex justify-content-center">
       <div>
         <div class="min-width-400">
-          <TaskCheckboxElement
-            v-for="(task, key) in filteredTasks"
+          <HabitCheckboxElement
+            v-for="(habit, key) in filteredHabits"
             :key="key"
-            :task="task"
-            :openTaskModal="openTaskModal"
-            :toggleTaskSelection="toggleTaskSelection"
-            :isSelected="selectedTasks.includes(task)"
+            :habit="habit"
+            :toggleHabitSelection="toggleHabitSelection"
+            :isSelected="selectedHabits.includes(habit)"
           />
         </div>
       </div>
@@ -48,12 +47,12 @@ import { ref, onMounted, watch, defineProps } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faHouse, faTrash } from '@fortawesome/free-solid-svg-icons'
-import type { Task, DayData } from '../../types/types'
+import type { Habit, DayData } from '../../types/types'
 import { useRouter } from 'vue-router'
 import { weekData } from '../../data/data.js'
 import { getWeekData } from '../../api/weekData'
 import { getWeekRange } from '../../services/weekService'
-import TaskCheckboxElement from '../../components/TaskCheckboxElement.vue'
+import HabitCheckboxElement from '../../components/HabitCheckboxElement.vue'
 
 library.add(faHouse, faTrash)
 
@@ -79,65 +78,55 @@ watch(
   { immediate: true }
 )
 
-const filteredTasks = ref<Task[]>([])
-const selectedTasks = ref<Task[]>([])
+const filteredHabits = ref<Habit[]>([])
+const selectedHabits = ref<Habit[]>([])
 const router = useRouter()
-const showModal = ref<boolean>(false)
-const selectedTask = ref<Task | null>(null)
 const timestamp = ref<Date | null>(null)
 
-const openTaskModal = (task: Task): void => {
-  selectedTask.value = task
-  showModal.value = true
-}
-
-const closeModal = (): void => {
-  showModal.value = false
-}
 
 const navigateToHomeView = (): void => {
   router.push({ name: 'HomeView' })
 }
 
-const updateFilteredTasks = (): void => {
+const updateFilteredHabits = (): void => {
   const urlDate = props.date
   const filteredData = weekData.find((item: DayData) => {
     return (
-      item.metadata &&
-      item.metadata.timestamp &&
-      item.metadata.timestamp.toISOString().split('T')[0] === urlDate
+      // item.metadata &&
+      item.timestamp &&
+      item.timestamp.toISOString().split('T')[0] === urlDate
     )
   })
 
   if (filteredData) {
-    filteredTasks.value = Object.values(filteredData.tasks)
-    timestamp.value = filteredData.metadata.timestamp
+    filteredHabits.value = Object.values(filteredData.habits)
+    timestamp.value = filteredData.timestamp
   } else {
-    filteredTasks.value = []
+    filteredHabits.value = []
     timestamp.value = null
   }
 }
 
-const toggleTaskSelection = (task: Task): void => {
-  const index = selectedTasks.value.indexOf(task)
+const toggleHabitSelection = (habit: Habit): void => {
+  const index = selectedHabits.value.indexOf(habit)
   if (index === -1) {
-    selectedTasks.value.push(task)
+    selectedHabits.value.push(habit)
   } else {
-    selectedTasks.value.splice(index, 1)
+    selectedHabits.value.splice(index, 1)
   }
 }
 
-const deleteSelectedTasks = (): void => {
-  filteredTasks.value = filteredTasks.value.filter((task) => !selectedTasks.value.includes(task))
-  selectedTasks.value = []
+const deleteSelectedHabits = (): void => {
+  filteredHabits.value = filteredHabits.value.filter((habit) => !selectedHabits.value.includes(habit))
+  selectedHabits.value = []
 }
 
 onMounted(() => {
-  updateFilteredTasks()
+  updateFilteredHabits()
 })
 
 watch(router.currentRoute, () => {
-  updateFilteredTasks()
+  updateFilteredHabits()
 })
 </script>
 
@@ -164,5 +153,9 @@ watch(router.currentRoute, () => {
 
 .min-width-400 {
   min-width: 345px;
+}
+
+.goodnamingconvention {
+  margin-left: 2px;
 }
 </style>

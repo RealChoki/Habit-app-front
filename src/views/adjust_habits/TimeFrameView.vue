@@ -37,7 +37,7 @@
             />
             <p class="delete-enddate" @click="deleteEndDate">Delete end date</p>
           </div>
-          <div class="d-flex align-items-center addEndDatediv" v-else @click="addEndDate">
+          <div class="d-flex align-items-center addEndDatediv " v-else @click="addEndDate">
             <font-awesome-icon :icon="['fas', 'square-plus']" style="color: #42b883; font-size: 2.1em;" />
             <p class="add-enddate" >Add end date</p>
           </div>
@@ -173,7 +173,6 @@ const addEndDate = () => {
   bottom: -16px;
   font-size: 11px;
   color: #b84242;
-  text-decoration: underline;
   font-style: italic;
   cursor: pointer;
 }
@@ -191,5 +190,6 @@ const addEndDate = () => {
   gap: 9px;
   margin-left: 1.6em;
   margin-top: 0.7em;
+  cursor: pointer;
 }
 </style>

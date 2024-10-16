@@ -18,3 +18,9 @@ export const setWeekOffset = (offset: number) => {
 }
 
 export const getWeekOffset = () => weekOffset.value
+
+
+// to not clean so the variables are always saved until we send the api call
+// when api then clean()
+
+// when back then clean current page() 

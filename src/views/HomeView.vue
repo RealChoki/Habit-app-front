@@ -5,21 +5,21 @@
       <div>
         <HomeCalender />
         <div class="max-width-500">
-          <TaskElement
-            v-for="(task, key) in filteredTasks"
+          <HabitElement
+            v-for="(habit, key) in filteredHabits"
             :key="key"
-            :task="task"
-            :openTaskModal="openTaskModal"
+            :habit="habit"
+            :openHabitModal="openHabitModal"
             :timestamp="timestamp"
           />
         </div>
       </div>
-      <TaskModal
-        v-if="selectedTask !== null"
+      <HabitModal
+        v-if="selectedHabit !== null"
         :showModal="showModal"
         :closeModal="closeModal"
         :timestamp="timestamp"
-        :task="selectedTask"
+        :habit="selectedHabit"
       />
 
       <div
@@ -47,13 +47,13 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 import HomeCalender from '../components/HomeCalender.vue'
-import TaskModal from '../components/TaskModal.vue'
+import HabitModal from '../components/HabitModal.vue'
 import HeaderNavbar from '../components/HeaderNavbar.vue'
-import TaskElement from '../components/TaskElement.vue'
+import HabitElement from '../components/HabitElement.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
-import type { Task, DayData } from '../types/types'
+import type { Habit, DayData } from '../types/types'
 import { useRouter } from 'vue-router'
 import { weekData } from '../data/data.js'
 import { getWeekData } from '../api/weekData'
@@ -81,14 +81,14 @@ watch(
   { immediate: true }
 )
 
-const filteredTasks = ref<Task[]>([])
+const filteredHabits = ref<Habit[]>([])
 const router = useRouter()
 const showModal = ref<boolean>(false)
-const selectedTask = ref<Task | null>(null)
+const selectedHabit = ref<Habit | null>(null)
 const timestamp = ref<Date | null>(null)
 
-const openTaskModal = (task: Task): void => {
-  selectedTask.value = task
+const openHabitModal = (habit: Habit): void => {
+  selectedHabit.value = habit
   showModal.value = true
 }
 
@@ -109,31 +109,31 @@ const navigateToDeleteHabitsView = (): void => {
   }
 }
 
-const updateFilteredTasks = (): void => {
+const updateFilteredHabits = (): void => {
   const urlDate = router.currentRoute.value.params.date
   const filteredData = weekData.find((item: DayData) => {
     return (
-      item.metadata &&
-      item.metadata.timestamp &&
-      item.metadata.timestamp.toISOString().split('T')[0] === urlDate
+      // item.metadata &&
+      item.timestamp &&
+      item.timestamp.toISOString().split('T')[0] === urlDate
     )
   })
 
   if (filteredData) {
-    filteredTasks.value = Object.values(filteredData.tasks)
-    timestamp.value = filteredData.metadata.timestamp
+    filteredHabits.value = Object.values(filteredData.habits)
+    timestamp.value = filteredData.timestamp
   } else {
-    filteredTasks.value = []
+    filteredHabits.value = []
     timestamp.value = null
   }
 }
 
 onMounted(() => {
-  updateFilteredTasks()
+  updateFilteredHabits()
 })
 
 watch(router.currentRoute, () => {
-  updateFilteredTasks()
+  updateFilteredHabits()
 })
 </script>
 

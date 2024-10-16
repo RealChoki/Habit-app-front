@@ -91,6 +91,7 @@ const goToRegister = () => {
   background-color: #232323;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 6px 0px #1a1a1b;
 }
 
 label {

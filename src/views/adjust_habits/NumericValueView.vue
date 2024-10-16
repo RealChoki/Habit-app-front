@@ -2,20 +2,24 @@
   <div class="d-flex justify-content-center align-items-center flex-column">
     <h2 class="title pt-5 mb-4 text-center font-weight-bold">Define your habit</h2>
     <div class="d-flex justify-content-center flex-column">
-      <CommonInput class="habit input-common" :id="'habit-input'" :label="'habit'" />
-
-      <CommonInput class="goal input-common mt-1" :id="'goal-input'" :label="'goal'" />
+      <CommonInput class="habit input-common" :id="'habit-input'" :label="'Habit'" v-model="habit" />
+      <CommonInput class="goal input-common mt-1" :id="'goal-input'" :label="'Goal'" v-model="goal" />
       <p class="text-center mt-2">eg., Drink 5 glasses of water per day.</p>
       <DescriptionField />
-      <BackNextButton :filledCircle="2" />
+      <BackNextButton :filledCircle="2" :isNextDisabled="!habit || !goal" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import CommonInput from '@/common/CommonInput.vue'
 import DescriptionField from '@/common/CommonDescription.vue'
 import BackNextButton from '@/common/BackNextButton.vue'
+
+// Track the state of the inputs
+const habit = ref('')
+const goal = ref('')
 </script>
 
 <style scoped>
@@ -27,6 +31,7 @@ import BackNextButton from '@/common/BackNextButton.vue'
 .habit {
   width: 300px;
 }
+
 .goal {
   width: 150px;
 }

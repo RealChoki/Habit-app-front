@@ -1,17 +1,17 @@
 <template>
-  <div class="task-checkbox-element d-flex align-items-center justify-content-between p-2">
+  <div class="habit-checkbox-element d-flex align-items-center justify-content-between p-2">
     <div class="d-flex align-items-center">
-      <font-awesome-icon class="tasktype-icon rounded-square" :icon="taskIcon" />
-      <p class="mb-0 ms-2 text-white">{{ task.title }}</p>
+      <font-awesome-icon class="habittype-icon rounded-square" :icon="habitIcon" />
+      <p class="mb-0 ms-2 text-white">{{ habit.title }}</p>
     </div>
     <input
       type="checkbox"
-      :id="'customCheckbox-' + task.id"
+      :id="'customCheckbox-' + habit.id"
       class="custom-checkbox"
       v-model="isChecked"
       @change="onCheckboxChange"
     />
-    <label :for="'customCheckbox-' + task.id" class="custom-checkbox-label"></label>
+    <label :for="'customCheckbox-' + habit.id" class="custom-checkbox-label"></label>
   </div>
 </template>
 
@@ -20,23 +20,23 @@ import { defineProps, computed, ref, watch } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faListCheck, faPlusMinus, faClock } from '@fortawesome/free-solid-svg-icons'
-import type { Task } from '../types/types'
+import type { Habit } from '../types/types'
 import type { PropType } from 'vue'
 
 // Add the icons to the library
 library.add(faListCheck, faPlusMinus, faClock)
 
 const props = defineProps({
-  task: {
-    type: Object as PropType<Task>,
+  habit: {
+    type: Object as PropType<Habit>,
     required: true
   },
-  openTaskModal: {
-    type: Function as PropType<(task: Task) => void>,
+  openHabitModal: {
+    type: Function as PropType<(habit: Habit) => void>,
     required: true
   },
-  toggleTaskSelection: {
-    type: Function as PropType<(task: Task) => void>,
+  toggleHabitSelection: {
+    type: Function as PropType<(habit: Habit) => void>,
     required: true
   },
   isSelected: {
@@ -54,8 +54,8 @@ watch(
   }
 )
 
-const taskIcon = computed(() => {
-  switch (props.task.type) {
+const habitIcon = computed(() => {
+  switch (props.habit.type) {
     case 'yesno':
       return ['fas', 'list-check']
     case 'numeric':
@@ -68,13 +68,13 @@ const taskIcon = computed(() => {
 })
 
 const onCheckboxChange = () => {
-  props.toggleTaskSelection(props.task)
+  props.toggleHabitSelection(props.habit)
   isChecked.value = !isChecked.value
 }
 </script>
 
 <style scoped>
-.task-checkbox-element {
+.habit-checkbox-element {
   border-bottom: 1px solid #232323;
   height: 72.71px;
 }

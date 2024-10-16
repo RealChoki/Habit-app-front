@@ -13,7 +13,7 @@ const generateWeekData = (weekOffset: number): void => {
     const timestamp = new Date(mondayTimestamp)
     timestamp.setDate(mondayTimestamp.getDate() + i)
 
-    const tasks: { [key: string]: any } = {
+    const habits: { [key: string]: any } = {
       1: {
         id: 1,
         type: 'yesno',
@@ -45,20 +45,16 @@ const generateWeekData = (weekOffset: number): void => {
       }
     }
 
-    const metadata = {
-      timestamp: timestamp
-    }
-
-    const tasksForDay: any = {}
-    // Loop through tasks object and add each task for the day
-    Object.keys(tasks).forEach((taskId) => {
-      tasksForDay[taskId] = { ...tasks[taskId] }
+    const habitsForDay: any = {}
+    // Loop through habits object and add each habit for the day
+    Object.keys(habits).forEach((habitId) => {
+      habitsForDay[habitId] = { ...habits[habitId] }
     })
 
-    // Add the metadata object and tasks for the day to the weekData array
+    // Add the metadata object and habits for the day to the weekData array
     weekData.push({
-      metadata: metadata,
-      tasks: tasksForDay,
+      timestamp,
+      habits: habitsForDay,
       completed: false
     })
   }

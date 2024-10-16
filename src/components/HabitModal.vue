@@ -9,21 +9,21 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content min-width-350">
         <div class="modal-header">
-          <h5 class="modal-title">{{ task.title || 'No Title' }}</h5>
+          <h5 class="modal-title">{{ habit.title || 'No Title' }}</h5>
           <button type="button" class="btn-close" aria-label="Close" @click="closeModal"></button>
         </div>
         <div class="modal-body">
           <p>Date: {{ formatDate(selectedDate) }}</p>
-          <p>Description: {{ task.description }}</p>
-          <p v-if="task.type === 'numeric'">Count: {{ task.count }}</p>
-          <p v-if="task.type === 'numeric'">Goal: {{ task.goal }}</p>
-          <p v-if="task.type === 'timer'">Timer: {{ getTimeStamp(task.timer) }}</p>
-          <p>Status: {{ task.completed ? 'Done' : 'Not done' }}</p>
+          <p>Description: {{ habit.description }}</p>
+          <p v-if="habit.type === 'numeric'">Count: {{ habit.count }}</p>
+          <p v-if="habit.type === 'numeric'">Goal: {{ habit.goal }}</p>
+          <p v-if="habit.type === 'timer'">Timer: {{ getTimeStamp(habit.timer) }}</p>
+          <p>Status: {{ habit.completed ? 'Done' : 'Not done' }}</p>
           <button
-            v-if="task.type === 'timer'"
+            v-if="habit.type === 'timer'"
             type="button"
             class="btn btn-primary"
-            @click="restartTimer(task)"
+            @click="restartTimer(habit)"
           >
             Restart Timer
           </button>
@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
 import { defineProps } from 'vue'
-import type { Task } from '@/types/types'
+import type { Habit } from '@/types/types'
 import type { PropType } from 'vue'
 import { selectedDate } from '../services/selectedDate'
 import type { DateInfo } from '../types/types'
@@ -50,8 +50,8 @@ const props = defineProps({
     type: Function as PropType<() => void>,
     required: true
   },
-  task: {
-    type: Object as PropType<Task>,
+  habit: {
+    type: Object as PropType<Habit>,
     required: true
   },
   timestamp: {
@@ -78,9 +78,9 @@ const getTimeStamp = (seconds: number | undefined): string => {
   return `${hours}:${paddedMinutes}:${paddedSeconds}`
 }
 
-const restartTimer = (task: Task): void => {
-  task.timer = task.default
-  task.completed = null
+const restartTimer = (habit: Habit): void => {
+  habit.timer = habit.default
+  habit.completed = null
 }
 </script>
 

@@ -1,84 +1,84 @@
 <template>
   <div
     class="container d-flex align-items-center justify-content-between p-2 py-3"
-    @click="openTaskModal(task)"
+    @click="openHabitModal(habit)"
   >
     <div class="d-flex align-items-center cursor-pointer">
       <font-awesome-icon
-        class="tasktype-icon rounded-square"
+        class="habittype-icon rounded-square"
         :icon="['fas', 'list-check']"
-        v-if="task?.type === 'yesno'"
+        v-if="habit?.type === 'yesno'"
       />
       <font-awesome-icon
-        class="tasktype-icon rounded-square"
+        class="habittype-icon rounded-square"
         :icon="['fas', 'plus-minus']"
-        v-else-if="task?.type === 'numeric'"
+        v-else-if="habit?.type === 'numeric'"
       />
       <font-awesome-icon
-        class="tasktype-icon rounded-square"
+        class="habittype-icon rounded-square"
         :icon="['fas', 'clock']"
-        v-else-if="task?.type === 'timer'"
+        v-else-if="habit?.type === 'timer'"
       />
-      <p class="mb-0 ms-2 text-white">{{ task?.title }}</p>
+      <p class="mb-0 ms-2 text-white">{{ habit?.title }}</p>
     </div>
-    <div v-if="task?.type === 'yesno'">
+    <div v-if="habit?.type === 'yesno'">
       <font-awesome-icon
         class="cursor-pointer rounded-circle btn-click no-select"
         :icon="['fas', 'check']"
         :class="{
-          'text-success': task?.completed,
-          'text-danger': task?.completed === false
+          'text-success': habit?.completed,
+          'text-danger': habit?.completed === false
         }"
-        @click.stop="toggleTaskValue(task)"
+        @click.stop="toggleHabitValue(habit)"
       />
     </div>
-    <div v-else-if="task?.type === 'numeric'">
+    <div v-else-if="habit?.type === 'numeric'">
       <div class="position-relative pt-2">
         <font-awesome-icon
           class="cursor-pointer rounded-circle btn-click no-select"
           :icon="['fas', 'minus']"
-          :class="{ 'text-success': task?.completed, 'text-danger': task?.completed === false }"
-          @click.stop="adjustCount(task, false)"
+          :class="{ 'text-success': habit?.completed, 'text-danger': habit?.completed === false }"
+          @click.stop="adjustCount(habit, false)"
         />
         <font-awesome-icon
           class="cursor-pointer rounded-circle btn-click no-select"
           :icon="['fas', 'plus']"
-          :class="{ 'text-success': task.completed, 'text-danger': task.completed === false }"
-          @click.stop="adjustCount(task, true)"
+          :class="{ 'text-success': habit.completed, 'text-danger': habit.completed === false }"
+          @click.stop="adjustCount(habit, true)"
         />
         <p
           class="timer position-absolute translate-middle p-0 m-0"
           :class="{
-            'text-success': task.completed,
-            'text-danger': task.completed === false
+            'text-success': habit.completed,
+            'text-danger': habit.completed === false
           }"
         >
-          Count: {{ task.count }}
+          Count: {{ habit.count }}
         </p>
       </div>
     </div>
-    <div v-else-if="task?.type === 'timer'">
+    <div v-else-if="habit?.type === 'timer'">
       <div class="position-relative pt-2">
         <font-awesome-icon
           class="cursor-pointer rounded-circle btn-click no-select"
           :icon="['fas', 'pause']"
-          :class="{ 'text-success': task?.completed, 'text-danger': task?.completed === false }"
-          @click.stop="pauseCountdown(task)"
+          :class="{ 'text-success': habit?.completed, 'text-danger': habit?.completed === false }"
+          @click.stop="pauseCountdown(habit)"
         />
         <font-awesome-icon
           class="cursor-pointer rounded-circle btn-click no-select"
           :icon="['fas', 'play']"
-          :class="{ 'text-success': task?.completed, 'text-danger': task?.completed === false }"
-          @click.stop="startCountdown(task)"
+          :class="{ 'text-success': habit?.completed, 'text-danger': habit?.completed === false }"
+          @click.stop="startCountdown(habit)"
         />
         <p
           class="timer position-absolute translate-middle p-0 m-0"
           :class="{
-            'text-success': isTimerRunning || task?.completed,
-            'text-danger': isTimerRunning === false || task?.completed === false
+            'text-success': isTimerRunning || habit?.completed,
+            'text-danger': isTimerRunning === false || habit?.completed === false
           }"
         >
-          {{ getTimeStamp(task.timer ?? 0) }}
+          {{ getTimeStamp(habit.timer ?? 0) }}
         </p>
       </div>
     </div>
@@ -98,7 +98,7 @@ import {
   faPause,
   faPlusMinus
 } from '@fortawesome/free-solid-svg-icons'
-import type { Task } from '../types/types'
+import type { Habit } from '../types/types'
 import { defineProps, ref, toRefs } from 'vue'
 import type { PropType } from 'vue'
 
@@ -107,12 +107,12 @@ library.add(faPlus, faMinus, faCheck, faListCheck, faClock, faPlay, faPause, faP
 
 // Define props
 const props = defineProps({
-  task: {
-    type: Object as () => Task,
+  habit: {
+    type: Object as () => Habit,
     required: true
   },
-  openTaskModal: {
-    type: Function as PropType<(task: Task) => void>,
+  openHabitModal: {
+    type: Function as PropType<(habit: Habit) => void>,
     required: true
   },
   timestamp: {
@@ -121,10 +121,10 @@ const props = defineProps({
   }
 })
 // Destructure props to use them directly
-const { openTaskModal, timestamp } = props
+const { openHabitModal, timestamp } = props
 
-// Make task UI reactive
-const { task } = toRefs(props)
+// Make habit UI reactive
+const { habit } = toRefs(props)
 
 // Define a variable to track timer running state
 const isTimerRunning = ref<null | boolean>(null)
@@ -133,35 +133,35 @@ beginningOfDay.setHours(0, 0, 0, 0)
 
 const isInPast = (timestamp: Date) => timestamp.getTime() <= beginningOfDay.getTime()
 
-const toggleTaskValue = (task: Task) => {
+const toggleHabitValue = (habit: Habit) => {
   if (timestamp === null || isInPast(timestamp)) return
-  task.completed = task.completed ? null : true
+  habit.completed = habit.completed ? null : true
 }
 
-const updateNumericTaskValue = (task: Task) => {
+const updateNumericHabitValue = (habit: Habit) => {
   if (
-    (task.subtype === 'increment' && (task.count ?? 0) >= (task.goal ?? 0)) ||
-    (task.subtype !== 'increment' && (task.count ?? 0) <= (task.goal ?? 0))
+    (habit.subtype === 'increment' && (habit.count ?? 0) >= (habit.goal ?? 0)) ||
+    (habit.subtype !== 'increment' && (habit.count ?? 0) <= (habit.goal ?? 0))
   ) {
-    task.completed = true
+    habit.completed = true
   } else {
-    task.completed = null
+    habit.completed = null
   }
 }
 
-const adjustCount = (task: Task, increment: boolean) => {
+const adjustCount = (habit: Habit, increment: boolean) => {
   if (timestamp === null || isInPast(timestamp)) return
 
   if (increment) {
-    if (task.count !== undefined) {
-      task.count = (task.count ?? 0) + 1
+    if (habit.count !== undefined) {
+      habit.count = (habit.count ?? 0) + 1
     }
   } else {
-    if (task.count !== undefined && task.count > 0) {
-      task.count -= 1
+    if (habit.count !== undefined && habit.count > 0) {
+      habit.count -= 1
     }
   }
-  updateNumericTaskValue(task)
+  updateNumericHabitValue(habit)
 }
 
 const getTimeStamp = (seconds: number) => {
@@ -172,32 +172,32 @@ const getTimeStamp = (seconds: number) => {
   return `${hours}:${paddedMinutes}:${paddedSeconds}`
 }
 
-const startCountdown = (task: Task) => {
-  if (timestamp === null || isInPast(timestamp) || isTimerRunning.value || task.completed !== null)
+const startCountdown = (habit: Habit) => {
+  if (timestamp === null || isInPast(timestamp) || isTimerRunning.value || habit.completed !== null)
     return
   isTimerRunning.value = true
-  task.timerInterval = setInterval(() => {
-    const timer = task.timer ?? 0
+  habit.timerInterval = setInterval(() => {
+    const timer = habit.timer ?? 0
     if (timer <= 1) {
-      task.completed = true
+      habit.completed = true
       isTimerRunning.value = null
-      task.timer = 0
-      clearInterval(task.timerInterval)
+      habit.timer = 0
+      clearInterval(habit.timerInterval)
     } else {
-      task.timer = timer - 1
+      habit.timer = timer - 1
     }
   }, 1000)
 }
 
-const pauseCountdown = (task: Task) => {
+const pauseCountdown = (habit: Habit) => {
   if (timestamp === null || isInPast(timestamp) || !isTimerRunning.value) return
   isTimerRunning.value = false
-  clearInterval(task.timerInterval)
+  clearInterval(habit.timerInterval)
 }
 </script>
 
 <style scoped>
-.tasktype-icon {
+.habittype-icon {
   color: #5b5b5b;
 }
 .rounded-circle {

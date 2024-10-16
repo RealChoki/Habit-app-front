@@ -10,8 +10,9 @@
     <RouterLink
       v-if="showNext"
       class="next back text-decoration-none fw-bold fs-6"
-      :to="nextRoute"
-      :class="{ 'move-left': nextButtonText === 'CREATE' }"
+      :class="{ 'move-left': nextButtonText === 'CREATE', 'disabled-link': isNextDisabled }"
+      :to="isNextDisabled ? '#' : nextRoute"
+      @click.prevent="isNextDisabled ? null : goNext"
     >
       {{ nextButtonText }}
     </RouterLink>
@@ -22,7 +23,7 @@
 import { useRouter, type Router } from 'vue-router'
 import { defineProps, type ComputedRef, computed } from 'vue'
 
-defineProps({
+const props = defineProps({
   showNext: {
     type: Boolean,
     default: true
@@ -30,6 +31,10 @@ defineProps({
   filledCircle: {
     type: Number,
     default: 0
+  },
+  isNextDisabled: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -71,6 +76,12 @@ const nextButtonText: ComputedRef<string> = computed(() => {
 const goBack = (): void => {
   router.back()
 }
+
+const goNext = (): void => {
+  if (!props.isNextDisabled) {
+    router.push(props.nextRoute)
+  }
+}
 </script>
 
 <style scoped>
@@ -82,6 +93,12 @@ const goBack = (): void => {
 .next {
   color: #fefff7;
   cursor: pointer;
+}
+
+.disabled-link {
+  opacity: 0.4;
+  color: #5b5b5b;
+  cursor: default;
 }
 
 .back-next {
@@ -114,5 +131,9 @@ const goBack = (): void => {
 
 .move-left {
   margin-left: -15px; /* Adjust this value as needed */
+}
+
+.create-color {
+  color: #42b883;
 }
 </style>
