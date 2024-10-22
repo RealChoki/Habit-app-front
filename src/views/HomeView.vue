@@ -9,18 +9,10 @@
             v-for="(habit, key) in filteredHabits"
             :key="key"
             :habit="habit"
-            :openHabitModal="openHabitModal"
             :timestamp="timestamp"
           />
         </div>
       </div>
-      <HabitModal
-        v-if="selectedHabit !== null"
-        :showModal="showModal"
-        :closeModal="closeModal"
-        :timestamp="timestamp"
-        :habit="selectedHabit"
-      />
 
       <div
         class="position-absolute plus-div d-flex justify-content-center align-items-center cursor-pointer"
@@ -47,7 +39,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 import HomeCalender from '../components/HomeCalender.vue'
-import HabitModal from '../components/HabitModal.vue'
 import HeaderNavbar from '../components/HeaderNavbar.vue'
 import HabitElement from '../components/HabitElement.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -83,18 +74,7 @@ watch(
 
 const filteredHabits = ref<Habit[]>([])
 const router = useRouter()
-const showModal = ref<boolean>(false)
-const selectedHabit = ref<Habit | null>(null)
 const timestamp = ref<Date | null>(null)
-
-const openHabitModal = (habit: Habit): void => {
-  selectedHabit.value = habit
-  showModal.value = true
-}
-
-const closeModal = (): void => {
-  showModal.value = false
-}
 
 const navigateToAddHabitView = (): void => {
   router.push({ name: 'AddHabitView' })

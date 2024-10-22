@@ -51,16 +51,15 @@
         </div>
       </div>
 
-      <BackNextButton :filledCircle="3" />
+      <BackNextButton :filledCircle="3" :isNextDisabled="isNextDisabled" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed, watch } from 'vue'
 import BackNextButton from '@/common/BackNextButton.vue'
 
-// ! not clean?
 interface DayOption {
   label: string
   value: string
@@ -79,8 +78,27 @@ const daysOfWeek: DayOption[] = [
 const selectedDaysOfWeek = ref<string[]>([])
 const daysOfMonth: number[] = Array.from({ length: 31 }, (_, i) => i + 1)
 const selectedDaysOfMonth = ref<number[]>([])
-</script>
 
+const isNextDisabled = computed(() => {
+  if (frequency.value === 'everyday') {
+    return false
+  } else if (frequency.value === 'specificDaysWeek') {
+    return selectedDaysOfWeek.value.length === 0
+  } else if (frequency.value === 'specificDaysMonth') {
+    return selectedDaysOfMonth.value.length === 0
+  }
+  return true
+})
+
+// Watch for changes in frequency and reset the selected days accordingly
+watch(frequency, (newFrequency, oldFrequency) => {
+  if (newFrequency === 'specificDaysWeek' && oldFrequency === 'specificDaysMonth') {
+    selectedDaysOfMonth.value = []
+  } else if (newFrequency === 'specificDaysMonth' && oldFrequency === 'specificDaysWeek') {
+    selectedDaysOfWeek.value = []
+  }
+})
+</script>
 
 <style scoped>
 .habit-goal-form {

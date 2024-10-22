@@ -3,7 +3,7 @@
     class="container d-flex align-items-center justify-content-between p-2 py-3"
     @click="openHabitModal(habit)"
   >
-    <div class="d-flex align-items-center cursor-pointer">
+    <div class="d-flex align-items-center">
       <font-awesome-icon
         class="habittype-icon rounded-square"
         :icon="['fas', 'list-check']"
@@ -60,17 +60,29 @@
     <div v-else-if="habit?.type === 'timer'">
       <div class="position-relative pt-2">
         <font-awesome-icon
-          class="cursor-pointer rounded-circle btn-click no-select"
-          :icon="['fas', 'pause']"
-          :class="{ 'text-success': habit?.completed, 'text-danger': habit?.completed === false }"
-          @click.stop="pauseCountdown(habit)"
-        />
-        <font-awesome-icon
+          v-if="habit.timer > 0 && !isTimerRunning"
           class="cursor-pointer rounded-circle btn-click no-select"
           :icon="['fas', 'play']"
           :class="{ 'text-success': habit?.completed, 'text-danger': habit?.completed === false }"
           @click.stop="startCountdown(habit)"
         />
+
+        <font-awesome-icon
+          v-if="habit.timer > 0 && isTimerRunning"
+          class="cursor-pointer rounded-circle btn-click no-select"
+          :icon="['fas', 'pause']"
+          :class="{ 'text-success': habit?.completed, 'text-danger': habit?.completed === false }"
+          @click.stop="pauseCountdown(habit)"
+        />
+
+        <font-awesome-icon
+          v-if="habit.timer === 0 || showRestart"
+          class="cursor-pointer rounded-circle btn-click no-select"
+          :icon="['fas', 'redo']"
+          :class="{ 'text-success': habit?.completed, 'text-danger': habit?.completed === false }"
+          @click.stop="restartCountdown(habit)"
+        />
+
         <p
           class="timer position-absolute translate-middle p-0 m-0"
           :class="{
@@ -96,14 +108,15 @@ import {
   faClock,
   faPlay,
   faPause,
-  faPlusMinus
+  faPlusMinus,
+  faRedo
 } from '@fortawesome/free-solid-svg-icons'
 import type { Habit } from '../types/types'
 import { defineProps, ref, toRefs } from 'vue'
 import type { PropType } from 'vue'
 
 // Add the icons to the library
-library.add(faPlus, faMinus, faCheck, faListCheck, faClock, faPlay, faPause, faPlusMinus)
+library.add(faPlus, faMinus, faCheck, faListCheck, faClock, faPlay, faPause, faPlusMinus, faRedo)
 
 // Define props
 const props = defineProps({
@@ -128,6 +141,7 @@ const { habit } = toRefs(props)
 
 // Define a variable to track timer running state
 const isTimerRunning = ref<null | boolean>(null)
+const showRestart = ref(false)
 const beginningOfDay = new Date()
 beginningOfDay.setHours(0, 0, 0, 0)
 
@@ -173,6 +187,7 @@ const getTimeStamp = (seconds: number) => {
 }
 
 const startCountdown = (habit: Habit) => {
+  showRestart.value = true
   if (timestamp === null || isInPast(timestamp) || isTimerRunning.value || habit.completed !== null)
     return
   isTimerRunning.value = true
@@ -193,6 +208,15 @@ const pauseCountdown = (habit: Habit) => {
   if (timestamp === null || isInPast(timestamp) || !isTimerRunning.value) return
   isTimerRunning.value = false
   clearInterval(habit.timerInterval)
+}
+
+const restartCountdown = (habit: Habit) => {
+  pauseCountdown(habit)
+  habit.timer = habit.default
+
+  isTimerRunning.value = null
+  showRestart.value = false
+  habit.completed = null
 }
 </script>
 

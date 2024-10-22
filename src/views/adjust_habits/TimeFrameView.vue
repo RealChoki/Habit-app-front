@@ -16,6 +16,7 @@
               v-model="startDate"
               dark
               :enable-time-picker="false"
+              :min-date="today"
               ref="startDatePicker"
               class="habit-date-picker__input"
             />
@@ -29,11 +30,12 @@
               <p class="habit-date-picker__text">End date</p>
             </div>
             <Datepicker
-            v-model="endDate"
-            dark
-            :enable-time-picker="false"
-            ref="endDatePicker"
-            class="habit-date-picker__input"
+              v-model="endDate"
+              dark
+              :enable-time-picker="false"
+              :min-date="minEndDate"
+              ref="endDatePicker"
+              class="habit-date-picker__input"
             />
             <p class="delete-enddate" @click="deleteEndDate">Delete end date</p>
           </div>
@@ -42,14 +44,14 @@
             <p class="add-enddate" >Add end date</p>
           </div>
         </div>
-        <BackNextButton :filledCircle="4" />
+        <BackNextButton :filledCircle="4" :isNextDisabled="isNextDisabled" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCalendarCheck, faCalendarDays, faSquarePlus} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -60,11 +62,23 @@ import '@vuepic/vue-datepicker/dist/main.css'
 library.add(faCalendarCheck, faCalendarDays, faSquarePlus)
 
 const startDate = ref(new Date())
-const endDate = ref(new Date(new Date().setFullYear(new Date().getFullYear() + 1)))
-const showEndDate = ref(true)
+const endDate = ref(null)
+const showEndDate = ref(false)
 
 const endDatePicker = ref(null)
 const startDatePicker = ref(null)
+
+const today = computed(() => {
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  return today
+})
+
+const minEndDate = computed(() => {
+  const minEndDate = new Date(startDate.value)
+  minEndDate.setDate(minEndDate.getDate() + 7)
+  return minEndDate
+})
 
 const openStartDatePicker = () => {
   const datePickerInput = startDatePicker.value?.$el.querySelector('input')
@@ -86,9 +100,24 @@ const deleteEndDate = () => {
 }
 
 const addEndDate = () => {
-  endDate.value = new Date(new Date().setFullYear(new Date().getFullYear() + 1))
+  endDate.value = null
   showEndDate.value = true
 }
+
+const isNextDisabled = computed(() => {
+  if (!startDate.value) {
+    return true
+  }
+  if (showEndDate.value && !endDate.value) {
+    return true
+  }
+  return false
+})
+
+onMounted(() => {
+  endDate.value = null
+  showEndDate.value = false
+})
 </script>
 
 <style>
@@ -107,10 +136,10 @@ const addEndDate = () => {
 .habit-date-picker__title {
   color: #fefff7;
   font-size: 18px;
-  font-weight: bold;
   text-align: center;
   padding-top: 20px;
   margin-bottom: 20px;
+  margin-top: 1.7em;
 }
 
 .habit-date-picker__fields {

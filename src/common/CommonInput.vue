@@ -32,7 +32,6 @@ const onInput = (event: Event) => {
 }
 </script>
 
-
 <style scoped>
 label {
   font-size: 12px;
@@ -49,5 +48,26 @@ label {
   box-shadow: none;
   background-color: #131213;
   color: #ffffff;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border: 1px solid #ffffff;
+  color: #ffffff;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  border: 1px solid #ffffff;
+  -webkit-text-fill-color: #ffffff;
+  -webkit-box-shadow: 0 0 0px 1000px #000 inset;
+  transition: background-color 5000s ease-in-out 0s;
 }
 </style>
