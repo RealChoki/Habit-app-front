@@ -1,23 +1,31 @@
 <template>
   <div class="form-group">
-    <input
-      type="text"
-      class="rounded-0 border-0 border-bottom w-100"
-      id="discription-input"
+    <textarea
+      class="rounded-0 border-0 border-bottom w-100 pb-2"
+      id="description-input"
       placeholder="Description (optional)"
-    />
+      rows="1"
+      @input="autoResize"
+    ></textarea>
   </div>
 </template>
-  
+
+<script setup lang="ts">
+const autoResize = (event: Event) => {
+  const target = event.target as HTMLTextAreaElement
+  target.style.height = 'auto'
+  target.style.height = `${target.scrollHeight}px`
+}
+</script>
+
 <style scoped>
-#discription-input {
-  height: 29px;
+#description-input {
   background: #131213;
   color: #ffffff;
   font-size: 12px;
 }
 
-#discription-input::placeholder {
+#description-input::placeholder {
   color: #c5c5c5;
   font-size: 12px;
   margin-left: 0px;
@@ -31,7 +39,15 @@ input:focus {
   outline: none;
   box-shadow: none;
   background-color: #131213;
-  color: #c5c5c5; 
-  border-color: #ffffff;
+  color: #c5c5c5;
+}
+
+textarea:focus {
+  outline: none;
+  box-shadow: none;
+  background-color: #131213;
+  color: #c5c5c5;
+  border: none;
+  /* border-color: #ffffff; */
 }
 </style>

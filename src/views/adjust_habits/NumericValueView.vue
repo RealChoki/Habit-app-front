@@ -3,7 +3,29 @@
     <h2 class="title pt-5 mb-4 text-center font-weight-bold">Define your habit</h2>
     <div class="d-flex justify-content-center flex-column">
       <CommonInput class="habit input-common" :id="'habit-input'" :label="'Habit'" v-model="habit" />
-      <CommonInput class="goal input-common mt-1" :id="'goal-input'" :label="'Goal'" v-model="goal" type="number" />
+      <template>
+        <v-container>
+          <v-row>
+            <v-col cols="12" md="4" sm="4">
+              <h5>Default</h5>
+
+              <v-number-input control-variant="default"></v-number-input>
+            </v-col>
+
+            <v-col cols="12" md="4" sm="4">
+              <h5>Stacked</h5>
+
+              <v-number-input control-variant="stacked"></v-number-input>
+            </v-col>
+
+            <v-col cols="12" md="4" sm="4">
+              <h5>Split</h5>
+
+              <v-number-input control-variant="split"></v-number-input>
+            </v-col>
+          </v-row>
+        </v-container>
+      </template>
       <p class="text-center mt-2">eg., Drink 5 glasses of water per day.</p>
       <DescriptionField />
       <BackNextButton :filledCircle="2" :isNextDisabled="isNextDisabled" />
