@@ -39,8 +39,8 @@ const generateWeekData = (weekOffset: number): void => {
         frequency: 'daily',
         title: 'Play 1 hour of Piano',
         description: 'Play the piano for at least 1 hour today',
-        default: 3,
-        timer: 3,
+        currentTime: 3,
+        initialTime: 3,
         completed: null
       }
     }

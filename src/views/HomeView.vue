@@ -11,6 +11,13 @@
             :habit="habit"
             :timestamp="timestamp"
           />
+          <div
+            v-if="filteredHabits.length === 0"
+            class="d-flex justify-content-center align-items-center text-white"
+            style="height: 200px"
+          >
+            No habit for this day
+          </div>
         </div>
       </div>
 
@@ -94,8 +101,7 @@ const updateFilteredHabits = (): void => {
   const filteredData = weekData.find((item: DayData) => {
     return (
       // item.metadata &&
-      item.timestamp &&
-      item.timestamp.toISOString().split('T')[0] === urlDate
+      item.timestamp && item.timestamp.toISOString().split('T')[0] === urlDate
     )
   })
 

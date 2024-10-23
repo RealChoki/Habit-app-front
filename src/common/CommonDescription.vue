@@ -50,4 +50,12 @@ textarea:focus {
   border: none;
   /* border-color: #ffffff; */
 }
+
+textarea {
+    border: none;
+    background-color: transparent;
+    resize: none;
+    outline: none;
+    overflow: hidden;
+}
 </style>

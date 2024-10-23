@@ -31,10 +31,6 @@ const props = defineProps({
     type: Object as PropType<Habit>,
     required: true
   },
-  openHabitModal: {
-    type: Function as PropType<(habit: Habit) => void>,
-    required: true
-  },
   toggleHabitSelection: {
     type: Function as PropType<(habit: Habit) => void>,
     required: true

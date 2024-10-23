@@ -1,25 +1,43 @@
 <template>
-  <div
-    class="container d-flex align-items-center justify-content-between p-2 py-3"
-    @click="openHabitModal(habit)"
-  >
+  <div class="container d-flex align-items-center justify-content-between p-2 py-3">
     <div class="d-flex align-items-center">
       <font-awesome-icon
         class="habittype-icon rounded-square"
+        :class="{
+          'text-success': habit?.completed,
+          'text-danger': habit?.completed === false
+        }"
         :icon="['fas', 'list-check']"
         v-if="habit?.type === 'yesno'"
       />
       <font-awesome-icon
         class="habittype-icon rounded-square"
+        :class="{
+          'text-success': habit?.completed,
+          'text-danger': habit?.completed === false
+        }"
         :icon="['fas', 'plus-minus']"
         v-else-if="habit?.type === 'numeric'"
       />
       <font-awesome-icon
         class="habittype-icon rounded-square"
+        :class="{
+          'text-success': habit?.completed,
+          'text-danger': habit?.completed === false
+        }"
         :icon="['fas', 'clock']"
         v-else-if="habit?.type === 'timer'"
       />
-      <p class="mb-0 ms-2 text-white">{{ habit?.title }}</p>
+      <p
+        class="mb-0 ms-2"
+        :class="{
+          'text-success': habit?.completed,
+          'text-danger': habit?.completed === false,
+          'text-white': habit?.completed === null
+        }"
+      >
+        {{ habit?.title }}
+      </p>
     </div>
     <div v-if="habit?.type === 'yesno'">
       <font-awesome-icon
@@ -60,7 +78,7 @@
     <div v-else-if="habit?.type === 'timer'">
       <div class="position-relative pt-2">
         <font-awesome-icon
-          v-if="habit.timer > 0 && !isTimerRunning"
+          v-if="habit.currentTime > 0 && !isTimerRunning"
           class="cursor-pointer rounded-circle btn-click no-select"
           :icon="['fas', 'play']"
           :class="{ 'text-success': habit?.completed, 'text-danger': habit?.completed === false }"
@@ -68,7 +86,7 @@
         />
 
         <font-awesome-icon
-          v-if="habit.timer > 0 && isTimerRunning"
+          v-if="habit.currentTime > 0 && isTimerRunning"
           class="cursor-pointer rounded-circle btn-click no-select"
           :icon="['fas', 'pause']"
           :class="{ 'text-success': habit?.completed, 'text-danger': habit?.completed === false }"
@@ -76,7 +94,7 @@
         />
 
         <font-awesome-icon
-          v-if="habit.timer === 0 || showRestart"
+          v-if="habit.currentTime === 0 || showRestart"
           class="cursor-pointer rounded-circle btn-click no-select"
           :icon="['fas', 'redo']"
           :class="{ 'text-success': habit?.completed, 'text-danger': habit?.completed === false }"
@@ -90,7 +108,7 @@
             'text-danger': isTimerRunning === false || habit?.completed === false
           }"
         >
-          {{ getTimeStamp(habit.timer ?? 0) }}
+          {{ getTimeStamp(habit.currentTime ?? 0) }}
         </p>
       </div>
     </div>
@@ -124,17 +142,13 @@ const props = defineProps({
     type: Object as () => Habit,
     required: true
   },
-  openHabitModal: {
-    type: Function as PropType<(habit: Habit) => void>,
-    required: true
-  },
   timestamp: {
     type: Date as PropType<Date | null>,
     default: null
   }
 })
 // Destructure props to use them directly
-const { openHabitModal, timestamp } = props
+const { timestamp } = props
 
 // Make habit UI reactive
 const { habit } = toRefs(props)
@@ -192,14 +206,14 @@ const startCountdown = (habit: Habit) => {
     return
   isTimerRunning.value = true
   habit.timerInterval = setInterval(() => {
-    const timer = habit.timer ?? 0
+    const timer = habit.currentTime ?? 0
     if (timer <= 1) {
       habit.completed = true
       isTimerRunning.value = null
-      habit.timer = 0
+      habit.currentTime = 0
       clearInterval(habit.timerInterval)
     } else {
-      habit.timer = timer - 1
+      habit.currentTime = timer - 1
     }
   }, 1000)
 }
@@ -212,7 +226,7 @@ const pauseCountdown = (habit: Habit) => {
 
 const restartCountdown = (habit: Habit) => {
   pauseCountdown(habit)
-  habit.timer = habit.default
+  habit.currentTime = habit.initialTime
 
   isTimerRunning.value = null
   showRestart.value = false

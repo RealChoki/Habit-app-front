@@ -1,4 +1,4 @@
-type TimerInterval = number | ReturnType<typeof setInterval>;
+type TimerInterval = number | ReturnType<typeof setInterval>
 
 export interface Habit {
   id: number
@@ -12,13 +12,13 @@ export interface Habit {
   goal?: number
   subtype?: 'increment' | 'decrement'
   // For timer habits
-  timer?: number
-  default?: number
+  currentTime?: number
+  initialTime?: number
   timerInterval?: TimerInterval
 }
 
 export interface DayData {
-  timestamp: Date //id
+  timestamp: Date // id string yyyy-mm-dd
   completed: boolean
   habits: { [habitId: string]: Habit }
 }
@@ -30,7 +30,7 @@ export interface DateInfo {
   year: number
 }
 
-// these arent used yet
+// These aren't used yet
 export interface UserHabit {
   id: string
   type: 'yesno' | 'numeric' | 'timer'
@@ -49,7 +49,7 @@ export interface DailyHabit {
   goal?: number
   subtype?: 'increment' | 'decrement'
   // For timer habits
-  timer?: number
-  default?: number
+  currentTime?: number
+  initialTime?: number
   timerInterval?: TimerInterval
 }
