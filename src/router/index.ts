@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
+import HabitFeedbackView from '@/views/adjust_habits/HabitFeedbackView.vue'
 import AddHabitView from '@/views/adjust_habits/AddHabitView.vue'
 import YesNoView from '@/views/adjust_habits/YesNoView.vue'
 import NumericValueView from '@/views/adjust_habits/NumericValueView.vue'
@@ -42,6 +43,11 @@ const router = createRouter({
       path: '/addhabit',
       name: 'AddHabitView',
       component: AddHabitView
+    },
+    {
+      path: '/habitfeedback',
+      name: 'HabitFeedbackView',
+      component: HabitFeedbackView
     },
     {
       path: '/addhabit/yesno',
