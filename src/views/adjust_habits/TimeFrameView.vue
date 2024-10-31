@@ -19,6 +19,7 @@
               :min-date="today"
               ref="startDatePicker"
               class="habit-date-picker__input"
+              format="dd/MM/yyyy"
             />
           </div>
           <div class="habit-date-picker__field" v-if="showEndDate">
@@ -36,6 +37,7 @@
               :min-date="minEndDate"
               ref="endDatePicker"
               class="habit-date-picker__input"
+              format="dd/MM/yyyy"
             />
             <p class="delete-enddate" @click="deleteEndDate">Delete end date</p>
           </div>
@@ -51,9 +53,9 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCalendarCheck, faCalendarDays, faSquarePlus} from '@fortawesome/free-solid-svg-icons'
+import { faCalendarCheck, faCalendarDays, faSquarePlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import BackNextButton from '@/common/BackNextButton.vue'
 import Datepicker from '@vuepic/vue-datepicker'
@@ -100,7 +102,9 @@ const deleteEndDate = () => {
 }
 
 const addEndDate = () => {
-  endDate.value = null
+  const newEndDate = new Date(startDate.value)
+  newEndDate.setDate(newEndDate.getDate() + 7)
+  endDate.value = newEndDate
   showEndDate.value = true
 }
 
@@ -112,6 +116,16 @@ const isNextDisabled = computed(() => {
     return true
   }
   return false
+})
+
+watch(startDate, (newStartDate) => {
+  if (showEndDate.value && endDate.value) {
+    const minEndDateValue = new Date(newStartDate)
+    minEndDateValue.setDate(minEndDateValue.getDate() + 7)
+    if (endDate.value < minEndDateValue) {
+      endDate.value = minEndDateValue
+    }
+  }
 })
 
 onMounted(() => {

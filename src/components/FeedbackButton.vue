@@ -2,7 +2,7 @@
   <div>
     <div class="d-flex flex-column align-items-center m-0" v-for="option in options" :key="option.id">
       <div :class="['feedback-button', getButtonClass(option.name), { 'selected-button': selectedOption === option.id }]" @click="selectOption(option)">
-        <h1 :class="['small-title', { 'selected-title': selectedOption === option.id }]">{{ option.name }}</h1>
+        <h1 :class="['small-feedbck-title', { 'selected-title': selectedOption === option.id }]">{{ option.name }}</h1>
       </div>
       <p class="desc">{{ option.description }}</p>
     </div>
@@ -69,7 +69,7 @@ function selectOption(option: EvaluateOption) {
   cursor: pointer;
 }
 
-.small-title {
+.small-feedbck-title {
   color: #b3b3b3 /* Darker shade of white */ !important;
   font-weight: 400;
   font-size: 24px;
