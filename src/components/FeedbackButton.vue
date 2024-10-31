@@ -71,7 +71,7 @@ function selectOption(option: EvaluateOption) {
 
 .small-feedbck-title {
   color: #b3b3b3 /* Darker shade of white */ !important;
-  font-weight: 400;
+  font-weight: 600;
   font-size: 24px;
   margin-bottom: 0px;
 }

@@ -18,7 +18,7 @@ type TimerInterval = number | ReturnType<typeof setInterval>
 // }
 
 export interface DayData {
-  timestamp: Date // id string yyyy-mm-dd
+  timestamp: Date
   completed: boolean
   dailyHabits: DailyHabit[]
 }
@@ -39,6 +39,7 @@ export interface UserHabit {
 }
 
 export interface DailyHabit {
+  dailyHabitId: string // PK
   habitId: string // FK
   timestamp: Date
   type: 'yesno' | 'numeric' | 'timer'

@@ -122,7 +122,7 @@ button {
   font-size: 20px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
-  padding: 3px 21px;
+  padding: 3px 20.8px;
 }
 
 button:hover {

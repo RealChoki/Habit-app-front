@@ -51,6 +51,10 @@
         </div>
       </div>
 
+      <div v-if="warningMessage" class="warning-message text-warning">
+        {{ warningMessage }}
+      </div>
+
       <BackNextButton :filledCircle="3" :isNextDisabled="isNextDisabled" />
     </div>
   </div>
@@ -78,6 +82,7 @@ const daysOfWeek: DayOption[] = [
 const selectedDaysOfWeek = ref<string[]>([])
 const daysOfMonth: number[] = Array.from({ length: 31 }, (_, i) => i + 1)
 const selectedDaysOfMonth = ref<number[]>([])
+const warningMessage = ref<string | null>(null)
 
 const isNextDisabled = computed(() => {
   if (frequency.value === 'everyday') {
@@ -96,6 +101,15 @@ watch(frequency, (newFrequency, oldFrequency) => {
     selectedDaysOfMonth.value = []
   } else if (newFrequency === 'specificDaysMonth' && oldFrequency === 'specificDaysWeek') {
     selectedDaysOfWeek.value = []
+  }
+})
+
+// Watch for changes in selectedDaysOfMonth and update warningMessage
+watch(selectedDaysOfMonth, (newDays) => {
+  if (newDays.includes(30) || newDays.includes(31)) {
+    warningMessage.value = 'Note: Habits set for the 30th or 31st won’t appear in months without these dates.'
+  } else {
+    warningMessage.value = null
   }
 })
 </script>
@@ -198,5 +212,11 @@ input[type='radio']:checked + label:before {
   position: absolute;
   transform: translate(50%, 0%);
   color: white;
+}
+
+.warning-message {
+  font-size: 10px;
+  margin-top: 5px;
+  margin-left: 16px;
 }
 </style>
