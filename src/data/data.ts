@@ -1,5 +1,5 @@
 import type { DayData } from '@/types/types'
-export const weekData: DayData[] = [];
+export const weekDataFrontend: DayData[] = [];
 
 const generateWeekData = (weekOffset: number): void => {
   const currentDate = new Date()
@@ -15,33 +15,39 @@ const generateWeekData = (weekOffset: number): void => {
 
     const habits: { [key: string]: any } = {
       1: {
-        id: 1,
+        dailyHabitId: 'f23qr23',
+        habitId: 'daed23e',
+        timestamp: timestamp,
         type: 'yesno',
+        completed: null,
         frequency: 'daily',
         title: 'Go to gym',
         description: 'Go to the gym and workout for at least 1 hour',
-        completed: null
       },
       2: {
-        id: 2,
+        dailyHabitId: 'f23qr23',
+        habitId: 'daed23e',
+        timestamp: timestamp,
         type: 'numeric',
+        completed: null,
         frequency: 'daily',
         title: 'Drink 5 Glasses of Water',
         description: 'Drink at least 5 glasses of water today',
         subtype: 'increment',
         count: 0,
         goal: 5,
-        completed: null
       },
       3: {
-        id: 3,
+        dailyHabitId: 'f23qr23',
+        habitId: 'daed23e',
+        timestamp: timestamp,
         type: 'timer',
+        completed: null,
         frequency: 'daily',
         title: 'Play 1 hour of Piano',
         description: 'Play the piano for at least 1 hour today',
         currentTime: 3,
         initialTime: 3,
-        completed: null
       }
     }
 
@@ -52,13 +58,13 @@ const generateWeekData = (weekOffset: number): void => {
     })
 
     // Add the metadata object and habits for the day to the weekData array
-    weekData.push({
+    weekDataFrontend.push({
       timestamp,
-      habits: habitsForDay,
+      dailyHabits: habitsForDay,
       completed: false
     })
   }
-  console.log(weekData)
+  console.log(weekDataFrontend)
 }
 
 // Generate week data for the current week (offset 0)

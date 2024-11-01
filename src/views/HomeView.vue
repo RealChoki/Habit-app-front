@@ -5,14 +5,14 @@
       <div>
         <HomeCalender />
         <div class="max-width-500">
+          <HabitElement v-for="(habit, key) in filteredHabits" :key="key" :habit="habit" />
           <HabitElement
-            v-for="(habit, key) in filteredHabits"
+            v-for="(habit, key) in Object.values(habitExample.dailyHabits)"
             :key="key"
             :habit="habit"
-            :timestamp="timestamp"
           />
           <div
-            v-if="filteredHabits.length === 0"
+            v-if="filteredHabits.length === 0 && habitExample.dailyHabits.length === 0"
             class="d-flex justify-content-center align-items-center text-white"
             style="height: 200px"
           >
@@ -53,7 +53,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 import type { DailyHabit, DayData } from '../types/types'
 import { useRouter } from 'vue-router'
-// import { weekData } from '../data/data.js'
+import { weekDataFrontend } from '../data/data.js'
 import { getWeekData } from '../api/weekData'
 import { getWeekRange } from '../services/weekService'
 
@@ -61,6 +61,7 @@ library.add(faMinus, faPlus)
 
 const weekData = ref<DayData[]>([])
 
+const habitExample = weekDataFrontend[0]
 watch(
   getWeekRange,
   async (newRange) => {
@@ -68,7 +69,7 @@ watch(
     if (startDate && endDate) {
       try {
         const habits = await getWeekData(startDate, endDate)
-        const sortedWeekData: DayData[] = sortHabitsByDay(habits);
+        const sortedWeekData: DayData[] = sortHabitsByDay(habits)
         weekData.value = sortedWeekData
         console.log('Days fetched:', weekData.value)
       } catch (error) {
@@ -125,24 +126,24 @@ const updateFilteredHabits = (): void => {
 }
 
 function sortHabitsByDay(habits: DailyHabit[]): DayData[] {
-  const groupedHabits: Record<string, DayData> = {};
+  const groupedHabits: Record<string, DayData> = {}
 
   habits.forEach((habit) => {
-    const date = new Date(habit.timestamp).toISOString().split('T')[0];
-    const completed = habit.completed;
+    const date = new Date(habit.timestamp).toISOString().split('T')[0]
+    const completed = habit.completed
 
     if (!groupedHabits[date]) {
       groupedHabits[date] = {
         timestamp: new Date(habit.timestamp),
         completed: completed,
         dailyHabits: []
-      };
+      }
     }
 
-    groupedHabits[date].dailyHabits.push(habit);
-  });
+    groupedHabits[date].dailyHabits.push(habit)
+  })
 
-  return Object.values(groupedHabits);
+  return Object.values(groupedHabits)
 }
 
 onMounted(() => {

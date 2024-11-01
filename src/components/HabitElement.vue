@@ -39,6 +39,7 @@
         {{ habit?.title }}
       </p>
     </div>
+    <!-- <div v-if="istInDerVergangenHeit(habit?.timestamp)"> -->
     <div v-if="habit?.type === 'yesno'">
       <font-awesome-icon
         class="cursor-pointer rounded-circle btn-click no-select"
@@ -112,6 +113,7 @@
         </p>
       </div>
     </div>
+    <!-- </div> -->
   </div>
 </template>
 
@@ -129,7 +131,7 @@ import {
   faPlusMinus,
   faRedo
 } from '@fortawesome/free-solid-svg-icons'
-import type { Habit } from '../types/types'
+import type { DailyHabit } from '../types/types'
 import { defineProps, ref, toRefs } from 'vue'
 import type { PropType } from 'vue'
 
@@ -139,16 +141,11 @@ library.add(faPlus, faMinus, faCheck, faListCheck, faClock, faPlay, faPause, faP
 // Define props
 const props = defineProps({
   habit: {
-    type: Object as () => Habit,
+    type: Object as () => DailyHabit,
     required: true
-  },
-  timestamp: {
-    type: Date as PropType<Date | null>,
-    default: null
   }
 })
 // Destructure props to use them directly
-const { timestamp } = props
 
 // Make habit UI reactive
 const { habit } = toRefs(props)
@@ -161,12 +158,12 @@ beginningOfDay.setHours(0, 0, 0, 0)
 
 const isInPast = (timestamp: Date) => timestamp.getTime() <= beginningOfDay.getTime()
 
-const toggleHabitValue = (habit: Habit) => {
-  if (timestamp === null || isInPast(timestamp)) return
+const toggleHabitValue = (habit: DailyHabit) => {
+  if (habit.timestamp === null || isInPast(habit.timestamp)) return
   habit.completed = habit.completed ? null : true
 }
 
-const updateNumericHabitValue = (habit: Habit) => {
+const updateNumericHabitValue = (habit: DailyHabit) => {
   if (
     (habit.subtype === 'increment' && (habit.count ?? 0) >= (habit.goal ?? 0)) ||
     (habit.subtype !== 'increment' && (habit.count ?? 0) <= (habit.goal ?? 0))
@@ -177,8 +174,8 @@ const updateNumericHabitValue = (habit: Habit) => {
   }
 }
 
-const adjustCount = (habit: Habit, increment: boolean) => {
-  if (timestamp === null || isInPast(timestamp)) return
+const adjustCount = (habit: DailyHabit, increment: boolean) => {
+  if (habit.timestamp === null || isInPast(habit.timestamp)) return
 
   if (increment) {
     if (habit.count !== undefined) {
@@ -200,10 +197,10 @@ const getTimeStamp = (seconds: number) => {
   return `${hours}:${paddedMinutes}:${paddedSeconds}`
 }
 
-const startCountdown = (habit: Habit) => {
+const startCountdown = (habit: DailyHabit) => {
   showRestart.value = true
-  if (timestamp === null || isInPast(timestamp) || isTimerRunning.value || habit.completed !== null)
-    return
+  if (habit.timestamp === null || isInPast(habit.timestamp)) return
+  if (isTimerRunning.value || habit.completed !== null) return
   isTimerRunning.value = true
   habit.timerInterval = setInterval(() => {
     const timer = habit.currentTime ?? 0
@@ -218,13 +215,14 @@ const startCountdown = (habit: Habit) => {
   }, 1000)
 }
 
-const pauseCountdown = (habit: Habit) => {
-  if (timestamp === null || isInPast(timestamp) || !isTimerRunning.value) return
+const pauseCountdown = (habit: DailyHabit) => {
+  if (habit.timestamp === null || isInPast(habit.timestamp)) return
+  if (!isTimerRunning.value) return
   isTimerRunning.value = false
   clearInterval(habit.timerInterval)
 }
 
-const restartCountdown = (habit: Habit) => {
+const restartCountdown = (habit: DailyHabit) => {
   pauseCountdown(habit)
   habit.currentTime = habit.initialTime
 
