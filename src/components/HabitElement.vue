@@ -39,81 +39,81 @@
         {{ habit?.title }}
       </p>
     </div>
-    <!-- <div v-if="istInDerVergangenHeit(habit?.timestamp)"> -->
-    <div v-if="habit?.type === 'yesno'">
-      <font-awesome-icon
-        class="cursor-pointer rounded-circle btn-click no-select"
-        :icon="['fas', 'check']"
-        :class="{
-          'text-success': habit?.completed,
-          'text-danger': habit?.completed === false
-        }"
-        @click.stop="toggleHabitValue(habit)"
-      />
-    </div>
-    <div v-else-if="habit?.type === 'numeric'">
-      <div class="position-relative pt-2">
+    <div v-if="isHabitToday">
+      <div v-if="habit?.type === 'yesno'">
         <font-awesome-icon
           class="cursor-pointer rounded-circle btn-click no-select"
-          :icon="['fas', 'minus']"
-          :class="{ 'text-success': habit?.completed, 'text-danger': habit?.completed === false }"
-          @click.stop="adjustCount(habit, false)"
-        />
-        <font-awesome-icon
-          class="cursor-pointer rounded-circle btn-click no-select"
-          :icon="['fas', 'plus']"
-          :class="{ 'text-success': habit.completed, 'text-danger': habit.completed === false }"
-          @click.stop="adjustCount(habit, true)"
-        />
-        <p
-          class="timer position-absolute translate-middle p-0 m-0"
+          :icon="['fas', 'check']"
           :class="{
-            'text-success': habit.completed,
-            'text-danger': habit.completed === false
+            'text-success': habit?.completed,
+            'text-danger': habit?.completed === false
           }"
-        >
-          Count: {{ habit.count }}
-        </p>
+          @click.stop="toggleHabitValue(habit)"
+        />
+      </div>
+      <div v-else-if="habit?.type === 'numeric'">
+        <div class="position-relative pt-2">
+          <font-awesome-icon
+            class="cursor-pointer rounded-circle btn-click no-select"
+            :icon="['fas', 'minus']"
+            :class="{ 'text-success': habit?.completed, 'text-danger': habit?.completed === false }"
+            @click.stop="adjustCount(habit, false)"
+          />
+          <font-awesome-icon
+            class="cursor-pointer rounded-circle btn-click no-select"
+            :icon="['fas', 'plus']"
+            :class="{ 'text-success': habit.completed, 'text-danger': habit.completed === false }"
+            @click.stop="adjustCount(habit, true)"
+          />
+          <p
+            class="timer position-absolute translate-middle p-0 m-0"
+            :class="{
+              'text-success': habit.completed,
+              'text-danger': habit.completed === false
+            }"
+          >
+            Count: {{ habit.count }}
+          </p>
+        </div>
+      </div>
+      <div v-else-if="habit?.type === 'timer'">
+        <div class="position-relative pt-2">
+          <font-awesome-icon
+            v-if="habit.currentTime > 0 && !isTimerRunning"
+            class="cursor-pointer rounded-circle btn-click no-select"
+            :icon="['fas', 'play']"
+            :class="{ 'text-success': habit?.completed, 'text-danger': habit?.completed === false }"
+            @click.stop="startCountdown(habit)"
+          />
+
+          <font-awesome-icon
+            v-if="habit.currentTime > 0 && isTimerRunning"
+            class="cursor-pointer rounded-circle btn-click no-select"
+            :icon="['fas', 'pause']"
+            :class="{ 'text-success': habit?.completed, 'text-danger': habit?.completed === false }"
+            @click.stop="pauseCountdown(habit)"
+          />
+
+          <font-awesome-icon
+            v-if="habit.currentTime === 0 || showRestart"
+            class="cursor-pointer rounded-circle btn-click no-select"
+            :icon="['fas', 'redo']"
+            :class="{ 'text-success': habit?.completed, 'text-danger': habit?.completed === false }"
+            @click.stop="restartCountdown(habit)"
+          />
+
+          <p
+            class="timer position-absolute translate-middle p-0 m-0"
+            :class="{
+              'text-success': isTimerRunning || habit?.completed,
+              'text-danger': isTimerRunning === false || habit?.completed === false
+            }"
+          >
+            {{ getTimeStamp(habit.currentTime ?? 0) }}
+          </p>
+        </div>
       </div>
     </div>
-    <div v-else-if="habit?.type === 'timer'">
-      <div class="position-relative pt-2">
-        <font-awesome-icon
-          v-if="habit.currentTime > 0 && !isTimerRunning"
-          class="cursor-pointer rounded-circle btn-click no-select"
-          :icon="['fas', 'play']"
-          :class="{ 'text-success': habit?.completed, 'text-danger': habit?.completed === false }"
-          @click.stop="startCountdown(habit)"
-        />
-
-        <font-awesome-icon
-          v-if="habit.currentTime > 0 && isTimerRunning"
-          class="cursor-pointer rounded-circle btn-click no-select"
-          :icon="['fas', 'pause']"
-          :class="{ 'text-success': habit?.completed, 'text-danger': habit?.completed === false }"
-          @click.stop="pauseCountdown(habit)"
-        />
-
-        <font-awesome-icon
-          v-if="habit.currentTime === 0 || showRestart"
-          class="cursor-pointer rounded-circle btn-click no-select"
-          :icon="['fas', 'redo']"
-          :class="{ 'text-success': habit?.completed, 'text-danger': habit?.completed === false }"
-          @click.stop="restartCountdown(habit)"
-        />
-
-        <p
-          class="timer position-absolute translate-middle p-0 m-0"
-          :class="{
-            'text-success': isTimerRunning || habit?.completed,
-            'text-danger': isTimerRunning === false || habit?.completed === false
-          }"
-        >
-          {{ getTimeStamp(habit.currentTime ?? 0) }}
-        </p>
-      </div>
-    </div>
-    <!-- </div> -->
   </div>
 </template>
 
@@ -132,7 +132,7 @@ import {
   faRedo
 } from '@fortawesome/free-solid-svg-icons'
 import type { DailyHabit } from '../types/types'
-import { defineProps, ref, toRefs } from 'vue'
+import { defineProps, ref, toRefs, computed } from 'vue'
 import type { PropType } from 'vue'
 
 // Add the icons to the library
@@ -148,18 +148,23 @@ const props = defineProps({
 // Destructure props to use them directly
 
 // Make habit UI reactive
-const { habit } = toRefs(props)
+// const { habit } = toRefs(props)
 
 // Define a variable to track timer running state
 const isTimerRunning = ref<null | boolean>(null)
 const showRestart = ref(false)
-const beginningOfDay = new Date()
-beginningOfDay.setHours(0, 0, 0, 0)
 
-const isInPast = (timestamp: Date) => timestamp.getTime() <= beginningOfDay.getTime()
+const isHabitToday = computed(() => {
+  const habitDate = new Date(props.habit.timestamp)
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  habitDate.setHours(0, 0, 0, 0)
+
+  return habitDate.getTime() === today.getTime()
+})
 
 const toggleHabitValue = (habit: DailyHabit) => {
-  if (habit.timestamp === null || isInPast(habit.timestamp)) return
+  if (habit.timestamp === null) return
   habit.completed = habit.completed ? null : true
 }
 
@@ -175,7 +180,7 @@ const updateNumericHabitValue = (habit: DailyHabit) => {
 }
 
 const adjustCount = (habit: DailyHabit, increment: boolean) => {
-  if (habit.timestamp === null || isInPast(habit.timestamp)) return
+  if (habit.timestamp === null) return
 
   if (increment) {
     if (habit.count !== undefined) {
@@ -199,7 +204,7 @@ const getTimeStamp = (seconds: number) => {
 
 const startCountdown = (habit: DailyHabit) => {
   showRestart.value = true
-  if (habit.timestamp === null || isInPast(habit.timestamp)) return
+  if (habit.timestamp === null) return
   if (isTimerRunning.value || habit.completed !== null) return
   isTimerRunning.value = true
   habit.timerInterval = setInterval(() => {
@@ -216,7 +221,7 @@ const startCountdown = (habit: DailyHabit) => {
 }
 
 const pauseCountdown = (habit: DailyHabit) => {
-  if (habit.timestamp === null || isInPast(habit.timestamp)) return
+  if (habit.timestamp === null) return
   if (!isTimerRunning.value) return
   isTimerRunning.value = false
   clearInterval(habit.timerInterval)

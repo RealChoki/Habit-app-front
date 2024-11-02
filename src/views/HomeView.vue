@@ -6,13 +6,13 @@
         <HomeCalender />
         <div class="max-width-500">
           <HabitElement v-for="(habit, key) in filteredHabits" :key="key" :habit="habit" />
-          <HabitElement
+          <!-- <HabitElement
             v-for="(habit, key) in Object.values(habitExample.dailyHabits)"
             :key="key"
             :habit="habit"
-          />
+          /> -->
           <div
-            v-if="filteredHabits.length === 0 && habitExample.dailyHabits.length === 0"
+            v-if="filteredHabits.length === 0"
             class="d-flex justify-content-center align-items-center text-white"
             style="height: 200px"
           >
@@ -53,7 +53,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 import type { DailyHabit, DayData } from '../types/types'
 import { useRouter } from 'vue-router'
-import { weekDataFrontend } from '../data/data.js'
+// import { weekDataFrontend } from '../data/data.js'
 import { getWeekData } from '../api/weekData'
 import { getWeekRange } from '../services/weekService'
 
@@ -61,7 +61,7 @@ library.add(faMinus, faPlus)
 
 const weekData = ref<DayData[]>([])
 
-const habitExample = weekDataFrontend[0]
+// const habitExample = weekDataFrontend[0]
 watch(
   getWeekRange,
   async (newRange) => {
