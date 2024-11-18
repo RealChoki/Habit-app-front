@@ -2,23 +2,45 @@
   <div class="d-flex justify-content-center align-items-center flex-column">
     <h2 class="title pt-5 mb-4 text-center font-weight-bold">Define your habit</h2>
     <div class="max-width-500 d-flex justify-content-center flex-column">
-      <CommonInput class="habit input-common" :id="'habit-input'" :label="'Habit'" v-model="habit" />
+      <CommonInput
+        class="habit input-common"
+        :id="'habit-input'"
+        :label="'Habit'"
+        v-model="habitTitle"
+      />
       <p class="text-center mt-2">eg., Go to the Gym.</p>
-      <DescriptionField />
-      <BackNextButton :filledCircle="2" :isNextDisabled="!habit" />
+      <DescriptionField v-model="habitDescription" />
+      <BackNextButton :filledCircle="2" :isNextDisabled="!habitTitle" @click="updateHabit" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import CommonInput from '@/common/CommonInput.vue'
-import DescriptionField from '@/common/CommonDescription.vue'
-import BackNextButton from '../../common/BackNextButton.vue'
+import { ref, watch } from 'vue';
+import CommonInput from '@/common/CommonInput.vue';
+import DescriptionField from '@/common/CommonDescription.vue';
+import BackNextButton from '../../common/BackNextButton.vue';
+import habitService from '../../api/newHabitService';
 
 // Track the state of the input
-const habit = ref('')
+const habitTitle = ref('');
+const habitDescription = ref('');
+
+// Watch habitTitle and habitDescription to update the service
+watch(habitTitle, (newTitle) => {
+  habitService.setHabit({ title: newTitle });
+});
+
+watch(habitDescription, (newDescription) => {
+  habitService.setHabit({ description: newDescription });
+});
+
+// Alternatively, update habit title and description when navigating
+const updateHabit = () => {
+  habitService.setHabit({ title: habitTitle.value, description: habitDescription.value });
+};
 </script>
+
 
 <style scoped>
 .title {

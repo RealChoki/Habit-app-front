@@ -6,12 +6,24 @@
       </h2>
 
       <div class="mt-5 mb-3 cursor-pointer">
-        <input type="radio" id="every-day" value="everyday" v-model="frequency" />
+        <input
+          type="radio"
+          id="every-day"
+          value="everyday"
+          v-model="frequency"
+          @change="updateHabitFrequency"
+        />
         <label class="d-flex align-items-center" for="every-day">Every day</label>
       </div>
 
       <div class="mb-3">
-        <input type="radio" id="specific-days-week" value="specificDaysWeek" v-model="frequency" />
+        <input
+          type="radio"
+          id="specific-days-week"
+          value="specificDaysWeek"
+          v-model="frequency"
+          @change="updateHabitFrequency"
+        />
         <label class="d-flex align-items-center" for="specific-days-week"
           >Specific days of the week</label
         >
@@ -25,10 +37,11 @@
             :id="day.value"
             :value="day.value"
             v-model="selectedDaysOfWeek"
+            @change="updateHabitFrequency"
           />
-          <label class="week-day-label d-flex align-items-center mb-3" :for="day.value">{{
-            day.label
-          }}</label>
+          <label class="week-day-label d-flex align-items-center mb-3" :for="day.value">
+            {{ day.label }}
+          </label>
         </div>
       </div>
 
@@ -38,6 +51,7 @@
           id="specific-days-month"
           value="specificDaysMonth"
           v-model="frequency"
+          @change="updateHabitFrequency"
         />
         <label class="d-flex align-items-center" for="specific-days-month"
           >Specific days of the month</label
@@ -46,7 +60,13 @@
 
       <div v-if="frequency === 'specificDaysMonth'" class="days-of-month">
         <div v-for="day in daysOfMonth" :key="day" class="day-button">
-          <input type="checkbox" :id="'day-' + day" :value="day" v-model="selectedDaysOfMonth" />
+          <input
+            type="checkbox"
+            :id="'day-' + day"
+            :value="day"
+            v-model="selectedDaysOfMonth"
+            @change="updateHabitFrequency"
+          />
           <label :for="'day-' + day">{{ day }}</label>
         </div>
       </div>
@@ -61,15 +81,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
-import BackNextButton from '@/common/BackNextButton.vue'
+import { ref, computed, watch } from 'vue';
+import BackNextButton from '@/common/BackNextButton.vue';
+import habitService from '../../api/newHabitService';
 
 interface DayOption {
-  label: string
-  value: string
+  label: string;
+  value: string;
 }
 
-const frequency = ref<string | null>(null)
+const frequency = ref<string | null>(null);
 const daysOfWeek: DayOption[] = [
   { label: 'Monday', value: 'monday' },
   { label: 'Tuesday', value: 'tuesday' },
@@ -78,40 +99,48 @@ const daysOfWeek: DayOption[] = [
   { label: 'Friday', value: 'friday' },
   { label: 'Saturday', value: 'saturday' },
   { label: 'Sunday', value: 'sunday' }
-]
-const selectedDaysOfWeek = ref<string[]>([])
-const daysOfMonth: number[] = Array.from({ length: 31 }, (_, i) => i + 1)
-const selectedDaysOfMonth = ref<number[]>([])
-const warningMessage = ref<string | null>(null)
+];
+const selectedDaysOfWeek = ref<string[]>([]);
+const daysOfMonth: number[] = Array.from({ length: 31 }, (_, i) => i + 1);
+const selectedDaysOfMonth = ref<number[]>([]);
+const warningMessage = ref<string | null>(null);
 
 const isNextDisabled = computed(() => {
   if (frequency.value === 'everyday') {
-    return false
+    return false;
   } else if (frequency.value === 'specificDaysWeek') {
-    return selectedDaysOfWeek.value.length === 0
+    return selectedDaysOfWeek.value.length === 0;
   } else if (frequency.value === 'specificDaysMonth') {
-    return selectedDaysOfMonth.value.length === 0
+    return selectedDaysOfMonth.value.length === 0;
   }
-  return true
-})
+  return true;
+});
 
-// Watch for changes in frequency and reset the selected days accordingly
-watch(frequency, (newFrequency, oldFrequency) => {
-  if (newFrequency === 'specificDaysWeek' && oldFrequency === 'specificDaysMonth') {
-    selectedDaysOfMonth.value = []
-  } else if (newFrequency === 'specificDaysMonth' && oldFrequency === 'specificDaysWeek') {
-    selectedDaysOfWeek.value = []
-  }
-})
+// Watch for changes in frequency and update habit frequency
+watch(frequency, () => updateHabitFrequency());
+
+// Watch for changes in selectedDaysOfWeek
+watch(selectedDaysOfWeek, () => updateHabitFrequency());
 
 // Watch for changes in selectedDaysOfMonth and update warningMessage
 watch(selectedDaysOfMonth, (newDays) => {
   if (newDays.includes(30) || newDays.includes(31)) {
-    warningMessage.value = 'Note: Habits set for the 30th or 31st won’t appear in months without these dates.'
+    warningMessage.value = 'Note: Habits set for the 30th or 31st won’t appear in months without these dates.';
   } else {
-    warningMessage.value = null
+    warningMessage.value = null;
   }
-})
+  updateHabitFrequency();
+});
+
+const updateHabitFrequency = () => {
+  if (frequency.value === 'everyday') {
+    habitService.setHabit({ frequency: 'daily' });
+  } else if (frequency.value === 'specificDaysWeek') {
+    habitService.setHabit({ frequency: { week: selectedDaysOfWeek.value.slice() } });
+  } else if (frequency.value === 'specificDaysMonth') {
+    habitService.setHabit({ frequency: { month: selectedDaysOfMonth.value.slice() } });
+  }
+};
 </script>
 
 <style scoped>

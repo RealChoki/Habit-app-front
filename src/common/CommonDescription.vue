@@ -5,14 +5,24 @@
       id="description-input"
       placeholder="Description (optional)"
       rows="1"
-      @input="autoResize"
+      :value="modelValue"
+      @input="onInput"
     ></textarea>
   </div>
 </template>
 
 <script setup lang="ts">
-const autoResize = (event: Event) => {
+import { defineProps, defineEmits } from 'vue'
+
+const props = defineProps<{
+  modelValue: string
+}>()
+
+const emit = defineEmits(['update:modelValue'])
+
+const onInput = (event: Event) => {
   const target = event.target as HTMLTextAreaElement
+  emit('update:modelValue', target.value)
   target.style.height = 'auto'
   target.style.height = `${target.scrollHeight}px`
 }
@@ -52,10 +62,10 @@ textarea:focus {
 }
 
 textarea {
-    border: none;
-    background-color: transparent;
-    resize: none;
-    outline: none;
-    overflow: hidden;
+  border: none;
+  background-color: transparent;
+  resize: none;
+  outline: none;
+  overflow: hidden;
 }
 </style>

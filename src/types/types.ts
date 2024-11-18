@@ -31,11 +31,10 @@ export interface DateInfo {
 }
 
 export interface UserHabit {
-  id: string
-  type: 'yesno' | 'numeric' | 'timer'
-  frequency: 'daily' | 'weekly' | 'monthly'
-  title: string
-  description: string
+  type: 'yesno' | 'numeric' | 'timer';
+  frequency: 'daily' | { week: string[] } | { month: number[] };
+  title: string;
+  description: string;
 }
 
 export interface DailyHabit {
