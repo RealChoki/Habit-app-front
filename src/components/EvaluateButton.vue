@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="d-flex flex-column align-items-center m-0"
-    v-for="option in options"
-    :key="option.id"
-  >
+  <div class="d-flex flex-column align-items-center m-0" v-for="option in options" :key="option.id">
     <div class="Evaluate-button" @click="handleOptionClick(option)">
       <h1 class="small-title">{{ option.name }}</h1>
     </div>
@@ -12,59 +8,59 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import habitService from '../api/newHabitService';
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import habitService from '../api/newHabitService'
 
-const router = useRouter();
+const router = useRouter()
 
 interface EvaluateOption {
-  id: number;
-  name: string;
-  description: string;
-  route: string;
+  id: number
+  name: string
+  description: string
+  route: string
 }
 
-// Define a mapping from view names to habit types
+onMounted(() => {
+  habitService.resetHabit('yesno')
+})
+
 const routeToHabitTypeMap: Record<string, 'yesno' | 'numeric' | 'timer'> = {
   YesNoView: 'yesno',
   NumericValueView: 'numeric',
-  TimerView: 'timer',
-};
+  TimerView: 'timer'
+}
 
 const options = ref<EvaluateOption[]>([
   {
     id: 1,
     name: 'With a Yes or No',
     description: 'If you just want to record whether you succeed with an activity or not',
-    route: 'YesNoView',
+    route: 'YesNoView'
   },
   {
     id: 2,
     name: 'With a numeric value',
     description: 'If you want to establish a value as a daily goal or limit for the habit',
-    route: 'NumericValueView',
+    route: 'NumericValueView'
   },
   {
     id: 3,
     name: 'With a timer',
     description: 'If you want to establish a time value as a daily goal or limit for the habit',
-    route: 'TimerView',
-  },
-]);
+    route: 'TimerView'
+  }
+])
 
 const handleOptionClick = (option: EvaluateOption): void => {
-  // Update habit type based on selected option
-  const habitType = routeToHabitTypeMap[option.route];
-  habitService.setHabit({ type: habitType });
-
-  // Navigate to the corresponding view
-  navigateToView(option.route);
-};
+  const habitType = routeToHabitTypeMap[option.route]
+  habitService.setHabit({ type: habitType })
+  navigateToView(option.route)
+}
 
 const navigateToView = (route: string): void => {
-  router.push({ name: route });
-};
+  router.push({ name: route })
+}
 </script>
 
 <style>

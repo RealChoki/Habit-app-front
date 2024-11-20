@@ -58,11 +58,11 @@ const nextRoute: ComputedRef<string> = computed(() => {
     case 'TimerFrequencyView':
       return '/addhabit/timer/frequency/timeframe'
     case 'YesNoTimeFrameView':
-      return '/home/:date'
+      return '/home'
     case 'NumericValueTimeFrameView':
-      return '/home/:date'
+      return '/home'
     case 'TimerTimeFrameView':
-      return '/home/:date'
+      return '/home'
     default:
       return ''
   }
@@ -79,7 +79,7 @@ const goBack = (): void => {
 
 const goNext = (): void => {
   if (!props.isNextDisabled) {
-    router.push(props.nextRoute)
+    router.push(props.nextRoute)  
   }
 }
 </script>

@@ -5,7 +5,7 @@
         What is your Future Goal regarding this Habit?
       </h2>
 
-      <div class="mt-5 mb-3 cursor-pointer">
+      <div class="mt-5 mb-3">
         <input
           type="radio"
           id="every-day"
@@ -13,7 +13,7 @@
           v-model="frequency"
           @change="updateHabitFrequency"
         />
-        <label class="d-flex align-items-center" for="every-day">Every day</label>
+        <label class="d-flex align-items-center cursor-pointer" for="every-day">Every day</label>
       </div>
 
       <div class="mb-3">
@@ -24,13 +24,13 @@
           v-model="frequency"
           @change="updateHabitFrequency"
         />
-        <label class="d-flex align-items-center" for="specific-days-week"
-          >Specific days of the week</label
-        >
+        <label class="d-flex align-items-center cursor-pointer" for="specific-days-week"
+          >Specific days of the week
+        </label>
       </div>
 
       <div v-if="frequency === 'specificDaysWeek'" class="days-of-week">
-        <div v-for="day in daysOfWeek" :key="day.value">
+        <div class="checkbox-container" v-for="day in daysOfWeek" :key="day.value">
           <input
             class="weekly-checkbox"
             type="checkbox"
@@ -39,9 +39,10 @@
             v-model="selectedDaysOfWeek"
             @change="updateHabitFrequency"
           />
-          <label class="week-day-label d-flex align-items-center mb-3" :for="day.value">
+          <label class="week-day-label d-flex align-items-center mb-3 cursor-pointer" :for="day.value">
             {{ day.label }}
           </label>
+          <font-awesome-icon v-if="selectedDaysOfWeek.includes(day.value)" :icon="['fas', 'check']" style="color: #ffffff;" class="checkmark" />
         </div>
       </div>
 
@@ -53,7 +54,7 @@
           v-model="frequency"
           @change="updateHabitFrequency"
         />
-        <label class="d-flex align-items-center" for="specific-days-month"
+        <label class="d-flex align-items-center cursor-pointer" for="specific-days-month"
           >Specific days of the month</label
         >
       </div>
@@ -67,7 +68,7 @@
             v-model="selectedDaysOfMonth"
             @change="updateHabitFrequency"
           />
-          <label :for="'day-' + day">{{ day }}</label>
+          <label class="cursor-pointer" :for="'day-' + day">{{ day }}</label>
         </div>
       </div>
 
@@ -81,16 +82,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
-import BackNextButton from '@/common/BackNextButton.vue';
-import habitService from '../../api/newHabitService';
+import { ref, computed, watch, onMounted } from 'vue'
+import BackNextButton from '@/common/BackNextButton.vue'
+import habitService from '../../api/newHabitService'
+import { useRouter } from 'vue-router'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
+
+library.add(faCheck)
+const router = useRouter()
 
 interface DayOption {
-  label: string;
-  value: string;
+  label: string
+  value: string
 }
 
-const frequency = ref<string | null>(null);
+const frequency = ref<string | null>(null)
 const daysOfWeek: DayOption[] = [
   { label: 'Monday', value: 'monday' },
   { label: 'Tuesday', value: 'tuesday' },
@@ -99,48 +107,58 @@ const daysOfWeek: DayOption[] = [
   { label: 'Friday', value: 'friday' },
   { label: 'Saturday', value: 'saturday' },
   { label: 'Sunday', value: 'sunday' }
-];
-const selectedDaysOfWeek = ref<string[]>([]);
-const daysOfMonth: number[] = Array.from({ length: 31 }, (_, i) => i + 1);
-const selectedDaysOfMonth = ref<number[]>([]);
-const warningMessage = ref<string | null>(null);
+]
+const selectedDaysOfWeek = ref<string[]>([])
+const daysOfMonth: number[] = Array.from({ length: 31 }, (_, i) => i + 1)
+const selectedDaysOfMonth = ref<number[]>([])
+const warningMessage = ref<string | null>(null)
 
 const isNextDisabled = computed(() => {
   if (frequency.value === 'everyday') {
-    return false;
+    return false
   } else if (frequency.value === 'specificDaysWeek') {
-    return selectedDaysOfWeek.value.length === 0;
+    return selectedDaysOfWeek.value.length === 0
   } else if (frequency.value === 'specificDaysMonth') {
-    return selectedDaysOfMonth.value.length === 0;
+    return selectedDaysOfMonth.value.length === 0
   }
-  return true;
-});
+  return true
+})
 
 // Watch for changes in frequency and update habit frequency
-watch(frequency, () => updateHabitFrequency());
+watch(frequency, () => updateHabitFrequency())
 
 // Watch for changes in selectedDaysOfWeek
-watch(selectedDaysOfWeek, () => updateHabitFrequency());
+watch(selectedDaysOfWeek, () => updateHabitFrequency())
 
 // Watch for changes in selectedDaysOfMonth and update warningMessage
 watch(selectedDaysOfMonth, (newDays) => {
   if (newDays.includes(30) || newDays.includes(31)) {
-    warningMessage.value = 'Note: Habits set for the 30th or 31st won’t appear in months without these dates.';
+    warningMessage.value =
+      'Note: Habits set for the 30th or 31st won’t appear in months without these dates.'
   } else {
-    warningMessage.value = null;
+    warningMessage.value = null
   }
-  updateHabitFrequency();
-});
+  updateHabitFrequency()
+})
 
 const updateHabitFrequency = () => {
   if (frequency.value === 'everyday') {
-    habitService.setHabit({ frequency: 'daily' });
+    habitService.setHabit({ frequency: 'daily' })
   } else if (frequency.value === 'specificDaysWeek') {
-    habitService.setHabit({ frequency: { week: selectedDaysOfWeek.value.slice() } });
+    habitService.setHabit({ frequency: { week: selectedDaysOfWeek.value.slice() } })
   } else if (frequency.value === 'specificDaysMonth') {
-    habitService.setHabit({ frequency: { month: selectedDaysOfMonth.value.slice() } });
+    habitService.setHabit({ frequency: { month: selectedDaysOfMonth.value.slice() } })
   }
-};
+}
+
+onMounted(() => {
+  const habit = habitService.getHabit()
+  
+  if (!habit.title) {
+    router.push('/home')
+  }
+})
+
 </script>
 
 <style scoped>
@@ -236,16 +254,30 @@ input[type='radio']:checked + label:before {
   background-color: #5b5b5b;
 }
 
-.weekly-checkbox:checked + label:after {
-  content: '\2713';
-  position: absolute;
-  transform: translate(50%, 0%);
-  color: white;
-}
-
 .warning-message {
   font-size: 10px;
   margin-top: 5px;
   margin-left: 16px;
+}
+
+.custom-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.checkmark {
+  position: absolute;
+  top: 3.5px;
+  left: 4px;
+  font-size: 0.5rem;
+}
+
+.checkbox-container {
+  position: relative;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 </style>

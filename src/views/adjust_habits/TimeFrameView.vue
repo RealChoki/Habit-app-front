@@ -25,8 +25,8 @@
           <div class="habit-date-picker__field" v-if="showEndDate">
             <div class="habit-date-picker__field-label" @click="openEndDatePicker">
               <font-awesome-icon
-              class="habit-date-picker__icon"
-              :icon="['fas', 'calendar-check']"
+                class="habit-date-picker__icon"
+                :icon="['fas', 'calendar-check']"
               />
               <p class="habit-date-picker__text">End date</p>
             </div>
@@ -41,9 +41,12 @@
             />
             <p class="delete-enddate" @click="deleteEndDate">Delete end date</p>
           </div>
-          <div class="d-flex align-items-center addEndDatediv " v-else @click="addEndDate">
-            <font-awesome-icon :icon="['fas', 'square-plus']" style="color: #42b883; font-size: 2.1em;" />
-            <p class="add-enddate" >Add end date</p>
+          <div class="d-flex align-items-center addEndDatediv" v-else @click="addEndDate">
+            <font-awesome-icon
+              :icon="['fas', 'square-plus']"
+              style="color: #42b883; font-size: 2.1em"
+            />
+            <p class="add-enddate">Add end date</p>
           </div>
         </div>
         <BackNextButton :filledCircle="4" :isNextDisabled="isNextDisabled" />
@@ -52,14 +55,17 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCalendarCheck, faCalendarDays, faSquarePlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import BackNextButton from '@/common/BackNextButton.vue'
 import Datepicker from '@vuepic/vue-datepicker'
-import '@vuepic/vue-datepicker/dist/main.css'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+import habitService from '../../api/newHabitService'
 
 library.add(faCalendarCheck, faCalendarDays, faSquarePlus)
 
@@ -99,6 +105,7 @@ const openEndDatePicker = () => {
 const deleteEndDate = () => {
   endDate.value = null
   showEndDate.value = false
+  updateHabitTimeFrame()
 }
 
 const addEndDate = () => {
@@ -118,7 +125,24 @@ const isNextDisabled = computed(() => {
   return false
 })
 
+function convertDateStringToTimestamp(dateString: string): number {
+  const date = new Date(dateString)
+  return date.getTime()
+}
+
+const updateHabitTimeFrame = () => {
+  const habitData: any = { startDate: convertDateStringToTimestamp(startDate.value.toISOString()) }
+
+  if (endDate.value) {
+    habitData.endDate = convertDateStringToTimestamp(endDate.value.toISOString())
+  } else {
+    habitService.deleteEndDate()
+  }
+  habitService.setHabit(habitData)
+}
+
 watch(startDate, (newStartDate) => {
+  console.log('startDate:', newStartDate) // Print the startDate value
   if (showEndDate.value && endDate.value) {
     const minEndDateValue = new Date(newStartDate)
     minEndDateValue.setDate(minEndDateValue.getDate() + 7)
@@ -126,14 +150,23 @@ watch(startDate, (newStartDate) => {
       endDate.value = minEndDateValue
     }
   }
+  updateHabitTimeFrame()
+})
+
+watch(endDate, () => {
+  updateHabitTimeFrame()
 })
 
 onMounted(() => {
   endDate.value = null
   showEndDate.value = false
+  const habit = habitService.getHabit()
+
+  if (!habit.title || !habit.frequency) {
+    router.push('/home')
+  }
 })
 </script>
-
 <style>
 .habit-date-picker__container {
   display: flex;
@@ -210,7 +243,7 @@ onMounted(() => {
   --dp-border-color: #2d2d2d;
 }
 
-.delete-enddate{
+.delete-enddate {
   position: absolute;
   right: 8px;
   bottom: -16px;
@@ -220,7 +253,7 @@ onMounted(() => {
   cursor: pointer;
 }
 
-.add-enddate{
+.add-enddate {
   cursor: pointer;
   color: #42b883;
   width: 40%;
@@ -228,7 +261,7 @@ onMounted(() => {
   margin: 0px;
 }
 
-.addEndDatediv{
+.addEndDatediv {
   height: 3em;
   gap: 9px;
   margin-left: 1.6em;

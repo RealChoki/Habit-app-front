@@ -6,8 +6,9 @@
         class="habit input-common"
         :id="'habit-input'"
         :label="'Habit'"
-        v-model="habit"
+        v-model="habitTitle"
       />
+
       <p class="goal-title">Goal</p>
       <div class="d-flex align-items-center">
         <VueDatePicker
@@ -32,31 +33,35 @@
       </div>
 
       <p class="text-center mt-2">eg., Play the piano for 1 hour per day.</p>
-      <DescriptionField />
-      <BackNextButton :filledCircle="2" :isNextDisabled="isNextDisabled" />
+
+      <DescriptionField v-model="habitDescription" />
+
+      <BackNextButton :filledCircle="2" :isNextDisabled="isNextDisabled" @click="updateHabit" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import CommonInput from '@/common/CommonInput.vue'
 import DescriptionField from '@/common/CommonDescription.vue'
 import BackNextButton from '@/common/BackNextButton.vue'
 import VueDatePicker from '@vuepic/vue-datepicker'
-import '@vuepic/vue-datepicker/dist/main.css'
-
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faRedo } from '@fortawesome/free-solid-svg-icons'
+import habitService from '../../api/newHabitService'
 
-// Add the icons to the library
 library.add(faRedo)
 
-// Track the state of the inputs
-const habit = ref('')
-const time = ref(null)
+const habitTitle = ref('')
+const habitDescription = ref('')
+const time = ref({ hours: 0, minutes: 0, seconds: 0 })
+
+const isTimeValid = computed(
+  () => time.value.hours !== 0 || time.value.minutes !== 0 || time.value.seconds !== 0
+)
+const isNextDisabled = computed(() => !habitTitle.value || !isTimeValid.value)
 
 const loadTimePickerValue = () => {
   if (!time.value) {
@@ -68,15 +73,30 @@ const clearTimePickerValue = () => {
   time.value = { hours: 0, minutes: 0, seconds: 0 }
 }
 
-const isTimeValid = computed(() => {
-  return time.value.hours !== 0 || time.value.minutes !== 0 || time.value.seconds !== 0
+watch(habitTitle, (newTitle) => {
+  habitService.setHabit({ title: newTitle })
 })
 
-const isNextDisabled = computed(() => !habit.value || !isTimeValid.value)
+watch(habitDescription, (newDescription) => {
+  habitService.setHabit({ description: newDescription })
+})
 
 watch(time, (newTime) => {
-  console.log('Time changed:', newTime.hours, newTime.minutes, newTime.seconds)
-  console.log('Is time valid:', isTimeValid)
+  const totalSeconds = newTime.hours * 3600 + newTime.minutes * 60 + newTime.seconds
+  habitService.setHabit({ initialTime: totalSeconds })
+})
+
+const updateHabit = () => {
+  const totalSeconds = time.value.hours * 3600 + time.value.minutes * 60 + time.value.seconds
+  habitService.setHabit({
+    title: habitTitle.value,
+    description: habitDescription.value,
+    initialTime: totalSeconds
+  })
+}
+
+onMounted(() => {
+  habitService.resetHabit('timer')
 })
 </script>
 

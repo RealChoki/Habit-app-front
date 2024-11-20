@@ -16,31 +16,34 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import CommonInput from '@/common/CommonInput.vue';
-import DescriptionField from '@/common/CommonDescription.vue';
-import BackNextButton from '../../common/BackNextButton.vue';
-import habitService from '../../api/newHabitService';
+import { ref, watch, onMounted } from 'vue'
+import CommonInput from '@/common/CommonInput.vue'
+import DescriptionField from '@/common/CommonDescription.vue'
+import BackNextButton from '../../common/BackNextButton.vue'
+import habitService from '../../api/newHabitService'
 
 // Track the state of the input
-const habitTitle = ref('');
-const habitDescription = ref('');
+const habitTitle = ref('')
+const habitDescription = ref('')
 
 // Watch habitTitle and habitDescription to update the service
 watch(habitTitle, (newTitle) => {
-  habitService.setHabit({ title: newTitle });
-});
+  habitService.setHabit({ title: newTitle })
+})
 
 watch(habitDescription, (newDescription) => {
-  habitService.setHabit({ description: newDescription });
-});
+  habitService.setHabit({ description: newDescription })
+})
 
 // Alternatively, update habit title and description when navigating
 const updateHabit = () => {
-  habitService.setHabit({ title: habitTitle.value, description: habitDescription.value });
-};
-</script>
+  habitService.setHabit({ title: habitTitle.value, description: habitDescription.value })
+}
 
+onMounted(() => {
+  habitService.resetHabit('yesno')
+})
+</script>
 
 <style scoped>
 .title {

@@ -31,10 +31,14 @@ export interface DateInfo {
 }
 
 export interface UserHabit {
-  type: 'yesno' | 'numeric' | 'timer';
-  frequency: 'daily' | { week: string[] } | { month: number[] };
-  title: string;
-  description: string;
+  type: 'yesno' | 'numeric' | 'timer' | undefined;
+  frequency: 'daily' | { week: string[] } | { month: number[] } | undefined;
+  title: string | undefined;
+  description: string | undefined;
+  goal?: number
+  initialTime?: number;
+  startDate: number | undefined;
+  endDate?: number;
 }
 
 export interface DailyHabit {
