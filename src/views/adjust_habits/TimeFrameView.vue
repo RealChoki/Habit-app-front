@@ -22,7 +22,7 @@
               format="dd/MM/yyyy"
             />
           </div>
-          <div class="habit-date-picker__field" v-if="showEndDate">
+          <div class="habit-date-picker__field habit-date-picker__field__end" v-if="showEndDate">
             <div class="habit-date-picker__field-label" @click="openEndDatePicker">
               <font-awesome-icon
                 class="habit-date-picker__icon"
@@ -131,7 +131,8 @@ function convertDateStringToTimestamp(dateString: string): number {
 }
 
 const updateHabitTimeFrame = () => {
-  const habitData: any = { startDate: convertDateStringToTimestamp(startDate.value.toISOString()) }
+  // const habitData: any = { startDate: convertDateStringToTimestamp(startDate.value.toISOString()) }
+  const habitData: any = {}
 
   if (endDate.value) {
     habitData.endDate = convertDateStringToTimestamp(endDate.value.toISOString())
@@ -267,5 +268,9 @@ onMounted(() => {
   margin-left: 1.6em;
   margin-top: 0.7em;
   cursor: pointer;
+}
+
+.habit-date-picker__field__end{
+  margin-top: 2px;
 }
 </style>

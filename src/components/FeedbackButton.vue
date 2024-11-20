@@ -107,7 +107,7 @@ function selectOption(option: EvaluateOption) {
 
 /* Style for selected button */
 .selected-button.easy-button {
-  background-color: #28a745; /* Lighter green */
+  background-color: #745; /* Lighter green */
   box-shadow: 0px 6px 0px #1e7e34; /* Lighter green for shadow */
 }
 

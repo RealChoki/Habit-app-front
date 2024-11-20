@@ -5,48 +5,57 @@
         What is your Future Goal regarding this Habit?
       </h2>
 
-      <div class="mt-5 mb-3">
-        <input
-          type="radio"
-          id="every-day"
-          value="everyday"
-          v-model="frequency"
-          @change="updateHabitFrequency"
-        />
-        <label class="d-flex align-items-center cursor-pointer" for="every-day">Every day</label>
-      </div>
-
-      <div class="mb-3">
-        <input
-          type="radio"
-          id="specific-days-week"
-          value="specificDaysWeek"
-          v-model="frequency"
-          @change="updateHabitFrequency"
-        />
-        <label class="d-flex align-items-center cursor-pointer" for="specific-days-week"
-          >Specific days of the week
-        </label>
-      </div>
-
-      <div v-if="frequency === 'specificDaysWeek'" class="days-of-week">
-        <div class="checkbox-container" v-for="day in daysOfWeek" :key="day.value">
+      <div style="user-select: none">
+        <div class="mt-5 mb-3">
           <input
-            class="weekly-checkbox"
-            type="checkbox"
-            :id="day.value"
-            :value="day.value"
-            v-model="selectedDaysOfWeek"
+            type="radio"
+            id="every-day"
+            value="everyday"
+            v-model="frequency"
             @change="updateHabitFrequency"
           />
-          <label class="week-day-label d-flex align-items-center mb-3 cursor-pointer" :for="day.value">
-            {{ day.label }}
-          </label>
-          <font-awesome-icon v-if="selectedDaysOfWeek.includes(day.value)" :icon="['fas', 'check']" style="color: #ffffff;" class="checkmark" />
+          <label class="d-flex align-items-center cursor-pointer" for="every-day">Every day</label>
         </div>
-      </div>
 
-      <div class="mb-3">
+        <div class="mb-3">
+          <input
+            type="radio"
+            id="specific-days-week"
+            value="specificDaysWeek"
+            v-model="frequency"
+            @change="updateHabitFrequency"
+          />
+          <label class="d-flex align-items-center cursor-pointer" for="specific-days-week"
+            >Specific days of the week
+          </label>
+        </div>
+
+        <div v-if="frequency === 'specificDaysWeek'" class="days-of-week">
+          <div class="checkbox-container" v-for="day in daysOfWeek" :key="day.value">
+            <input
+              class="weekly-checkbox"
+              type="checkbox"
+              :id="day.value"
+              :value="day.value"
+              v-model="selectedDaysOfWeek"
+              @change="updateHabitFrequency"
+            />
+            <label
+              class="week-day-label d-flex align-items-center mb-3 cursor-pointer"
+              :for="day.value"
+            >
+              {{ day.label }}
+            </label>
+            <font-awesome-icon
+              v-if="selectedDaysOfWeek.includes(day.value)"
+              :icon="['fas', 'check']"
+              style="color: #ffffff; pointer-events: none"
+              class="checkmark"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3"></div>
         <input
           type="radio"
           id="specific-days-month"
@@ -57,23 +66,23 @@
         <label class="d-flex align-items-center cursor-pointer" for="specific-days-month"
           >Specific days of the month</label
         >
-      </div>
 
-      <div v-if="frequency === 'specificDaysMonth'" class="days-of-month">
-        <div v-for="day in daysOfMonth" :key="day" class="day-button">
-          <input
-            type="checkbox"
-            :id="'day-' + day"
-            :value="day"
-            v-model="selectedDaysOfMonth"
-            @change="updateHabitFrequency"
-          />
-          <label class="cursor-pointer" :for="'day-' + day">{{ day }}</label>
+        <div v-if="frequency === 'specificDaysMonth'" class="days-of-month mt-3">
+          <div v-for="day in daysOfMonth" :key="day" class="day-button">
+            <input
+              type="checkbox"
+              :id="'day-' + day"
+              :value="day"
+              v-model="selectedDaysOfMonth"
+              @change="updateHabitFrequency"
+            />
+            <label class="cursor-pointer" :for="'day-' + day">{{ day }}</label>
+          </div>
         </div>
-      </div>
 
-      <div v-if="warningMessage" class="warning-message text-warning">
-        {{ warningMessage }}
+        <div v-if="warningMessage" class="warning-message text-warning">
+          {{ warningMessage }}
+        </div>
       </div>
 
       <BackNextButton :filledCircle="3" :isNextDisabled="isNextDisabled" />
@@ -125,20 +134,42 @@ const isNextDisabled = computed(() => {
 })
 
 // Watch for changes in frequency and update habit frequency
-watch(frequency, () => updateHabitFrequency())
+watch(frequency, (newFrequency, oldFrequency) => {
+  if (newFrequency !== oldFrequency) {
+    // Reset the days based on the frequency
+    if (newFrequency === 'specificDaysWeek') {
+      selectedDaysOfMonth.value = [] // Reset days of the month
+    } else if (newFrequency === 'specificDaysMonth') {
+      selectedDaysOfWeek.value = [] // Reset days of the week
+    } else {
+      selectedDaysOfWeek.value = []
+      selectedDaysOfMonth.value = []
+    }
+    console.log('Frequency changed:', newFrequency)
+    updateHabitFrequency() // Only called here for frequency change
+  }
+})
 
 // Watch for changes in selectedDaysOfWeek
-watch(selectedDaysOfWeek, () => updateHabitFrequency())
+watch(selectedDaysOfWeek, (newDays, oldDays) => {
+  if (frequency.value === 'specificDaysWeek' && newDays !== oldDays) {
+    console.log('Days of the week changed:', newDays)
+    updateHabitFrequency()
+  }
+})
 
 // Watch for changes in selectedDaysOfMonth and update warningMessage
-watch(selectedDaysOfMonth, (newDays) => {
-  if (newDays.includes(30) || newDays.includes(31)) {
-    warningMessage.value =
-      'Note: Habits set for the 30th or 31st won’t appear in months without these dates.'
-  } else {
-    warningMessage.value = null
+watch(selectedDaysOfMonth, (newDays, oldDays) => {
+  if (frequency.value === 'specificDaysMonth' && newDays !== oldDays) {
+    console.log('Days of the month changed:', newDays)
+    updateHabitFrequency()
+    if (newDays.includes(30) || newDays.includes(31)) {
+      warningMessage.value =
+        'Note: Habits set for the 30th or 31st won’t appear in months without these dates.'
+    } else {
+      warningMessage.value = null
+    }
   }
-  updateHabitFrequency()
 })
 
 const updateHabitFrequency = () => {
@@ -153,12 +184,11 @@ const updateHabitFrequency = () => {
 
 onMounted(() => {
   const habit = habitService.getHabit()
-  
+
   if (!habit.title) {
     router.push('/home')
   }
 })
-
 </script>
 
 <style scoped>
@@ -279,5 +309,9 @@ input[type='radio']:checked + label:before {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.disable-user-select {
+  user-select: none;
 }
 </style>

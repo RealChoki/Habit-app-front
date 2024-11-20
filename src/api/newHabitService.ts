@@ -2,11 +2,11 @@ import axios from 'axios'
 import type { UserHabit } from '../types/types'
 
 let currentHabit: UserHabit = {
-  title: undefined,
-  description: undefined,
-  frequency: undefined,
-  type: undefined,
-  startDate: undefined
+  title: null,
+  description: null,
+  frequency: null,
+  type: null,
+  startDate: null
 }
 
 const getHabit = () => {
@@ -24,11 +24,11 @@ const deleteEndDate = () => {
 
 const resetHabit = (type: 'yesno' | 'numeric' | 'timer') => {
   currentHabit = {
-    title: undefined,
-    description: undefined,
-    frequency: undefined,
+    title: null,
+    description: null,
+    frequency: null,
     type: type,
-    startDate: undefined
+    startDate: null
   }
   console.log('habit:', currentHabit)
 }
